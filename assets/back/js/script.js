@@ -111,7 +111,7 @@ if ($('input[name="success_msg"]').val() != '') {
     flash_msg("Success", $('input[name="success_msg"]').val(), "success");
 }
 
-if ($('select[name="sub_cat_id"]').length > 0 && $('select[name="cat_id"]').length > 0) {
+/* if ($('select[name="sub_cat_id"]').length > 0 && $('select[name="cat_id"]').length > 0) {
     $('select[name="cat_id"]').change(function() {
         var select = $(this);
         var selected = select.data('value');
@@ -151,7 +151,7 @@ if ($('select[name="sub_cat_id"]').length > 0 && $('select[name="cat_id"]').leng
     });
 
     $('select[name="cat_id"]').trigger('change');
-}
+} */
 
 function flash_msg(title, message, type) {
     $.notify({
@@ -199,20 +199,6 @@ var script = {
                 }
             })
         return;
-        /* swal({
-                title: "Are you sure?",
-                text: "Are you sure remove this item?",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonClass: "btn btn-outline-danger",
-                confirmButtonText: "Yes, delete it!",
-                cancelButtonText: 'No',
-                closeOnConfirm: false
-            },
-            function() {
-                let form = $("#" + id);
-
-            }); */
     }
 };
 

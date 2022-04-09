@@ -1,11 +1,21 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <div class="card-header">
     <div class="row">
-        <div class="col-6">
+        <div class="col-md-9">
             <h5><?= $title ?> <?= $operation ?></h5>
         </div>
-        <div class="col-6">
-            <?= anchor("$url/add", '<span class="fa fa-plus"></span> Add new', 'class="btn btn-outline-success btn-sm float-right"'); ?>
+        <div class="col-md-3">
+            <?= form_open_multipart("$url/upload") ?>
+                <?= form_label("<i class='fa fa-upload'></i> Upload", 'image', 'class="btn btn-outline-success btn-sm float-right"'); ?>
+                <?= form_input([
+                    'style' => "display:none;",
+                    'type' => "file",
+                    'id' => "image",
+                    'accept' => "image/jpeg, image/jpg, image/png",
+                    'name' => "image",
+                    'onchange' => 'this.form.submit()'
+                ]); ?>
+            <?= form_close() ?>
         </div>
     </div>
 </div>
@@ -14,9 +24,7 @@
         <table class="datatable table table-striped table-bordered nowrap">
             <thead>
                 <th class="target">Sr.</th>
-                <th>Title</th>
-                <th>Sub Title</th>
-                <th>Banner</th>
+                <th class="target">Banner</th>
                 <th class="target">Action</th>
             </thead>
             <tbody>

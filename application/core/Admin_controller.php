@@ -11,9 +11,8 @@ class Admin_controller extends MY_Controller
 		if (!$this->session->auth) 
 			return redirect(admin('login'));
 
-        $this->user = (object) $this->main->get("logins", 'name, mobile, email', ['id' => $this->session->auth]);
+        $this->user = (object) $this->main->get("logins", 'name, mobile, email, role', ['id' => $this->session->auth]);
 		$this->redirect = admin($this->redirect);
-		$this->app_table = $this->config->item('app_table');
 	}
 
 	protected function uploadImage($upload, $exts='jpg|jpeg|png', $size=[], $name=null, $thumb=[])
@@ -76,7 +75,7 @@ class Admin_controller extends MY_Controller
             return ['error' => true, 'message' => $this->upload->display_errors()];
     }
 
-    public function getSubCats()
+    /* public function getSubCats()
     {
         check_ajax();
         
@@ -85,5 +84,5 @@ class Admin_controller extends MY_Controller
         }, $this->main->getall("category", 'id, cat_name', ['is_deleted' => 0, 'parent_id' => d_id($this->input->get('cat_id'))]));
         
         die(json_encode($return));
-    }
+    } */
 }

@@ -67,34 +67,27 @@
                         </div>
                         <ul class="sidebar-menu">
                             <li>
-                                <?= anchor(admin('dashboard'), '<i data-feather="home"></i><span> Dashboard</span>', 'class="sidebar-header '.($name == 'dashboard' ? 'active' : '').'"') ?>
+                                <?= anchor(admin('dashboard'), '<i data-feather="home"></i><span> Dashboard</span>', 'class="sidebar-header '.($name === 'dashboard' ? 'active' : '').'"') ?>
+                            </li>
+                            <li <?= in_array($name, ['category', 'department', 'methods', 'samples', 'report_time', 'tests', 'test_details']) ? 'class="active"' : '' ?>>
+                                <a class="sidebar-header" href="javascript:;" >
+                                    <i data-feather="thermometer"></i><span>Test</span><i class="fa fa-angle-right pull-right"></i>
+                                </a>
+                                <ul class="sidebar-submenu <?= in_array($name, ['category', 'department', 'methods', 'samples', 'report_time', 'tests', 'test_details']) ? 'menu-open' : '' ?>">
+                                    <li><?= anchor(admin('category'), '<i class="fa fa-circle"></i> Test Category', 'class="'.($name === 'category' ? 'active' : '').'"') ?></li>
+                                    <li><?= anchor(admin('department'), '<i class="fa fa-circle"></i> Test Department', 'class="'.($name === 'department' ? 'active' : '').'"') ?></li>
+                                    <li><?= anchor(admin('methods'), '<i class="fa fa-circle"></i> Test Method', 'class="'.($name === 'methods' ? 'active' : '').'"') ?></li>
+                                    <li><?= anchor(admin('samples'), '<i class="fa fa-circle"></i> Sample  Type', 'class="'.($name === 'samples' ? 'active' : '').'"') ?></li>
+                                    <li><?= anchor(admin('report_time'), '<i class="fa fa-circle"></i> Report Time', 'class="'.($name === 'report_time' ? 'active' : '').'"') ?></li>
+                                    <li><?= anchor(admin('tests'), '<i class="fa fa-circle"></i> Test', 'class="'.($name === 'tests' ? 'active' : '').'"') ?></li>
+                                    <li><?= anchor(admin('test_details'), '<i class="fa fa-circle"></i> Test details', 'class="'.($name === 'test_details' ? 'active' : '').'"') ?></li>
+                                </ul>
                             </li>
                             <li>
-                                <?= anchor(admin('orders'), '<i data-feather="file-text"></i><span> Orders</span>', 'class="sidebar-header '.($name == 'orders' ? 'active' : '').'"') ?>
+                                <?= anchor(admin('banners'), '<i data-feather="image"></i><span> Banners</span>', 'class="sidebar-header '.($name === 'banners' ? 'active' : '').'"') ?>
                             </li>
                             <li>
-                                <?= anchor(admin('banners'), '<i data-feather="image"></i><span> Banners</span>', 'class="sidebar-header '.($name == 'banners' ? 'active' : '').'"') ?>
-                            </li>
-                            <li>
-                                <?= anchor(admin('category'), '<i data-feather="file-text"></i><span> Category</span>', 'class="sidebar-header '.($name == 'category' ? 'active' : '').'"') ?>
-                            </li>
-                            <li>
-                                <?= anchor(admin('subCategory'), '<i data-feather="file-text"></i><span> Sub Category</span>', 'class="sidebar-header '.($name == 'subCategory' ? 'active' : '').'"') ?>
-                            </li>
-                            <li>
-                                <?= anchor(admin('products'), '<i data-feather="file-text"></i><span> products</span>', 'class="sidebar-header '.($name == 'product' ? 'active' : '').'"') ?>
-                            </li>
-                            <li>
-                                <?= anchor(admin('coupon'), '<i data-feather="file-text"></i><span> Coupon Code</span>', 'class="sidebar-header '.($name == 'coupon' ? 'active' : '').'"') ?>
-                            </li>
-                            <li>
-                                <?= anchor(admin('users'), '<i data-feather="users"></i><span> Users</span>', 'class="sidebar-header '.($name == 'users' ? 'active' : '').'"') ?>
-                            </li>
-                            <li>
-                                <?= anchor(admin('state'), '<i data-feather="file"></i><span> State</span>', 'class="sidebar-header '.($name == 'state' ? 'active' : '').'"') ?>
-                            </li>
-                            <li>
-                                <?= anchor(admin('pincode'), '<i data-feather="file"></i><span> Pincode</span>', 'class="sidebar-header '.($name == 'pincode' ? 'active' : '').'"') ?>
+                                <?= anchor(admin('city'), '<i data-feather="file-text"></i><span> City</span>', 'class="sidebar-header '.($name === 'city' ? 'active' : '').'"') ?>
                             </li>
                         </ul>
                     </div>
@@ -155,6 +148,7 @@
         <script src="<?= base_url('assets/back/js/config.js') ?>"></script>
         <script src="<?= base_url('assets/back/js/select2/select2.full.min.js') ?>"></script>
         <script src="<?= base_url('assets/back/js/select2/select2-custom.js') ?>"></script>
+        <script src="<?= base_url('assets/back/js/editor/ckeditor/ckeditor.js') ?>"></script>
         <script src="<?= base_url('assets/back/js/script.js?v=1.0.1') ?>"></script>
     </body>
 </html>

@@ -49,10 +49,13 @@ class Login extends MY_Controller
         {
             $post = [
     			'mobile'   	 => $this->input->post('mobile'),
-    			'password'   => my_crypt($this->input->post('password'))
+    			'password'   => my_crypt($this->input->post('password')),
+    			'role'       => $this->input->post('role'),
+    			'is_blocked' => 0,
+    			'is_deleted' => 0
     		];
             
-    		$user = $this->main->get($this->table, 'id auth, name, mobile', $post);
+    		$user = $this->main->get($this->table, 'id auth', $post);
     		
             if ($user) {
     			$this->session->set_userdata($user);

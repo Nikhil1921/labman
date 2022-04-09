@@ -15,7 +15,6 @@
             <thead>
                 <th class="target">Sr.</th>
                 <th>Category</th>
-                <th>Slug</th>
                 <th class="target">Action</th>
             </thead>
             <tbody>

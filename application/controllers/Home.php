@@ -24,12 +24,12 @@ class Home extends Public_controller {
 	public function index()
 	{
 		return redirect(admin());
-		$data['title'] = 'Home';
+		/* $data['title'] = 'Home';
         $data['name'] = 'home';
         $data['banners'] = $this->main->getBanners();
         $data['prods'] = $this->main->getProds($this->show);
 
-		return $this->template->load('template', 'home', $data);
+		return $this->template->load('template', 'home', $data); */
 	}
 	
 	public function wishlist()

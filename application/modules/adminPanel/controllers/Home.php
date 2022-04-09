@@ -66,7 +66,7 @@ class Home extends Admin_controller  {
 
     public function mobile_check($str)
     {   
-        $where = ['mobile' => $str, 'id != ' => $this->session->auth];
+        $where = ['mobile' => $str, 'id != ' => $this->session->auth, 'role' => $this->user->role, 'is_deleted' => 0, 'is_blocked' => 0];
         
         if ($this->main->check($this->table, $where, 'id'))
         {
@@ -78,7 +78,7 @@ class Home extends Admin_controller  {
 
     public function email_check($str)
     {   
-        $where = ['email' => $str, 'id != ' => $this->session->auth];
+        $where = ['email' => $str, 'id != ' => $this->session->auth, 'role' => $this->user->role, 'is_deleted' => 0, 'is_blocked' => 0];
         
         if ($this->main->check($this->table, $where, 'id'))
         {
@@ -92,38 +92,38 @@ class Home extends Admin_controller  {
         [
             'field' => 'name',
             'label' => 'Name',
-            'rules' => 'required|max_length[255]',
+            'rules' => 'required|max_length[100]',
             'errors' => [
                 'required' => "%s is required",
-                'max_length' => "Max 255 chars allowed"
+                'max_length' => "Max 100 chars allowed"
             ],
         ],
         [
             'field' => 'mobile',
             'label' => 'Mobile',
-            'rules' => 'required|numeric|exact_length[10]|callback_mobile_check',
+            'rules' => 'required|is_natural|exact_length[10]|callback_mobile_check',
             'errors' => [
                 'required' => "%s is required",
-                'numeric' => "%s is invalid",
+                'is_natural' => "%s is invalid",
                 'exact_length' => "%s is invalid",
             ],
         ],
         [
             'field' => 'email',
             'label' => 'Email',
-            'rules' => 'required|max_length[255]|callback_email_check',
+            'rules' => 'required|max_length[100]|callback_email_check|valid_email',
             'errors' => [
                 'required' => "%s is required",
-                'numeric' => "%s is invalid",
-                'max_length' => "Max 255 chars allowed"
+                'valid_email' => "%s is invalid",
+                'max_length' => "Max 100 chars allowed"
             ],
         ],
         [
             'field' => 'password',
             'label' => 'Password',
-            'rules' => 'max_length[255]',
+            'rules' => 'max_length[100]',
             'errors' => [
-                'max_length' => "Max 255 chars allowed"
+                'max_length' => "Max 100 chars allowed"
             ],
         ]
     ];

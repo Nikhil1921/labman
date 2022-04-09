@@ -18,6 +18,14 @@
         ]); ?>
         <?= form_error('mobile') ?>
     </div>
+    <div class="checkbox">
+        <div class="form-group m-t-15 m-checkbox-inline mb-0 custom-radio-ml">
+            <div class="radio radio-danger">
+                <?= form_radio('role', "Admin", true, 'id="admin"') ?>
+                <?= form_label("Admin", "admin", 'class="mb-0"') ?>
+            </div>
+        </div>
+    </div>
     <div class="col-12">
         <div class="text-right mt-3"><?= anchor(admin('login'), 'click here', 'class="btn-link text-capitalize"') ?> to login</div>
     </div>

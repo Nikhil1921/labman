@@ -30,6 +30,15 @@
         ]); ?>
         <?= form_error('password') ?>
     </div>
+    <div class="checkbox">
+        <div class="form-group m-t-15 m-checkbox-inline mb-0 custom-radio-ml">
+            <div class="radio radio-danger">
+                <?= form_radio('role', "Admin", true, 'id="admin"') ?>
+                <!-- set_value('role') === 'Admin' ? true : false -->
+                <?= form_label("Admin", "admin", 'class="mb-0"') ?>
+            </div>
+        </div>
+    </div>
     <div class="col-12">
         <div class="text-right mt-3">Forgot your password?&nbsp;&nbsp;<?= anchor(admin('forgot-password'), 'click here', 'class="btn-link text-capitalize"') ?></div>
     </div>
