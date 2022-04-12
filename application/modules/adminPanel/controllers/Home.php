@@ -44,6 +44,40 @@ class Home extends Admin_controller  {
         }
     }
 
+	/* public function charges()
+    {
+        $this->form_validation->set_rules('hard_copy', 'Hard Copy', 'required|max_length[6]|is_natural|trim', ['is_natural' => '%s is required.', 'is_natural' => '%s is invalid.', 'max_length' => 'Max 6 characterd are allowed.']);
+        $this->form_validation->set_rules('home_visit', 'Home Visit', 'required|max_length[6]|is_natural|trim', ['is_natural' => '%s is required.', 'is_natural' => '%s is invalid.', 'max_length' => 'Max 6 characterd are allowed.']);
+        $this->form_validation->set_rules('fix_price', 'Fix To Price', 'required|max_length[6]|is_natural|trim', ['is_natural' => '%s is required.', 'is_natural' => '%s is invalid.', 'max_length' => 'Max 6 characterd are allowed.']);
+
+        if ($this->form_validation->run() == FALSE){
+            $data['title'] = 'Report & Delivery Charges';
+            $data['name'] = 'charges';
+            $data['operation'] = "Update";
+            $data['url'] = $this->redirect;
+            $data['data'] = $this->main->get('charges', 'hard_copy, home_visit, fix_price', []);
+            if(!$data['data'])
+            {
+                $this->main->add(['hard_copy' => 30, 'home_visit' => 50, 'fix_price' => 300], 'charges');
+                $data['data'] = $this->main->get('charges', 'hard_copy, home_visit, fix_price', []);
+            }
+
+            return $this->template->load('template', "charges", $data);
+        }
+        else{
+            $post = [
+                'hard_copy'  => $this->input->post('hard_copy'),
+                'home_visit' => $this->input->post('home_visit'),
+                'fix_price'  => $this->input->post('fix_price')
+            ];
+
+            $id = $this->main->update([], $post, 'charges');
+
+            flashMsg($id, "Charges updated.", "Charges not updated. Try again.", admin('charges'));
+            
+        }
+    } */
+
 	public function logout()
     {
         $this->session->sess_destroy();
@@ -66,7 +100,7 @@ class Home extends Admin_controller  {
 
     public function mobile_check($str)
     {   
-        $where = ['mobile' => $str, 'id != ' => $this->session->auth, 'role' => $this->user->role, 'is_deleted' => 0, 'is_blocked' => 0];
+        $where = ['mobile' => $str, 'id != ' => $this->session->auth, 'role' => $this->user->role, 'is_deleted' => 0];
         
         if ($this->main->check($this->table, $where, 'id'))
         {
@@ -78,7 +112,7 @@ class Home extends Admin_controller  {
 
     public function email_check($str)
     {   
-        $where = ['email' => $str, 'id != ' => $this->session->auth, 'role' => $this->user->role, 'is_deleted' => 0, 'is_blocked' => 0];
+        $where = ['email' => $str, 'id != ' => $this->session->auth, 'role' => $this->user->role, 'is_deleted' => 0];
         
         if ($this->main->check($this->table, $where, 'id'))
         {

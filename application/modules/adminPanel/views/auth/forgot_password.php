@@ -19,10 +19,14 @@
         <?= form_error('mobile') ?>
     </div>
     <div class="checkbox">
-        <div class="form-group m-t-15 m-checkbox-inline mb-0 custom-radio-ml">
+        <div class="form-group m-checkbox-inline mb-0 custom-radio-ml">
             <div class="radio radio-danger">
-                <?= form_radio('role', "Admin", true, 'id="admin"') ?>
+                <?= form_radio('role', "Admin", set_radio('role', 'Admin', true), 'id="admin"') ?>
                 <?= form_label("Admin", "admin", 'class="mb-0"') ?>
+            </div>
+            <div class="radio radio-danger">
+                <?= form_radio('role', "Lab partner", set_radio('role', 'Lab partner'), 'id="lab_partner"') ?>
+                <?= form_label("Lab partner", "lab_partner", 'class="mb-0"') ?>
             </div>
         </div>
     </div>

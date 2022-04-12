@@ -31,6 +31,9 @@ class City extends Admin_controller  {
             $sub_array = [];
             $sub_array[] = $sr;
             $sub_array[] = $row->c_name;
+            $sub_array[] = $row->hard_copy;
+            $sub_array[] = $row->home_visit;
+            $sub_array[] = $row->fix_price;
             
             $action = '<div class="btn-group" role="group"><button class="btn btn-success btn-xs dropdown-toggle" id="btnGroupVerticalDrop1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="icon-settings"></span></button><div class="dropdown-menu" aria-labelledby="btnGroupVerticalDrop1" x-placement="bottom-start">';
@@ -66,12 +69,21 @@ class City extends Admin_controller  {
         $data['name'] = $this->name;
         $data['operation'] = "Add";
         $data['url'] = $this->redirect;
-
+        $data['labs'] = $this->main->getAll('logins', 'id, name', ['role' => 'Lab partner', 'is_deleted' => 0]);
+        
         if ($this->form_validation->run() == FALSE)
             return $this->template->load('template', "$this->redirect/form", $data);
         else{
+            $lab_ids = array_map(function($id){
+                return d_id($id);
+            }, $this->input->post('lab_ids'));
+
             $post = [
                 'c_name'        => $this->input->post('c_name'),
+                'hard_copy'     => $this->input->post('hard_copy'),
+                'home_visit'    => $this->input->post('home_visit'),
+                'fix_price'     => $this->input->post('fix_price'),
+                'lab_ids'       => implode(',', $lab_ids),
             ];
 
             $id = $this->main->add($post, $this->table);
@@ -91,12 +103,21 @@ class City extends Admin_controller  {
             $data['name'] = $this->name;
             $data['operation'] = "Update";
             $data['url'] = $this->redirect;
-            $data['data'] = $this->main->get($this->table, 'c_name', ['id' => d_id($id)]);
+            $data['data'] = $this->main->get($this->table, 'c_name, hard_copy, home_visit, fix_price, lab_ids', ['id' => d_id($id)]);
+            $data['labs'] = $this->main->getAll('logins', 'id, name', ['role' => 'Lab partner', 'is_deleted' => 0]);
             
             return $this->template->load('template', "$this->redirect/form", $data);
         }else{
+            $lab_ids = array_map(function($id){
+                return d_id($id);
+            }, $this->input->post('lab_ids'));
+
             $post = [
-                'c_name'        => $this->input->post('c_name')
+                'c_name'        => $this->input->post('c_name'),
+                'hard_copy'     => $this->input->post('hard_copy'),
+                'home_visit'    => $this->input->post('home_visit'),
+                'fix_price'     => $this->input->post('fix_price'),
+                'lab_ids'       => implode(',', $lab_ids),
             ];
             
             $id = $this->main->update(['id' => d_id($id)], $post, $this->table);
@@ -127,6 +148,44 @@ class City extends Admin_controller  {
                 'max_length' => "Max 100 chars allowed.",
                 'alpha_numeric_spaces' => "Only characters and numbers are allowed.",
             ],
-        ]
+        ],
+        [
+            'field' => 'hard_copy',
+            'label' => 'Hard Copy',
+            'rules' => 'required|max_length[6]|is_natural|trim',
+            'errors' => [
+                'required' => "%s is required",
+                'max_length' => "Max 6 chars allowed.",
+                'is_natural' => "%s is invalid",
+            ],
+        ],
+        [
+            'field' => 'home_visit',
+            'label' => 'Home Visit',
+            'rules' => 'required|max_length[6]|is_natural|trim',
+            'errors' => [
+                'required' => "%s is required",
+                'max_length' => "Max 6 chars allowed.",
+                'is_natural' => "%s is invalid",
+            ],
+        ],
+        [
+            'field' => 'fix_price',
+            'label' => 'Fix To Price',
+            'rules' => 'required|max_length[6]|is_natural|trim',
+            'errors' => [
+                'required' => "%s is required",
+                'max_length' => "Max 6 chars allowed.",
+                'is_natural' => "%s is invalid",
+            ],
+        ],
+        [
+            'field' => 'lab_ids[]',
+            'label' => 'Labs',
+            'rules' => 'required|trim',
+            'errors' => [
+                'required' => "%s is required",
+            ],
+        ],
     ];
 }

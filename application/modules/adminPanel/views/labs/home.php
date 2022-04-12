@@ -14,10 +14,12 @@
         <table class="datatable table table-striped table-bordered nowrap">
             <thead>
                 <th class="target">Sr.</th>
-                <th>City</th>
-                <th>Hard copy</th>
-                <th>Home visit</th>
-                <th>Fix price</th>
+                <th>Name</th>
+                <th>Doctor name</th>
+                <th>Contact no.</th>
+                <th>Address</th>
+                <th>Certificates</th>
+                <th class="target">Approval</th>
                 <th class="target">Action</th>
             </thead>
             <tbody>

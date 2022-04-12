@@ -23,6 +23,7 @@
         <link rel="stylesheet" type="text/css" href="<?= base_url('assets/back/css/date-picker.css') ?>">
         <link rel="stylesheet" type="text/css" href="<?= base_url('assets/back/css/bootstrap.css') ?>">
         <link rel="stylesheet" type="text/css" href="<?= base_url('assets/back/css/style.css') ?>">
+
         <link id="color" rel="stylesheet" href="<?= base_url('assets/back/css/light-1.css') ?>" media="screen">
         <link rel="stylesheet" type="text/css" href="<?= base_url('assets/back/css/responsive.css') ?>">
     </head>
@@ -69,6 +70,12 @@
                             <li>
                                 <?= anchor(admin('dashboard'), '<i data-feather="home"></i><span> Dashboard</span>', 'class="sidebar-header '.($name === 'dashboard' ? 'active' : '').'"') ?>
                             </li>
+                            <li>
+                                <?= anchor(admin('users'), '<i data-feather="users"></i><span> Users</span>', 'class="sidebar-header '.($name === 'users' ? 'active' : '').'"') ?>
+                            </li>
+                            <li>
+                                <?= anchor(admin('orders'), '<i data-feather="file-text"></i><span> Completed orders</span>', 'class="sidebar-header '.($name === 'orders' ? 'active' : '').'"') ?>
+                            </li>
                             <li <?= in_array($name, ['category', 'department', 'methods', 'samples', 'report_time', 'tests', 'test_details']) ? 'class="active"' : '' ?>>
                                 <a class="sidebar-header" href="javascript:;" >
                                     <i data-feather="thermometer"></i><span>Test</span><i class="fa fa-angle-right pull-right"></i>
@@ -89,6 +96,23 @@
                             <li>
                                 <?= anchor(admin('city'), '<i data-feather="file-text"></i><span> City</span>', 'class="sidebar-header '.($name === 'city' ? 'active' : '').'"') ?>
                             </li>
+                            <li>
+                                <?= anchor(admin('gallery'), '<i data-feather="image"></i><span> Gallery</span>', 'class="sidebar-header '.($name === 'gallery' ? 'active' : '').'"') ?>
+                            </li>
+                            <li>
+                                <?= anchor(admin('labs'), '<i data-feather="truck"></i><span> Lab Partner</span>', 'class="sidebar-header '.($name === 'labs' ? 'active' : '').'"') ?>
+                            </li>
+                            <li>
+                                <?= anchor(admin('packages'), '<i data-feather="shopping-bag"></i><span> Packages / Organs / Offer</span>', 'class="sidebar-header '.($name === 'packages' ? 'active' : '').'"') ?>
+                            </li>
+                            <li>
+                                <?= anchor(admin('lab_test'), '<i data-feather="dollar-sign"></i><span> Test by Lab</span>', 'class="sidebar-header '.($name === 'lab_test' ? 'active' : '').'"') ?>
+                            </li>
+                            <?php if ($this->user->role === 'Admin'): ?>
+                            <!-- <li>
+                                <?= anchor(admin('charges'), '<i data-feather="dollar-sign"></i><span> Report Charges</span>', 'class="sidebar-header '.($name === 'charges' ? 'active' : '').'"') ?>
+                            </li> -->
+                            <?php endif ?>
                         </ul>
                     </div>
                 </div>
@@ -148,7 +172,28 @@
         <script src="<?= base_url('assets/back/js/config.js') ?>"></script>
         <script src="<?= base_url('assets/back/js/select2/select2.full.min.js') ?>"></script>
         <script src="<?= base_url('assets/back/js/select2/select2-custom.js') ?>"></script>
-        <script src="<?= base_url('assets/back/js/editor/ckeditor/ckeditor.js') ?>"></script>
+        <script src=""></script>
+        <?php if($name === 'city'): ?>
+        <script type='text/javascript' src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDiWWB6yJd6ilpII5N89O-vXAo2eXiVD9g&sensor=false&libraries=places"></script>
+        <script src="<?= base_url('assets/js/jquery.geocomplete.js') ?>"></script>
+        <script>
+        $(function(){
+            $(".geocomplete")
+                .geocomplete({
+                    types: ["establishment"],
+                })
+                .bind("geocode:result", function(event, result){
+                    let city;
+                    result.address_components.map(function(object){
+                        if(object.types.includes("locality"))
+                            city = object.long_name;
+                            return;
+                    });
+                $("input[name=c_name]").val(city);
+            });
+        });
+        </script>
+        <?php endif ?>
         <script src="<?= base_url('assets/back/js/script.js?v=1.0.1') ?>"></script>
     </body>
 </html>

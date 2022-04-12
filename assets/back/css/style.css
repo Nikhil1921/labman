@@ -10399,7 +10399,11 @@ ul .submenu input {
 }
 
 .authentication-main {
-    background: #f6f7fb;
+    background-image: url('../../images/admin.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100%;
     padding: 15px 100px
 }
 

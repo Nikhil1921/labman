@@ -15,7 +15,11 @@ queries
 /theme/
 uploads/banners/*
 !uploads/banners/index.html
-uploads/products/*
-!uploads/products/index.html
+uploads/lab-partner/*
+!uploads/lab-partner/index.html
 uploads/department/*
 !uploads/department/index.html
+uploads/gallery/*
+!uploads/gallery/index.html
+uploads/packages/*
+!uploads/packages/index.html

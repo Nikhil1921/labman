@@ -47,8 +47,7 @@ var table = $('.datatable').DataTable({
         url: dataTableUrl,
         type: "GET",
         data: function(data) {
-            data.cat_id = $("select[name='cat_id']").val();
-            data.status = $("input[name='status']").val();
+            data.status = $("select[name='status']").val();
         },
         complete: function(response) {},
     },
@@ -58,15 +57,6 @@ var table = $('.datatable').DataTable({
     }, ]
 });
 
-$("select[name=cat_id]").change(() => {
+$("select[name=status]").change(() => {
   table.ajax.reload();
 });
-
-$(".reload-table").click(function(){
-    $("input[name=status]").val($(this).html());
-    table.ajax.reload();
-});
-
-const changeStatus = (id) => {
-    $("#status_"+id).submit();
-};

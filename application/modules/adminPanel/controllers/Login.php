@@ -83,7 +83,8 @@ class Login extends MY_Controller
         else
         {
             $post = [
-    			'mobile'   	 => $this->input->post('mobile')
+    			'mobile'   	 => $this->input->post('mobile'),
+                'role'       => $this->input->post('role'),
     		];
             
     		if ($user = $this->main->get($this->table, 'id', $post)) {
