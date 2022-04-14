@@ -24,7 +24,7 @@
                 <th class="target">Sr.</th>
                 <th>Lab</th>
                 <th>Name</th>
-                <th>Price</th>
+                <th>Discount</th>
                 <th class="target">Image</th>
                 <th class="target">Action</th>
             </thead>

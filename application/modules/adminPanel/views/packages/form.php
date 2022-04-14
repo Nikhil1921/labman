@@ -17,23 +17,9 @@
                     <?= form_error('lab_id') ?>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <div class="form-group">
-                    <?= form_label('Original price', 'org_price', 'class="col-form-label"') ?>
-                    <?= form_input([
-                        'class' => "form-control",
-                        'id' => "org_price",
-                        'name' => "org_price",
-                        'maxlength' => 6,
-                        'required' => "",
-                        'value' => set_value('org_price') ? set_value('org_price') : (isset($data['org_price']) ? $data['org_price'] : '')
-                    ]); ?>
-                    <?= form_error('org_price') ?>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    <?= form_label('Discounted price', 'price', 'class="col-form-label"') ?>
+                    <?= form_label('Discount', 'price', 'class="col-form-label"') ?>
                     <?= form_input([
                         'class' => "form-control",
                         'id' => "price",
@@ -45,7 +31,7 @@
                     <?= form_error('price') ?>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <div class="form-group">
                     <?= form_label('Package Type', '', 'class="col-form-label"') ?>
                     <br />

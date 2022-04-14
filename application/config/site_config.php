@@ -10,3 +10,4 @@ $config['gallery'] = 'uploads/gallery/';
 $config['lab-partner'] = 'uploads/lab-partner/';
 $config['packages'] = 'uploads/packages/';
 $config['users'] = 'uploads/users/';
+$config['prescription'] = 'uploads/prescription/';

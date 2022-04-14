@@ -1,391 +1,263 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
-<div class="slider-area">
-    <div class="swiper-container slider__active">
-        <div class="slider-wrapper swiper-wrapper">
-            <?php foreach($banners as $banner): ?>
-            <div class="single-slider swiper-slide slider-height d-flex align-items-center" data-background="<?= $banner['banner']; ?>">
-                <div class="container">
+<div class="pop-menu">
+    <div class="owl-carousel owl-slider owl-carousel-area" id="owl-carousel-slider">
+        <?php foreach($banners as $banner): ?>
+            <div class="item banner">
+                <?= img($banner['banner']) ?>
+            </div>
+        <?php endforeach ?>
+    </div>
+</div>
+<div class="container">
+    <div class="search-tabs search-tabs-bg search-tabs-nobox search-tabs-lift-top">
+        <div class="tabbable">
+            <ul class="nav nav-tabs" id="myTab">
+                <li class="active"><a href="#tab-1" data-toggle="tab"><i class="fa fa-building-o"></i><span >Upload Prescription</span></a>
+                </li>
+                <li><a href="#tab-2" data-toggle="tab"><i class="fa fa-phone"></i> <span >Call Back Form</span></a>
+                </li>
+                <li><a href="#tab-3" data-toggle="tab"><i class="fa fa-home"></i> <span >Institutional</span></a>
+                </li>
+                <li><a href="#tab-4" data-toggle="tab"><i class="fa fa-flask"></i> <span >Popular Test</span></a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane fade in active" id="tab-1">
+                    <h2>Upload Prescription</h2>
                     <div class="row">
-                        <div class="col-xl-5">
-                            <div class="slider-content">
-                                <h2 data-animation="fadeInLeft" data-delay="1.7s" class="pt-15 slider-title pb-5"><?= $banner['title']; ?></h2>
-                                <p class="pr-20 slider_text" data-animation="fadeInLeft" data-delay="1.9s"><?= $banner['sub_title']; ?></p>
+                        <div class="col-md-12">
+                            <div class="input-daterange">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <?= form_open_multipart('upload-prescription', 'id="upload-prescription"'); ?>
+                                            <div class="form-group">
+                                                <div class="input-group input-file">
+                                                    <span class="input-group-btn">
+                                                        <button class="btn btn-default btn-choose bg-up-img" type="button">Upload Image</button>
+                                                    </span>
+                                                    <input type="text" class="form-control" readonly placeholder='Upload Prescription' required />
+                                                    <span class="input-group-btn">
+                                                        <button class="btn btn-warning" type="submit">Submit</button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        <?= form_close(); ?>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div class="tab-pane fade" id="tab-2">
+                    <h2>Call Back Form</h2>
+                    <?= form_open('callback', 'class="callback-form"'); ?>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Name</label>
+                                    <input class="form-control" name="name" maxlength="100" type="text" placeholder="Enter Name" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Email address</label>
+                                    <input class="form-control" name="email" maxlength="100" type="email" placeholder="Enter email" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Mobile No</label>
+                                    <input class="form-control" name="mobile" type="text" placeholder="Enter Mobile No" maxlength="10" />
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <button class="btn btn-primary" type="submit">Submit</button>
+                            </div>
+                        </div>
+                    <?= form_close(); ?>
+                </div>
+                <div class="tab-pane fade" id="tab-3">
+                    <h2>Institutional Form</h2>
+                    <?= form_open('institutional', 'class="institutional-form"'); ?>
+                        <div class="row">
+                            <div class="col-md-3">
+                               <div class="form-group">
+                                    <label>Company Name</label>
+                                    <input class="form-control" type="text" name="c_name" maxlength="255" placeholder="Enter Company Name" required/>
+                                </div>
+                           </div>
+                           <div class="col-md-3">
+                               <div class="form-group">
+                                    <label>Name</label>
+                                    <input class="form-control" type="text" name="name" maxlength="100" placeholder="Enter Name" />
+                                </div>
+                           </div>
+                           <div class="col-md-3">
+                               <div class="form-group">
+                                    <label>Address</label>
+                                    <input class="form-control" type="text" name="address" maxlength="255" placeholder="Enter address" required/>
+                                </div>
+                           </div>
+                           <div class="col-md-3">
+                               <div class="form-group">
+                                    <label>Email address</label>
+                                    <input class="form-control" type="email" name="email" maxlength="100" placeholder="Enter email" required/>
+                                </div>
+                           </div>
+                           <div class="col-md-3">
+                               <div class="form-group">
+                                    <label>Mobile No</label>
+                                    <input class="form-control" type="text" name="mobile" maxlength="10" placeholder="Enter Mobile No" required/>
+                                </div>
+                           </div>
+                           <div class="col-md-3">
+                               <div class="form-group">
+                                    <label>Total Staff</label>
+                                    <input class="form-control" type="text" name="total" maxlength="5" placeholder="Enter Total Staff" required/>
+                                </div>
+                           </div>
+                           <div class="col-md-6">
+                               <div class="form-group">
+                                    <label>Requirement</label>
+                                    <input class="form-control" type="text" name="requirement" maxlength="255" placeholder="Enter Requirement" required>
+                                </div>
+                           </div>
+                            <div class="col-md-12">
+                                <button class="btn btn-primary" type="submit">Submit</button>
+                            </div>
+                        </div>
+                    <?= form_close(); ?>
+                </div>
+                <div class="tab-pane fade" id="tab-4">
+                    <h2>Popular Test</h2>
+                    <div class="row">
+                        <?php foreach($tests as $po): ?>
+                        <div class="col-md-3">
+                            <?= anchor('test/'.e_id($po['id']), '<div class="test-box">
+                                <p>'.$po['t_name'].'</p><i class="fa fa-arrow-right" aria-hidden="true"></i>
+                            </div>'); ?>
+                        </div>
+                        <?php endforeach ?>
+                    </div>
+                </div>
             </div>
-            <?php endforeach ?>
-            <div class="main-slider-paginations"></div>
+        </div>
+    </div>
+    <div class="gap gap-small"></div>
+</div>
+<div class="bg-holder packages-section">
+    <div class="bg-mask"></div>
+    <div class="bg-parallax" style="background-image:url(<?= base_url('assets/images/street_1280x853.jpg') ?>);"></div>
+    <div class="bg-content">
+        <div class="container">
+            <div class="text-center">
+                 <h1 class="title-text-white">Packages</h1>
+            </div>
+            <div class="package-slider">
+               <?php foreach($packs as $pack): if($pack['p_type'] !== 'Package') continue; ?>
+                <div class="items">
+                    <div class="thumb">
+                        <header class="thumb-header package-img">
+                            <?= anchor('package/'.$pack['id'], img($pack['image']).'<h5 class="hover-title-center">Book Now</h5>','class="hover-img"'); ?>
+                        </header>
+                        <div class="thumb-caption">
+                            <h4 class="thumb-title">
+                                <?= anchor('package/'.$pack['id'], $pack['p_name'],'class="text-darken"'); ?>
+                            </h4>
+                            <p class="mb0 text-darken"> M.R.P : <span class="text-lg lh1em text-color-read"> <i class="fa fa-inr" aria-hidden="true"></i> <?= $pack['mrp']; ?></span><br>Our Price : <span class="text-lg lh1em"> <i class="fa fa-inr" aria-hidden="true"></i> <?= $pack['price']; ?></span><small></small><span class="packages-read"><?= anchor('package/'.$pack['id'], 'Read More'); ?></span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <?php endforeach ?>
+            </div>
+            <div class="col-md-12 text-center">
+                <?= anchor('packages', 'View All','class="btn btn-primary packages-view-all"'); ?>
+            </div>
         </div>
     </div>
 </div>
-<!-- <section class="banner__area pt-20 pb-10">
+<section class="category">
     <div class="container">
-        <div class="row">
-            <?php $sub_bans = [
-                [
-                    'banner' => 'banner-1.jpg',
-                    'title'  => 'Intelligent <br> New Touch Control',
-                    'sub_title'  => 'Discount 20% On Products',
-                ],
-                [
-                    'banner' => 'banner-2.jpg',
-                    'title'  => 'On-sale <br> Best Prices',
-                    'sub_title'  => 'Limited Time: Online Only!',
-                ],
-                [
-                    'banner' => 'banner-3.jpg',
-                    'title'  => 'Hot Sale <br> Super Laptops 2022',
-                    'sub_title'  => 'Free Shipping All Order',
-                ],
-            ] ?>
-            <?php foreach($sub_bans as $sb): ?>
-            <div class="col-xl-4 col-lg-4 col-md-6">
-                <div class="banner__item p-relative w-img mb-30">
-                    <div class="banner__img">
-                        <a href="javascript:;">
-                        <?= img("assets/images/banners/".$sb['banner']); ?>
-                        </a>
-                    </div>
-                    <div class="banner__content">
-                        <h6><a href="javascript:;"><?= $sb['title'] ?></a></h6>
-                        <p><?= $sb['sub_title'] ?></p>
-                    </div>
-                </div>
+        <div class="text-center">
+            <h1 class="title-text">Organs Packages</h1>
+        </div>
+        <div class="category-slider">
+            <?php foreach($packs as $pack): if($pack['p_type'] !== 'Organ') continue; ?>
+            <div class="items">
+                <?= anchor('package/'.$pack['id'], '<div class="thumb">
+                        <div class="category-icon text-center">'.img($pack['image']).'</div>
+                        <div class="category-name">
+                            <h3>'.$pack['p_name'].'
+                        </div>
+                    </div>'); ?>
             </div>
             <?php endforeach ?>
-        </div>
-    </div>
-</section> -->
-<?php if($prods && $prods['Deals Of The Day']):  ?>
-<section class="topsell__area-1 pt-15">
-    <div class="container">
-        <div class="row">
-            <div class="col-xl-12">
-                <div class="section__head d-flex justify-content-between mb-10">
-                    <div class="section__title">
-                        <h5 class="st-titile">Top Deals Of The Day</h5>
-                    </div>
-                    <div class="button-wrap">
-                        <?= anchor('all', 'See All Product <i class="fal fa-chevron-right"></i>', ); ?>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="product-bs-slider">
-                <div class="product-slider swiper-container">
-                    <div class="swiper-wrapper">
-                    <?php foreach($prods['Deals Of The Day'] as $deal): ?>
-                        <?= form_hidden('cart-'.e_id($deal->id), json_encode([
-                            'prod' => e_id($deal->id),
-                            'p_title' => $deal->p_title,
-                            'image' => $deal->image,
-                            'p_price' => $deal->p_price,
-                            'slug' => $deal->slug])) ?>
-                        <div class="product__item swiper-slide">
-                            <div class="product__thumb fix">
-                                <div class="product-image w-img">
-                                    <?= anchor($deal->slug, img($deal->image)); ?>
-                                </div>
-                                <div class="product-action">
-                                    <a href="javascript:;" class="icon-box icon-box-1" data-bs-toggle="modal" data-bs-target="#productModalId">
-                                        <i class="fal fa-eye"></i>
-                                        <i class="fal fa-eye"></i>
-                                    </a>
-                                    <a href="javascript:;" onclick="wish.add(<?= e_id($deal->id) ?>)" class="icon-box icon-box-1">
-                                        <i class="fal fa-heart"></i>
-                                        <i class="fal fa-heart"></i>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="product__content">
-                                <h6><?= $deal->p_title; ?></h6>
-                                <div class="rating mb-5">
-                                </div>
-                                <div class="price mb-10">
-                                    <span>₹<?= $deal->p_price; ?></span>
-                                </div>
-                                <!-- <div class="progress-rate">
-                                    <span>Qty : 0</span>
-                                </div> -->
-                            </div>
-                            <div class="product__add-cart text-center">
-                                <button type="button" onclick="cart.add(<?= e_id($deal->id) ?>)" name="cart" class="cart-btn product-modal-sidebar-open-btn d-flex align-items-center justify-content-center w-100">
-                                    Add to Cart
-                                </button>
-                            </div>
-                        </div>
-                    <?php endforeach ?>
-                    </div>
-                </div>
-                <!-- If we need navigation buttons -->
-                <div class="bs-button bs-button-prev"><i class="fal fa-chevron-left"></i></div>
-                <div class="bs-button bs-button-next"><i class="fal fa-chevron-right"></i></div>
-            </div>
         </div>
     </div>
 </section>
-<?php endif ?>
-<!-- <?php $sub_bans = [
-    [
-        'banner' => 'banner-4.jpg',
-        'span'  => 'Bestseller Products',
-        'title'  => 'PC & Docking Station',
-        'sub_title'  => 'Discount 20% Off, Top Quality Products',
-    ],
-    [
-        'banner' => 'banner-5.jpg',
-        'span'  => 'Featured Products',
-        'title'  => 'Accessories iPhone',
-        'sub_title'  => 'Free Shipping All Order Over ₹ 99',
-    ]
-    ];  ?>
-<section class="banner__area banner__area-d pb-10">
-    <div class="container">
-        <div class="row">
-            <?php foreach($sub_bans as $sb): ?>
-            <div class="col-xl-6 col-lg-6 col-md-12">
-                <div class="banner__item p-relative w-img mb-30">
-                    <div class="banner__img">
-                        <a href="javascript:;"><?= img("assets/images/banners/".$sb['banner']) ?></a>
-                    </div>
-                    <div class="banner__content">
-                        <span><?= $sb['span'] ?></span>
-                        <h6><a href="javascript:;"><?= $sb['title'] ?></a></h6>
-                        <p><?= $sb['sub_title'] ?></p>
-                    </div>
-                </div>
-            </div>
-            <?php endforeach ?>
-        </div>
-    </div>
-</section> -->
-<?php if($prods && $prods['Top Selling']):  ?>
-<section class="topsell__area-2 pt-15">
-    <div class="container">
-        <div class="row">
-            <div class="col-xl-12">
-                <div class="section__head d-flex justify-content-between mb-10">
-                    <div class="section__title">
-                        <h5 class="st-titile">Top Selling Products</h5>
-                    </div>
-                    <div class="button-wrap">
-                        <?= anchor('all', 'See All Product <i class="fal fa-chevron-right"></i>', ); ?>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="product-bs-slider">
-                <div class="product-slider swiper-container">
-                    <div class="swiper-wrapper">
-                    <?php foreach($prods['Top Selling'] as $deal): ?>
-                        <?= form_hidden('cart-'.e_id($deal->id), json_encode([
-                            'prod' => e_id($deal->id),
-                            'p_title' => $deal->p_title,
-                            'image' => $deal->image,
-                            'p_price' => $deal->p_price,
-                            'slug' => $deal->slug])) ?>
-                        <?= form_hidden('cart-'.e_id($deal->id), json_encode([
-                            'prod' => e_id($deal->id),
-                            'p_title' => $deal->p_title,
-                            'image' => $deal->image,
-                            'p_price' => $deal->p_price,
-                            'slug' => $deal->slug])) ?>
-                        <div class="product__item swiper-slide">
-                            <div class="product__thumb fix">
-                                <div class="product-image w-img">
-                                    <?= anchor($deal->slug, img($deal->image)); ?>
-                                </div>
-                                <div class="product-action">
-                                    <a href="javascript:;" class="icon-box icon-box-1" onclick="getProd(<?= e_id($deal->id) ?>);">
-                                        <i class="fal fa-eye"></i>
-                                        <i class="fal fa-eye"></i>
-                                    </a>
-                                    <a href="javascript:;" onclick="wish.add(<?= e_id($deal->id) ?>)" class="icon-box icon-box-1">
-                                        <i class="fal fa-heart"></i>
-                                        <i class="fal fa-heart"></i>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="product__content">
-                                <h6><?= $deal->p_title; ?></h6>
-                                <div class="rating mb-5">
-                                </div>
-                                <div class="price mb-10">
-                                    <span>₹<?= $deal->p_price; ?></span>
-                                </div>
-                            </div>
-                            <div class="product__add-cart text-center">
-                                <button type="button" onclick="cart.add(<?= e_id($deal->id) ?>)" name="cart" class="cart-btn product-modal-sidebar-open-btn d-flex align-items-center justify-content-center w-100">
-                                    Add to Cart
-                                </button>
-                            </div>
-                        </div>
-                    <?php endforeach ?>
-                    </div>
-                </div>
-                <div class="bs-button bs-button-prev"><i class="fal fa-chevron-left"></i></div>
-                <div class="bs-button bs-button-next"><i class="fal fa-chevron-right"></i></div>
-            </div>
-        </div>
-    </div>
+<section class="our-process">
+    <?= img("assets/images/our-process.jpg"); ?>
 </section>
-<?php endif ?>
-<?php if($prods && $prods['Top Selling']):  ?>
-<section class="featured light-bg pt-55 pb-40">
+<section class="lab-partner bg-holder">
+    <div class="bg-mask"></div>
+    <div class="bg-parallax" style="background-image:url(<?= base_url('assets/images/lab-partners-bg.jpg') ?>);"></div>
+    <div class="bg-content">
     <div class="container">
-        <div class="row">
-            <div class="col-xl-12">
-                <div class="section__head d-flex justify-content-between mb-30">
-                    <div class="section__title">
-                        <h5 class="st-titile">Top Featured Products</h5>
-                    </div>
-                    <div class="button-wrap">
-                        <?= anchor('all', 'See All Product <i class="fal fa-chevron-right"></i>', ); ?>
-                    </div>
-                </div>
+            <div class="gap"></div>
+            <div class="text-center">
+                 <h1 class="title-text-white">Lab Partners</h1>
             </div>
-        </div>
-        <div class="row">
-            <?php foreach($prods['Top Featured'] as $k => $deal): if ($k != 0) break; ?>
-            <?= form_hidden('cart-'.e_id($deal->id), json_encode([
-                            'prod' => e_id($deal->id),
-                            'p_title' => $deal->p_title,
-                            'image' => $deal->image,
-                            'p_price' => $deal->p_price,
-                            'slug' => $deal->slug])) ?>
-            <div class="col-xl-6 col-lg-12">
-                <div class="single-features-item single-features-item-d b-radius mb-20">
-                    <div class="row  g-0 align-items-center">
-                        <div class="col-md-6">
-                            <div class="features-thum">
-                                <div class="features-product-image w-img">
-                                    <?= anchor($deal->slug, img($deal->image)); ?>
-                                </div>
-                                <div class="product-action">
-                                    <a href="javascript:;" class="icon-box icon-box-1" data-bs-toggle="modal" data-bs-target="#productModalId">
-                                        <i class="fal fa-eye"></i>
-                                        <i class="fal fa-eye"></i>
-                                    </a>
-                                    <a href="javascript:;" onclick="wish.add(<?= e_id($deal->id) ?>)" class="icon-box icon-box-1">
-                                        <i class="fal fa-heart"></i>
-                                        <i class="fal fa-heart"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="product__content product__content-d">
-                                <h6><?= anchor($deal->slug, $deal->p_title); ?></h6>
-                                <div class="rating mb-5"></div>
-                                <div class="price d-price mb-10">
-                                    <span>₹ <?= $deal->p_price ?> </span>
-                                </div>
-                                <div class="features-des mb-25">
-                                    <?= anchor($deal->slug, $deal->description); ?>
-                                </div>
-                                <div class="cart-option">
-                                    <a href="javascript:;" onclick="cart.add(<?= e_id($deal->id) ?>)" class="cart-btn-2 w-100 mr-10">Add to Cart</a>
-                                    <a href="javascript:;" onclick="wish.add(<?= e_id($deal->id) ?>)" class="transperant-btn"><i class="fal fa-heart"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <?php endforeach ?>
-            <div class="col-xl-6 col-lg-12">
-                <div class="row">
-                    <?php foreach($prods['Top Featured'] as $k => $deal): if ($k == 0) continue; if ($k > 4) break; ?>
-                    <div class="col-md-6">
-                        <div class="single-features-item b-radius mb-20">
-                            <div class="row  g-0 align-items-center">
-                                <div class="col-6">
-                                    <div class="features-thum">
-                                        <div class="features-product-image w-img">
-                                            <?= anchor($deal->slug, img($deal->image)); ?>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="product__content product__content-d">
-                                        <h6><?= anchor($deal->slug, $deal->p_title); ?></h6>
-                                        <div class="rating mb-5"></div>
-                                        <div class="price d-price">
-                                            <span>₹ <?= $deal->p_price ?></span>
-                                        </div>
-                                    </div>
-                                    <div class="features-des mb-25">
-                                        <?= anchor($deal->slug, substr($deal->description, 0, 30)); ?>...
-                                    </div>
-                                </div>
+                <div class="lab-partner-slider">
+                    <?php foreach($labs as $lab): ?>
+                    <div class="items">
+                        <div class="thumb">
+                            <header class="thumb-header mb-0">
+                                <?= anchor('lab/'.e_id($lab['id']), img($lab['logo']).'<i class="fa fa-plus box-icon-white box-icon-border hover-icon-top-right round"></i>', 'class="hover-img"'); ?>
+                            </header>
+                            <div class="thumb-caption">
+                                <?= anchor('lab/'.e_id($lab['id']), '<h4 class="thumb-title">'.$lab['name'].'</h4>'); ?>
                             </div>
                         </div>
                     </div>
                     <?php endforeach ?>
                 </div>
-            </div>
+                <div class="col-md-12 text-center lab_view_butt">
+                    <?= anchor('labs/', 'View All', 'class="btn btn-primary packages-view-all"'); ?>
+                </div>
+          <div class="gap"></div>
         </div>
     </div>
 </section>
-<?php endif ?>
-<!-- <section class="moveing-text-area">
+<section class="category">
     <div class="container">
-        <div class="ovic-running">
-            <div class="wrap">
-                <div class="inner">
-                    <p class="item">Free Delivery - Return Over ₹ 100.00 ( Excluding Homeware) | Free Collect From Store</p>
-                    <p class="item">Design Week / 15% Off the website / Code: AYOSALE-2020</p>
-                    <p class="item">Always iconic. Now organic. Introducing the ₹ 20 Organic Tee.</p>
-                </div>
+        <div class="text-center">
+                 <h1 class="title-text">Test Department</h1>
             </div>
+        <div class="category-slider">
+            <?php foreach($deps as $dep): ?>
+            <div class="items">
+                <?= anchor('tests/'.e_id($dep['id']), '<div class="thumb">
+                        <div class="category-icon text-center">'.img($dep['image']).'</div>
+                        <div class="category-name">
+                            <h3>'.$dep['d_name'].'</h3>
+                        </div>
+                    </div>'); ?>
+            </div>
+            <?php endforeach ?>
         </div>
     </div>
-</section> -->
-<section class="features__area pt-20">
+</section>
+<section class="lab-part-reg-se">
     <div class="container">
-        <div class="row row-cols-xxl-4 row-cols-xl-4 row-cols-lg-4 row-cols-md-2 row-cols-sm-2 row-cols-1 gx-0">
-            <div class="col">
-                <div class="features__item d-flex white-bg">
-                    <div class="features__icon mr-20">
-                        <i class="fal fa-truck"></i>
-                    </div>
-                    <div class="features__content">
-                        <h5>वोकल से लोकल</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="features__item d-flex white-bg">
-                    <div class="features__icon mr-20">
-                        <i class="fal fa-money-check"></i>
-                    </div>
-                    <div class="features__content">
-                        <h5>आत्मनिर्भर भारत</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="features__item d-flex white-bg">
-                    <div class="features__icon mr-20">
-                        <i class="fal fa-comments-alt"></i>
-                    </div>
-                    <div class="features__content">
-                        <h5>१०० % भारत में निर्मित</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="features__item features__item-last d-flex white-bg">
-                    <div class="features__icon mr-20">
-                        <i class="fad fa-user-headset"></i>
-                    </div>
-                    <div class="features__content">
-                        <h5>उत्पादक से उपभोक्ता तक</h5>
-                    </div>
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <div class="lab-part-div">
+                    <h2>Be a Part of LabMan</h2>
+                    <p>Join the LabMan family by becoming our Lab partner. Take part in the revolution to provide affordable health diagnostics.</p>
+                    <?= anchor('lab-registration', 'Lab Partner', 'class="lab-part-btn"') ?>
+                    <?= anchor('employee-registration', 'Employee Registration', 'class="lab-part-btn"') ?>
+                    <?= anchor('franchise-inquiry', 'Franchise Inquiry', 'class="lab-part-btn"') ?>
                 </div>
             </div>
         </div>

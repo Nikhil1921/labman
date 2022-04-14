@@ -93,7 +93,6 @@ class Packages extends Admin_controller  {
 
                 $post = [
                     'lab_id' => d_id($this->input->post('lab_id')),
-                    'org_price' => $this->input->post('org_price'),
                     'price' => $this->input->post('price'),
                     'p_type' => $this->input->post('p_type'),
                     'p_name' => $this->input->post('p_name'),
@@ -119,7 +118,7 @@ class Packages extends Admin_controller  {
             $data['name'] = $this->name;
             $data['operation'] = "Update";
             $data['url'] = $this->redirect;
-            $data['data'] = $this->main->get($this->table, 'lab_id, org_price, price, p_type, p_name, tests, description, image', ['id' => d_id($id)]);
+            $data['data'] = $this->main->get($this->table, 'lab_id, price, p_type, p_name, tests, description, image', ['id' => d_id($id)]);
             $data['labs'] = $this->main->getAll('logins', 'id, name', ['is_deleted' => 0, 'role' => 'Lab partner']);
             $data['tests'] = $this->main->getAll('tests', 'id, t_name', ['is_deleted' => 0]);
             
@@ -131,7 +130,6 @@ class Packages extends Admin_controller  {
 
             $post = [
                 'lab_id' => d_id($this->input->post('lab_id')),
-                'org_price' => $this->input->post('org_price'),
                 'price' => $this->input->post('price'),
                 'p_type' => $this->input->post('p_type'),
                 'p_name' => $this->input->post('p_name'),
@@ -178,7 +176,7 @@ class Packages extends Admin_controller  {
                 'is_natural' => "%s is invalid",
             ],
         ],
-        [
+        /* [
             'field' => 'org_price',
             'label' => 'Original price',
             'rules' => 'required|max_length[6]|is_natural|trim',
@@ -187,7 +185,7 @@ class Packages extends Admin_controller  {
                 'max_length' => "Max 6 chars allowed.",
                 'is_natural' => "%s is invalid",
             ],
-        ],
+        ], */
         [
             'field' => 'price',
             'label' => 'Discounted price',

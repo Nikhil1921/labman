@@ -4,6 +4,9 @@ $route['404_override'] = 'home/error_404';
 $route['translate_uri_dashes'] = TRUE;
 
 // front routes
+$route["callback"]['post'] = "home/callback";
+$route["institutional"]['post'] = "home/institutional";
+$route["upload-prescription"]['post'] = "home/prescription";
 
 /* if ($this->uri->segment(1) !== $admin)
 {

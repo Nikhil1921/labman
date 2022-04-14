@@ -23,3 +23,5 @@ uploads/gallery/*
 !uploads/gallery/index.html
 uploads/packages/*
 !uploads/packages/index.html
+uploads/prescription/*
+!uploads/prescription/index.html
