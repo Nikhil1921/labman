@@ -52,7 +52,7 @@ function d_id($id)
 
 function admin($uri='')
 {
-    return 'adminPanel/'.$uri;
+    return ADMIN.'/'.$uri;
 }
 
 if ( ! function_exists('convert_webp'))

@@ -1,5 +1,7 @@
 "use strict";
 
+const base_url = $('input[name="base_url"]').val();
+
 function formatText (icon) {
     return $('<span><i class="fas ' + $(icon.element).data('icon') + '"></i> ' + icon.text + '</span>');
 };
@@ -8,8 +10,8 @@ function bs_input_file() {
     $(".input-file").before(
         function() {
             if ( ! $(this).prev().hasClass('input-ghost') ) {
-                let element = $("<input type='file' name='prescription' accept='image/jpg' class='input-ghost' style='visibility:hidden; height:0' />");
-                element.attr("name",$(this).attr("name"));
+                let element = $("<input type='file' class='input-ghost' style='visibility:hidden; height:0' />");
+                element.attr("name", $(this).attr("name"));
                 element.change(function(){
                     element.next(element).find('input').val((element.val()).split('\\').pop());
                 });
@@ -31,10 +33,6 @@ bs_input_file();
 
 $(document).ready(function () {
 
-    $(".js-example-placeholder-multiple").select2({
-        placeholder: "Select Test Here....",
-    });
-
     $(".select2-icon").select2({
         width: "100%",
         templateSelection: formatText,
@@ -53,6 +51,13 @@ $(document).ready(function () {
         });
     }
     
+    if ($('.i-check').length > 0) {
+        $(".i-check, .i-radio").iCheck({
+            checkboxClass: "i-check",
+            radioClass: "i-radio",
+        });
+    }
+
     if ($('.package-slider').length > 0) {
         $(".package-slider").owlCarousel({
             loop: true,
@@ -145,6 +150,16 @@ $(document).ready(function () {
         zindex: 9999,
     });
 
+    if ($("input[name=form_validate]").length > 0) {
+        $.validator.addMethod(
+            "chars_space",
+            function (val) {
+                return /^[a-zA-Z\s]*$/.test(val);
+            },
+            "Given input is invalid."
+        );
+    }
+
     if ($('#upload-prescription').length > 0) {
         $("#upload-prescription").submit(function(e){
             e.preventDefault();
@@ -157,7 +172,42 @@ $(document).ready(function () {
         });
     }
 
-    if ($(".callback-form").length > 0){
+    if ($(".validate-form").length > 0){
+        $(".validate-form").validate({
+            ignore: '.ignore',
+            rules: {
+                mobile: {
+                    required: true,
+                    minlength: 10,
+                    maxlength: 10,
+                    digits: true
+                },
+                email: {
+                    required: true,
+                    minlength: 10,
+                    maxlength: 100,
+                    email: true
+                },
+                name: {
+                    required: true,
+                    chars_space: true,
+                    minlength: 5,
+                    maxlength: 100
+                },
+                message: {
+                    required: true,
+                    chars_space: true,
+                    maxlength: 255
+                }
+            },
+            errorPlacement: function(error, element) {},
+            submitHandler: function (form) {
+                submitForm(form);
+            },
+        });
+    }
+
+    if ($(".institutional-form").length > 0){
         $(".institutional-form").validate({
             ignore: '.ignore',
             rules: {
@@ -236,14 +286,6 @@ $(document).ready(function () {
                 submitForm(form);
             },
         });
-
-        $.validator.addMethod(
-          "chars_space",
-          function (val) {
-            return /^[a-zA-Z\s]*$/.test(val);
-          },
-          "Given input is invalid."
-        );
     }
 
     $(".side-bar-open").click(function () {
@@ -257,6 +299,15 @@ $(document).ready(function () {
             right: "-450px",
         });
     });
+
+    $("#search-tests").submit(function(e){
+        e.preventDefault();
+        console.log($(this).serialize());
+    });
+
+    if($('[data-fancybox="images"]').length > 0){
+        $('[data-fancybox="images"]').fancybox();
+    }
 
     const cookieValue = decodeURIComponent(document.cookie);
     const str1 = cookieValue;
@@ -299,3 +350,13 @@ const submitForm = (form) => {
 const toast = (msg) => {
     $(".toast").stop().html(msg).fadeIn(400).delay(3000).fadeOut(500);
 };
+
+$.ajax({
+    url: `${base_url}getTests`,
+    success: function (tests) {
+        $("#tests-list").html(tests);
+        $(".js-example-placeholder-multiple").select2({
+            placeholder: "Select Test Here....",
+        });
+    },
+});

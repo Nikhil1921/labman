@@ -172,7 +172,7 @@
         <script src="<?= base_url('assets/back/js/config.js') ?>"></script>
         <script src="<?= base_url('assets/back/js/select2/select2.full.min.js') ?>"></script>
         <script src="<?= base_url('assets/back/js/select2/select2-custom.js') ?>"></script>
-        <script src=""></script>
+        <script src="<?= base_url('assets/back/js/editor/ckeditor/ckeditor.js') ?>"></script>
         <?php if($name === 'city'): ?>
         <script type='text/javascript' src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDiWWB6yJd6ilpII5N89O-vXAo2eXiVD9g&sensor=false&libraries=places"></script>
         <script src="<?= base_url('assets/js/jquery.geocomplete.js') ?>"></script>

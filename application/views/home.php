@@ -31,7 +31,7 @@
                                     <div class="col-md-8">
                                         <?= form_open_multipart('upload-prescription', 'id="upload-prescription"'); ?>
                                             <div class="form-group">
-                                                <div class="input-group input-file">
+                                                <div class="input-group input-file" name="prescription">
                                                     <span class="input-group-btn">
                                                         <button class="btn btn-default btn-choose bg-up-img" type="button">Upload Image</button>
                                                     </span>
