@@ -56,7 +56,7 @@
                            <ul class="top-user-area-list list list-horizontal list-border">
                            <?php if($this->session->userId): ?>
                               <li class="top-user-area-avatar">
-                                 <?= anchor('user-profile', img($this->user['image']).$this->user['name']); ?>
+                                 <?= anchor('user-profile', img($this->config->item('users').$this->user['image']).$this->user['name']); ?>
                                  <ul class="list logout">
                                        <li>
                                           <?= anchor('user', 'My Profile'); ?>
@@ -281,19 +281,27 @@
       <?php if(in_array($name, ['home', 'gallery'])): ?>
          <script src="<?= base_url('assets/js/owl-carousel.js') ?>"></script>
       <?php endif ?>
-      <?php if(in_array($name, ['lab_registration'])): ?>
+      <?php if(in_array($name, ['lab_registration', 'cart'])): ?>
          <script src="<?= base_url('assets/js/icheck.js') ?>"></script>
       <?php endif ?>
       <?php if(in_array($name, ['gallery'])): ?>
          <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
       <?php endif ?>
-      <?php if(in_array($name, ['home', 'login', 'contact', 'institute', 'franchise_inquiry'])): ?>
+      <?php if(in_array($name, ['home', 'login', 'contact', 'institute', 'franchise_inquiry', 'cart'])): ?>
          <input type="hidden" name="form_validate" value="true" />
          <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
          <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/additional-methods.min.js"></script>
       <?php endif ?>
       <?php if(in_array($name, ['login'])): ?>
          <script src="<?= base_url('assets/js/switcher.js') ?>"></script>
+      <?php endif ?>
+      <?php if(in_array($name, ['cart'])): ?>
+         <script type='text/javascript' src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDiWWB6yJd6ilpII5N89O-vXAo2eXiVD9g&sensor=false&libraries=places"></script>
+         <script src="<?= base_url('assets/js/jquery.geocomplete.js') ?>"></script>
+      <?php endif ?>
+      <?php if(in_array($name, ['cart'])): ?>
+         <script src="<?= base_url('assets/js/bootstrap-datepicker.js') ?>"></script>
+         <script src="<?= base_url('assets/js/bootstrap-timepicker.js') ?>"></script>
       <?php endif ?>
       <script src="<?= base_url('assets/js/custom.js?v='.time()) ?>"></script>
    </body>

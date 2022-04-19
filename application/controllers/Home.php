@@ -12,7 +12,7 @@ class Home extends Public_controller {
         $data['packs'] = $this->main->getPackages();
         $data['deps'] = $this->main->getDeps();
         $data['labs'] = $this->main->getLabs();
-		
+        
 		return $this->template->load('template', 'home', $data);
 	}
     
@@ -20,7 +20,7 @@ class Home extends Public_controller {
 	{
         $data['title'] = 'Tests';
         $data['name'] = 'tests';
-        $data['labs'] = $this->main->searchLab();
+        $data['labs'] = $this->main->searchLab($this->input->get('tests'));
         $data['tests'] = $data['labs'] ? $this->main->getTests($this->input->get('tests')) : [];
         
         return $this->template->load('template', 'search', $data);

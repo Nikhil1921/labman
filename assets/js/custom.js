@@ -51,7 +51,19 @@ $(document).ready(function () {
         });
     }
     
-    if ($('.i-check').length > 0) {
+    if ($('.geocomplete').length > 0) {
+        $(".geocomplete").geocomplete({
+            details: ".details",
+            detailsScope: ".location",
+            types: ["geocode", "establishment"],
+        });
+
+        $(".find").click(function () {
+            $(this).parents(".location").find(".geocomplete").trigger("geocode");
+        });
+    }
+
+    if ($('.i-check').length > 0 || $('.i-radio').length > 0) {
         $(".i-check, .i-radio").iCheck({
             checkboxClass: "i-check",
             radioClass: "i-radio",
@@ -169,6 +181,149 @@ $(document).ready(function () {
             }else{
                 toast("Login to upload prescription.");
             }
+        });
+    }
+
+    if ($(".address-form").length > 0) {
+        $(".address-form").validate({
+            rules: {
+                faddress: {
+                    required: true,
+                    maxlength: 100
+                },
+                address: {
+                    required: true,
+                    maxlength: 255
+                }
+            },
+            errorPlacement: function(error, element) {},
+            submitHandler: function (form) {
+                $.ajax({
+                    url: $(form).attr("action"),
+                    type: "POST",
+                    data: new FormData(form),
+                    dataType: "json",
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    async: false,
+                    beforeSend: function () {
+                        $(form).find(":submit").attr("disabled", true);
+                    },
+                    success: function (result) {
+                        toast(result.message);
+                        $(form).find(":submit").attr("disabled", false);
+                        $("select[name=address]").html(result.address);
+                        form.reset();
+                        $("#add-address").modal("toggle");
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        $(form).find(":submit").attr("disabled", false);
+                        toast("Something is not going good.");
+                    },
+                });
+            },
+        });
+    }
+
+    if ($(".member-form").length > 0) {
+        $(".member-form").validate({
+            rules: {
+                relation: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 20
+                },
+                name: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 100
+                },
+                mobile: {
+                    required: true,
+                    minlength: 10,
+                    maxlength: 10,
+                    digits: true
+                },
+                email: {
+                    required: true,
+                    minlength: 10,
+                    maxlength: 100,
+                    email: true
+                },
+                dob: {
+                    required: true,
+                },
+                gender: {
+                    required: true,
+                },
+            },
+            errorPlacement: function(error, element) {},
+            submitHandler: function (form) {
+                $.ajax({
+                    url: $(form).attr("action"),
+                    type: "POST",
+                    data: new FormData(form),
+                    dataType: "json",
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    async: false,
+                    beforeSend: function () {
+                        $(form).find(":submit").attr("disabled", true);
+                    },
+                    success: function (result) {
+                        toast(result.message);
+                        $(form).find(":submit").attr("disabled", false);
+                        $("select[name=family]").html(result.address);
+                        form.reset();
+                        $("#add-member").modal("toggle");
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        $(form).find(":submit").attr("disabled", false);
+                        toast("Something is not going good.");
+                    },
+                });
+            },
+        });
+    }
+
+    if ($(".checkout-form").length > 0) {
+        $(".checkout-form").validate({
+            rules: {
+                /* family: {
+                    required: true,
+                    digits: true
+                },
+                address: {
+                    required: true,
+                    digits: true
+                },
+                collection_date: {
+                    required: true,
+                },
+                collection_time: {
+                    required: true,
+                },
+                ref_doctor: {
+                    required: true,
+                    maxlength: 100,
+                },
+                remarks: {
+                    required: true,
+                    maxlength: 100,
+                },
+                pay_method: {
+                    required: true,
+                }, */
+            },
+            errorPlacement: function(error, element) {},
+            submitHandler: function (form) {
+                if ($("input[name='pay_method']:checked").val() === "Cash") {
+                    submitForm(form);} else {
+                  console.log(radioValue);
+                }
+            },
         });
     }
 
@@ -339,6 +494,7 @@ const submitForm = (form) => {
             toast(result.message);
             $(form).find(":submit").attr("disabled", false);
             if (result.error === false) form.reset();
+            if (result.redirect) window.location.href = result.redirect;
         },
         error: function (xhr, ajaxOptions, thrownError) {
             $(form).find(":submit").attr("disabled", false);
@@ -350,6 +506,17 @@ const submitForm = (form) => {
 const toast = (msg) => {
     $(".toast").stop().html(msg).fadeIn(400).delay(3000).fadeOut(500);
 };
+
+if($('input.date-pick').length >0){
+    $("input.date-pick").datepicker("setDate", "today");
+}
+
+if($('input.time-pick').length >0){
+    $("input.time-pick").timepicker({
+        minuteStep: 15,
+        showInpunts: false,
+    });
+}
 
 $.ajax({
     url: `${base_url}getTests`,

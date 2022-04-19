@@ -15,6 +15,10 @@ $route["package/(:num)"] = "home/package/$1";
 $route["add-to-cart"]['post'] = "home/add_to_cart";
 $route["cart"] = "user/cart";
 $route["logout"] = "user/logout";
+$route["add-address"]['post'] = "user/add_address";
+$route["add-member"]['post'] = "user/add_member";
+$route["add-order"]['post'] = "user/add_order";
+$route["thankyou"]['get'] = "user/thankyou";
 
 $route["verify-otp"] = "login/verify_otp";
 $route["register"] = "login/register";

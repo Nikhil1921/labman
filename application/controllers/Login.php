@@ -68,11 +68,10 @@ class Login extends Public_controller {
 			if($this->main->get('check_otp', 'mobile', $post)) {
 				$this->main->delete('check_otp', ['mobile' => $post['mobile']]);
 				$verify = $this->main->get($this->table, 'id', ['mobile' => $post['mobile']]);
+				$this->main->verifyCart($verify['id']);
 				if($verify){
 					$this->session->set_userdata('userId', $verify['id']);
-					$cart = $this->main->get('cart', 'session_id', ['session_id' => $this->session->session_id]);
-					if($cart){
-						$this->main->update($cart, ['user_id' => $verify['id']], 'cart');
+					if($this->main->verifyCart($verify['id'])){
 						flashMsg($id, "Login success.", "", 'cart');
 					}else{
 						flashMsg($id, "Login success.", "", '');

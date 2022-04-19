@@ -84,10 +84,10 @@ class Home extends API_controller {
 	public function searchTests()
 	{
 		get();
-		verifyRequiredParams(['city']);
-
-		$data['labs'] = $this->main->searchLab();
-        $data['tests'] = $data['labs'] ? $this->main->getTests($this->input->get('tests')) : [];
+		verifyRequiredParams(['city', 'tests']);
+		
+		$data['labs'] = $this->main->searchLab(explode(',', $this->input->get('tests')));
+        $data['tests'] = $data['labs'] ? $this->main->getTests(explode(',', $this->input->get('tests'))) : [];
 
 		$response['row'] = $data;
 		$response['error'] = false;

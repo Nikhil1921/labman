@@ -25,3 +25,6 @@ uploads/packages/*
 !uploads/packages/index.html
 uploads/prescription/*
 !uploads/prescription/index.html
+uploads/users/*
+!uploads/users/index.html
+!uploads/users/user.png
