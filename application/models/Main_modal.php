@@ -14,9 +14,67 @@ class Main_modal extends MY_Model
         $this->lab_partner = $this->config->item('lab-partner');
 	}
 
+    public function addOrder($userId)
+    {
+        $cart = $this->getCart($userId);
+
+        if(!$cart) return ['error' => true, 'message' => 'Cart is empty.'];
+
+        if($this->input->post('family') == 0)
+            $user = $this->main->get('users', 'name, email, mobile', ['id' => $userId]);
+        else
+            $user = $this->main->get('user_members', 'name, email, mobile, relation', ['id' => d_id($this->input->post('family'))]);
+        
+        $order = [
+            'name' => $user['name'],
+            'mobile' => $user['mobile'],
+            'email' => $user['email'],
+            'relation' => isset($user['relation']) ? $user['relation'] : 'Self',
+            'city' => $cart['cart']->c_name,
+            'lab_id' => $cart['cart']->lab_id,
+            'package' => $cart['cart']->pack_id,
+            'package_by' => $cart['cart']->package_by,
+            'hardcopy' => $this->input->post('hardcopy') ? $cart['cart']->hard_copy : 0,
+            'fix_price' => $cart['cart']->fix_price,
+            'home_visit' => $cart['cart']->home_visit,
+            'discount' => $cart['cart']->discount,
+            'u_id' => $userId,
+            'add_id' => d_id($this->input->post('address')),
+            'collection_date' => date('Y-m-d', strtotime($this->input->post('collection_date'))),
+            'collection_time' => date('H:i:s', strtotime($this->input->post('collection_time'))),
+            'ref_doctor' => $this->input->post('ref_doctor'),
+            'doc_remarks' => $this->input->post('remarks'),
+            'phlebotomist_id' => 0,
+            'pay_type' => $this->input->post('pay_method'),
+            'pay_id' => $this->input->post('pay_method') === 'Cash' ? 'Cash' : $this->input->post('payment_id'),
+            'pay_status' => $this->input->post('payment_id') ? 'Paid' : 'Unpaid',
+            'status' => 'Pending'
+        ];
+
+        $this->db->trans_start();
+        $this->db->insert('orders', $order);
+        $or_id = $this->db->insert_id();
+        foreach ($cart['tests'] as $test)
+            $or_test[] = [
+                't_name' => $test->t_name,
+                'mrp'    => $test->ltl_mrp,
+                'price'  => $test->ltl_price,
+                'margin' => $test->t_price,
+                'o_id'   => $or_id
+            ];
+        $this->db->insert_batch('orders_tests', $or_test);
+        $this->db->delete('cart', ['user_id' => $userId]);
+        $this->db->trans_complete();
+        
+        if ($this->db->trans_status() === FALSE)
+            return ['error' => true, 'message' => 'Order not placed.'];
+        else
+            return ['error' => false, 'message' => 'Order placed successfully.', 'redirect' => 'thankyou.html'];
+    }
+
     public function getCart($userId)
     {
-        $cart = $this->db->select('c.lab_id, ci.c_name, l.name AS lab_name, IF(pack_id > 0, p.tests, c.test_id) AS test_ids, , IF(pack_id > 0, p.price, 0) AS discount, c.pack_id, fix_price, home_visit, hard_copy, c.add_id')
+        $cart = $this->db->select('c.lab_id, ci.c_name, l.name AS lab_name, IF(pack_id > 0, p.tests, c.test_id) AS test_ids, IF(pack_id > 0, p.package_by, "Admin") AS package_by, IF(pack_id > 0, p.price, 0) AS discount, c.pack_id, fix_price, home_visit, hard_copy')
                          ->from('cart c')
                          ->where('c.user_id', $userId)
                          ->join('logins l', 'l.id = c.lab_id')
@@ -24,12 +82,13 @@ class Main_modal extends MY_Model
                          ->join('packages p', 'p.id = c.pack_id', 'left')
                          ->get()->row();
         if($cart)
-            $tests = $this->db->select('(t_price + ltl_price) AS total, t_name, ltl_mrp')
+            $tests = $this->db->select('(t_price + ltl_price) AS total, t_name, ltl_mrp, t_price, ltl_price')
                                 ->from('lab_tests lt')
                                 ->where_in('t.id', explode(',', $cart->test_ids))
                                 ->where('lt.lab_id', $cart->lab_id)
                                 ->join('tests t', 't.id = lt.test_id')
                                 ->get()->result();
+
         return ['cart' => $cart, 'tests' => isset($tests) ? $tests : []];
     }
 
@@ -165,5 +224,30 @@ class Main_modal extends MY_Model
         }
         
         return $cart;
+    }
+
+	public function getTest($id)
+    {
+            $this->db->select('t.t_name, t.details, s.s_name, rt.re_time')
+                    ->from('tests t')
+                     ->where(['t.id' => $id])
+                     ->join('samples s', 's.id = t.samp_id')
+                     ->join('report_time rt', 'rt.id = t.re_time_id');
+        
+        return $this->db->get()->row_array();
+    }
+
+	public function getLab($id)
+    {
+        $lab = $this->db->select('l.name, lp.details')
+                    ->from('logins l')
+                    ->where(['l.id' => $id])
+                    ->join('lab_partners lp', 'lp.id = l.id')
+                    ->get()->row_array();
+        
+        $lab['gallery'] = $this->getAll('lab_gallery', 'CONCAT("'.$this->config->item('gallery').'", image) image', ['lab_id' => $id]);
+        $lab['doctors'] = $this->getAll('doctors', 'name, quilification, CONCAT("'.$this->config->item('lab-partner').'", image) image', ['lab_id' => $id]);
+        
+        return $lab;
     }
 }

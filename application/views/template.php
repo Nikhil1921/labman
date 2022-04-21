@@ -116,7 +116,7 @@
                                           <li><?= anchor('lab-registration', 'Become Lab Partner'); ?></li>
                                        </ul> 
                                     </li>
-                                    <li class="sub-drop"><a href="#" class="last">More<i class="fa fa-caret-down" aria-hidden="true"></i></a>
+                                    <li class="sub-drop"><a href="javascript:;" class="last">More<i class="fa fa-caret-down" aria-hidden="true"></i></a>
                                        <ul class="sub-menu">
                                           <li><?= anchor('faq', 'FAQs'); ?></li>
                                           <li><?= anchor('gallery', 'Gallery'); ?></li>
@@ -278,13 +278,13 @@
       <script src="<?= base_url('assets/js/bootstrap.js') ?>"></script>
       <script src="<?= base_url('assets/js/select2.min.js') ?>"></script>
       <script src="<?= base_url('assets/js/nicescroll.js') ?>"></script>
-      <?php if(in_array($name, ['home', 'gallery'])): ?>
+      <?php if(in_array($name, ['home', 'gallery', 'lab'])): ?>
          <script src="<?= base_url('assets/js/owl-carousel.js') ?>"></script>
       <?php endif ?>
       <?php if(in_array($name, ['lab_registration', 'cart'])): ?>
          <script src="<?= base_url('assets/js/icheck.js') ?>"></script>
       <?php endif ?>
-      <?php if(in_array($name, ['gallery'])): ?>
+      <?php if(in_array($name, ['gallery', 'lab'])): ?>
          <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
       <?php endif ?>
       <?php if(in_array($name, ['home', 'login', 'contact', 'institute', 'franchise_inquiry', 'cart'])): ?>
@@ -296,12 +296,13 @@
          <script src="<?= base_url('assets/js/switcher.js') ?>"></script>
       <?php endif ?>
       <?php if(in_array($name, ['cart'])): ?>
-         <script type='text/javascript' src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDiWWB6yJd6ilpII5N89O-vXAo2eXiVD9g&sensor=false&libraries=places"></script>
+         <script type='text/javascript' src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDiWWB6yJd6ilpII5N89O-vXAo2eXiVD9g&libraries=places"></script>
          <script src="<?= base_url('assets/js/jquery.geocomplete.js') ?>"></script>
       <?php endif ?>
       <?php if(in_array($name, ['cart'])): ?>
          <script src="<?= base_url('assets/js/bootstrap-datepicker.js') ?>"></script>
          <script src="<?= base_url('assets/js/bootstrap-timepicker.js') ?>"></script>
+         <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
       <?php endif ?>
       <script src="<?= base_url('assets/js/custom.js?v='.time()) ?>"></script>
    </body>

@@ -25,6 +25,24 @@ class Home extends Public_controller {
         
         return $this->template->load('template', 'search', $data);
 	}
+    
+	public function test($id)
+	{
+        $data['title'] = 'Tests';
+        $data['name'] = 'tests';
+        $data['data'] = $this->main->getTest(d_id($id));
+        
+        return $this->template->load('template', 'test', $data);
+	}
+    
+	public function lab($id)
+	{
+        $data['title'] = 'Lab';
+        $data['name'] = 'lab';
+        $data['lab'] = $this->main->getLab(d_id($id));
+        
+        return $this->template->load('template', 'lab', $data);
+	}
 
 	public function add_to_cart()
 	{  

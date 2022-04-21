@@ -57,7 +57,7 @@
                         <span class="total-title">Discount</span>
                         <?php $total = $total - $cart->discount ?>
                         <span class="total-price">
-                            <i class="fa fa-rupee"></i> <?= $total > $cart->fix_price ? $mrp - $total + $cart->home_visit : $mrp - $total; ?>
+                            <i class="fa fa-rupee"></i> <?= $total >= $cart->fix_price ? $mrp - $total + $cart->home_visit : $mrp - $total; ?>
                         </span>
                     </div>
                 </div>
@@ -65,7 +65,7 @@
                     <div class="add-to-cart-top">
                         <span class="total-title">Amount Payable</span>
                         <span class="total-price">
-                            <i class="fa fa-rupee"></i> <?= $total > $cart->fix_price ? $total : $total + $cart->home_visit ?>
+                            <i class="fa fa-rupee"></i> <?= $total >= $cart->fix_price ? $total : $total + $cart->home_visit ?>
                         </span>
                     </div>
                 </div>
@@ -111,11 +111,11 @@
                     </div>
                     <div class="form-group col-md-12">
                         <label>Refer by Doctor</label>
-                         <input type="text" name="ref_doctor" class="form-control" placeholder="Refer by Doctor">
+                         <input type="text" name="ref_doctor" maxlength="100" class="form-control" placeholder="Refer by Doctor">
                     </div>
                     <div class="form-group col-md-12">
                         <label>Doctor Remarks</label>
-                        <textarea class="form-control" name="remarks"></textarea>
+                        <textarea class="form-control" maxlength="255" name="remarks"></textarea>
                     </div>
                     <div class="form-group col-md-12">
                         <div class="radio-inline radio-small">

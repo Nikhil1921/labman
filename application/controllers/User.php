@@ -90,13 +90,46 @@ class User extends Public_controller {
 	public function add_order()
     {
 		check_ajax();
+		
+		die(json_encode($this->main->addOrder($this->session->userId)));
+    }
 
-		re($_POST);
-		die(json_encode(['error' => false, 'redirect' => 'thankyou.html']));
+	public function getTotal()
+    {
+		check_ajax();
+
+		$cart = $this->main->getCart($this->session->userId);
+		$total = 0;
+		
+		foreach ($cart['tests'] as $v)
+			$total += $v->total;
+
+		if($total < $cart['cart']->fix_price)
+			$total += $cart['cart']->home_visit;
+
+		if($this->input->get('hardcopy') === 'true')
+			$total += $cart['cart']->hard_copy;
+		
+		if($this->input->get('family') == 0)
+            $user = $this->main->get('users', 'name, email, mobile', ['id' => $this->session->userId]);
+        else
+            $user = $this->main->get('user_members', 'name, email, mobile', ['id' => d_id($this->input->get('family'))]);
+		
+		$response = [
+			'name'		=> isset($user['name']) ? $user['name'] : '',
+			'email'		=> isset($user['email']) ? $user['email'] : '',
+			'mobile'	=> isset($user['mobile']) ? $user['mobile'] : '',
+			'total'		=> $total
+		];
+
+		die(json_encode($response));
     }
 
 	public function thankyou()
     {
-		
+		$data['title'] = 'Thank you';
+        $data['name'] = 'thankyou';
+        
+        return $this->template->load('template', 'thankyou', $data);
     }
 }

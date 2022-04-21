@@ -291,7 +291,7 @@ $(document).ready(function () {
     if ($(".checkout-form").length > 0) {
         $(".checkout-form").validate({
             rules: {
-                /* family: {
+                family: {
                     required: true,
                     digits: true
                 },
@@ -311,17 +311,60 @@ $(document).ready(function () {
                 },
                 remarks: {
                     required: true,
-                    maxlength: 100,
+                    maxlength: 255,
                 },
                 pay_method: {
                     required: true,
-                }, */
+                },
             },
             errorPlacement: function(error, element) {},
             submitHandler: function (form) {
                 if ($("input[name='pay_method']:checked").val() === "Cash") {
-                    submitForm(form);} else {
-                  console.log(radioValue);
+                    submitForm(form);
+                } else {
+                    $.get(`${base_url}getTotal.html`, {
+                        hardcopy: $("input[name='hardcopy']").is(":checked"),
+                        family: $("select[name='family']").val()
+                    }, function (data, status) {
+                        data = JSON.parse(data);
+                        if(status === 'success' && Number.isNaN(parseInt(data.total)) === false)
+                        {
+                            const options = {
+                              /*live api key*/
+                              /* key: "rzp_live_Jf7dJMbtMe1xSC",
+                              secret: "7QSfgUjxMW5xWKY3ingxBgWN", */
+                              /*testing api key*/
+                              key: "rzp_test_5y8kpAVhlqca3q",
+                              secret: "C0WW4XCMRDY2LOwfPpTR4RzB",
+                              amount: parseInt(data.total) * 100, // 2000 paise = INR 20
+                              description: "Labman payment",
+                              prefill: {
+                                name: data.name,
+                                contact: data.mobile,
+                                email: data.email,
+                              },
+                              handler: function (response) {
+                                let payment_id = document.createElement("input");
+                                payment_id.setAttribute("type", "hidden");
+                                payment_id.setAttribute("name", "payment_id");
+                                payment_id.setAttribute("value", response.razorpay_payment_id);
+                                form.appendChild(payment_id);
+                                submitForm(form);
+                              },
+                              modal: {
+                                ondismiss: function () {
+                                  $(form)
+                                    .find("button[type=submit]")
+                                    .prop("disabled", false);
+                                },
+                              },
+                            };
+                            var rzp1 = new Razorpay(options);
+                            rzp1.open();
+                            return;
+                        }else
+                            toast("Something is not going good.");
+                    });
                 }
             },
         });

@@ -58,12 +58,9 @@
                             </div>
                             <div class="lab-add-to-cart text-center">
                                 <!-- <input type="button" name="" class="lab-add-to-select-btn" value="Selected"> -->
-                                <input type="submit" class="lab-add-to-cart-btn" name="redirect" value="Add to Cart" />
+                                <!-- <input type="submit" class="lab-add-to-cart-btn" name="redirect" value="Add to Cart" /> -->
                                 <input type="submit" class="lab-add-to-cart-btn" name="redirect" value="Book Now" />
                             </div>
-                            <!-- <div class="lab-add-to-cart text-center">
-                                <?= anchor('checkout', 'Checkout', 'class="lab-add-to-cart-btn"'); ?>
-                            </div> -->
                         </div>
                     </form>
                 </div>
