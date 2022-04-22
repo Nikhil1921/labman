@@ -60,3 +60,11 @@ var table = $('.datatable').DataTable({
 $("select[name=status]").change(() => {
   table.ajax.reload();
 });
+
+const getOrderDetails = (id) => {
+    $.get(`${url}getOrderDetails`,{id: id}, function (result) {
+        $(".order-modal").find(".modal-body").html(result);
+        $(".order-modal").modal("toggle");
+      }
+    );
+}

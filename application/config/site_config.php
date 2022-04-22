@@ -10,3 +10,4 @@ $config['lab-partner'] = 'uploads/lab-partner/';
 $config['packages'] = 'uploads/packages/';
 $config['users'] = 'uploads/users/';
 $config['prescription'] = 'uploads/prescription/';
+$config['test-reports'] = 'uploads/test-reports/';

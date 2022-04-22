@@ -570,3 +570,45 @@ $.ajax({
         });
     },
 });
+
+function readURL(input) {
+  if (input.files && input.files[0]) {
+    const reader = new FileReader();
+
+    reader.onload = function (e) {
+        $("#show-img").attr("src", e.target.result);
+    };
+
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+
+$("#imgInp").change(function () {
+  readURL(this);
+});
+
+$(".select-profile").click(function () {
+  $("input[id='imgInp']").click();
+});
+
+if($("#datatable").length > 0)
+{
+    $("#datatable").DataTable({
+        processing: true,
+        serverSide: true,
+        language: {
+            loadingRecords: "&nbsp;",
+            processing: "Processing",
+        },
+        ajax: {
+            url: $("#datatable").data("url"),
+            type: "GET",
+        },
+        columnDefs: [
+            {
+                targets: "target",
+                orderable: false,
+            },
+        ],
+    });
+}

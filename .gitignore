@@ -28,3 +28,5 @@ uploads/prescription/*
 uploads/users/*
 !uploads/users/index.html
 !uploads/users/user.png
+uploads/test-reports/*
+!uploads/test-reports/index.html

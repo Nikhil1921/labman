@@ -4,7 +4,7 @@ class Home extends Admin_controller  {
 
 	private $table = 'logins';
 	protected $redirect = 'dashboard';
-	
+
 	public function index()
 	{
 		$data['title'] = 'dashboard';
@@ -13,6 +13,14 @@ class Home extends Admin_controller  {
         
         return $this->template->load('template', 'home', $data);
 	}
+	
+	public function getOrderDetails()
+    {
+        $this->load->model('Order_model', 'order');
+        $data['order'] = $this->order->getOrder(d_id($this->input->get('id')));
+        
+        return $this->load->view('order', $data);
+    }
 
 	public function profile()
     {

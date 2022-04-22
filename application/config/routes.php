@@ -13,6 +13,7 @@ $route["contact"]['post'] = "home/contact";
 $route["franchise"]['post'] = "home/franchise";
 $route["package/(:num)"] = "home/package/$1";
 $route["test/(:num)"] = "home/test/$1";
+$route["tests/(:num)"] = "home/tests/$1";
 $route["lab/(:num)"] = "home/lab/$1";
 $route["add-to-cart"]['post'] = "home/add_to_cart";
 $route["cart"] = "user/cart";
@@ -22,6 +23,7 @@ $route["add-member"]['post'] = "user/add_member";
 $route["add-order"]['post'] = "user/add_order";
 $route["thankyou"]['get'] = "user/thankyou";
 $route["getTotal"]['get'] = "user/getTotal";
+$route["clear-cart"]['post'] = "user/clear_cart";
 
 $route["verify-otp"] = "login/verify_otp";
 $route["register"] = "login/register";

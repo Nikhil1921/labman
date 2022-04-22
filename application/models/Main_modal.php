@@ -89,7 +89,7 @@ class Main_modal extends MY_Model
                                 ->join('tests t', 't.id = lt.test_id')
                                 ->get()->result();
 
-        return ['cart' => $cart, 'tests' => isset($tests) ? $tests : []];
+        return ['cart' => $cart ? $cart : [], 'tests' => isset($tests) ? $tests : []];
     }
 
     public function cart_count()
@@ -139,7 +139,7 @@ class Main_modal extends MY_Model
 
             $this->db->where_in('test_id', $ts)
                      ->join('logins l', 'l.id = lt.lab_id')
-                    //  ->where('is_blocked', 0)
+                     ->where('is_blocked', 0)
                      ->join('lab_partners lp', 'lp.id = lt.lab_id')
                      ->join('tests t', 't.id = lt.test_id')
                      ->join('report_time rt', 'rt.id = lp.del_time');

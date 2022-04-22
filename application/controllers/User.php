@@ -1,5 +1,4 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
-// use Razorpay\Api\Api;
 
 class User extends Public_controller {
 	
@@ -14,7 +13,175 @@ class User extends Public_controller {
 
 	public function index()
 	{
+		$data['title'] = 'Dashboard';
+        $data['name'] = 'dashboard';
+        
+        return $this->template->load('template', 'dashboard', $data);
+	}
+
+	public function test_report()
+	{
+		$data['title'] = 'Test report';
+        $data['name'] = 'test_report';
+        
+        return $this->template->load('template', 'test-report', $data);
+	}
+
+	public function orders()
+	{
+		check_ajax();
+
+        $this->load->model('Orders_model', 'data');
+        $fetch_data = $this->data->make_datatables();
+        $sr = $this->input->get('start') + 1;
+
+        $data = [];
 		
+        foreach($fetch_data as $row)
+        {
+            $sub_array = [];
+            $sub_array[] = $sr;
+            $sub_array[] = $row->name;
+            $sub_array[] = $row->lab;
+			$ts = '';
+			foreach ($this->data->getOrder($row->id) as $k => $v)
+				$ts .= ($k+1).'. '.$v['t_name'].'<br />';
+            $sub_array[] = $ts;
+            $sub_array[] = date('d-m-Y', strtotime($row->collection_date));
+            $sub_array[] = $row->total;
+            $sub_array[] = $row->pay_type;
+            $sub_array[] = $row->coll_otp;
+            $sub_array[] = $row->status;
+
+            $data[] = $sub_array;
+            $sr++;
+        }
+
+        $output = [
+            "draw"              => intval($this->input->get('draw')),  
+            "recordsTotal"      => $this->data->count(),
+            "recordsFiltered"   => $this->data->get_filtered_data(),
+            "data"              => $data
+        ];
+        
+        die(json_encode($output));
+	}
+
+	public function booking_history()
+	{
+		$data['title'] = 'Booking history';
+        $data['name'] = 'booking_history';
+        
+        return $this->template->load('template', 'booking-history', $data);
+	}
+
+	public function history()
+	{
+		check_ajax();
+
+        $this->load->model('Orders_model', 'data');
+        $fetch_data = $this->data->make_datatables();
+        $sr = $this->input->get('start') + 1;
+
+        $data = [];
+		
+        foreach($fetch_data as $row)
+        {
+            $sub_array = [];
+            $sub_array[] = $sr;
+            $sub_array[] = $row->name;
+            $sub_array[] = $row->lab;
+			$ts = '';
+			foreach ($this->data->getOrder($row->id) as $k => $v)
+				$ts .= ($k+1).'. '.$v['t_name'].'<br />';
+            $sub_array[] = $ts;
+            $sub_array[] = date('d-m-Y', strtotime($row->collection_date));
+            $sub_array[] = $row->total;
+            $sub_array[] = $row->pay_type;
+
+            $data[] = $sub_array;
+            $sr++;
+        }
+
+        $output = [
+            "draw"              => intval($this->input->get('draw')),  
+            "recordsTotal"      => $this->data->count(),
+            "recordsFiltered"   => $this->data->get_filtered_data(),
+            "data"              => $data
+        ];
+        
+        die(json_encode($output));
+	}
+
+	public function test_reports()
+	{
+		check_ajax();
+
+        $this->load->model('Reports_model', 'data');
+        $fetch_data = $this->data->make_datatables();
+        $sr = $this->input->get('start') + 1;
+
+        $data = [];
+
+        foreach($fetch_data as $row)
+        {
+            $sub_array = [];
+            $sub_array[] = $sr;
+            $sub_array[] = $row->name;
+            $sub_array[] = $row->t_name;
+            $sub_array[] = $row->upload_date ? $row->upload_date : "Report Not Uploaded";
+            $sub_array[] = $row->test_report ? anchor($this->config->item('test-reports').$row->test_report, '', 'target="_blank" class="btn btn-default btn-sm"') : "Report Not Uploaded";
+
+            $data[] = $sub_array;
+            $sr++;
+        }
+
+        $output = [
+            "draw"              => intval($this->input->get('draw')),  
+            "recordsTotal"      => $this->data->count(),
+            "recordsFiltered"   => $this->data->get_filtered_data(),
+            "data"              => $data
+        ];
+        
+        die(json_encode($output));
+	}
+
+	public function profile()
+	{
+		$this->form_validation->set_rules($this->profile);
+
+		if($this->form_validation->run() == FALSE){
+			$data['title'] = 'Profile';
+			$data['name'] = 'profile';
+			
+			return $this->template->load('template', 'profile', $data);
+		}else{
+			$post = [
+				'name'   => $this->input->post('name'),
+				'mobile' => $this->input->post('mobile'),
+				'email'  => $this->input->post('email')
+			];
+
+			if(! empty($_FILES['image']['name']))
+			{
+				$unlink = $this->user['image'];
+				$this->path = $this->config->item('users');
+				$img = $this->uploadImage('image');
+				
+				if($img['error']) flashMsg(0, "", $img['message'], 'user/profile');
+				$post['image'] = $img['message'];
+			}
+
+			$id = $this->main->update(['id' => $this->session->userId], $post, $this->table);
+			if($id && ! empty($_FILES['image']['name']) && $unlink != 'user.png' && is_file($this->config->item('users').$unlink))
+				unlink($this->config->item('users').$unlink);
+			flashMsg($id, "Profile updated.", "Profile not updated.", 'user/profile');
+		}
+	}
+
+	public function clear_cart()
+	{
+		flashMsg($this->main->delete('cart', ['user_id' => $this->session->userId]), "Cart clear", "Cart not clear.", 'cart');
 	}
 
 	public function cart()
@@ -132,4 +299,63 @@ class User extends Public_controller {
         
         return $this->template->load('template', 'thankyou', $data);
     }
+
+	public function mobile_check($str)
+    {   
+        $where = ['mobile' => $str, 'id != ' => $this->session->userId];
+        
+        if ($this->main->check($this->table, $where, 'id'))
+        {
+            $this->form_validation->set_message('mobile_check', 'The %s is already in use');
+            return FALSE;
+        } else
+            return TRUE;
+    }
+
+    public function email_check($str)
+    {   
+        $where = ['email' => $str, 'id != ' => $this->session->userId];
+        
+        if ($this->main->check($this->table, $where, 'id'))
+        {
+            $this->form_validation->set_message('email_check', 'The %s is already in use');
+            return FALSE;
+        } else
+            return TRUE;
+    }
+
+	private $table = 'users';
+
+	public $profile = [
+		[
+            'field' => 'name',
+            'label' => 'Full name',
+            'rules' => 'required|max_length[100]|alpha_numeric_spaces|trim',
+            'errors' => [
+                'required' => "%s is required",
+                'max_length' => "Max 100 chars allowed.",
+                'alpha_numeric_spaces' => "Only characters and numbers are allowed.",
+            ],
+        ],
+        [
+            'field' => 'email',
+            'label' => 'Email',
+            'rules' => 'required|max_length[100]|valid_email|callback_email_check|trim',
+            'errors' => [
+                'required' => "%s is required",
+                'max_length' => "Max 100 chars allowed.",
+                'valid_email' => "%s is invalid"
+            ],
+        ],
+        [
+            'field' => 'mobile',
+            'label' => 'Mobile',
+            'rules' => 'required|exact_length[10]|is_numeric|callback_mobile_check|trim',
+            'errors' => [
+                'required' => "%s is required",
+                'exact_length' => "%s is invalid",
+                'is_numeric' => "%s is invalid"
+            ],
+        ],
+	];
 }

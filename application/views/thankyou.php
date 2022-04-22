@@ -7,7 +7,7 @@
                 <div class="radd">
                     <span class="ltitle">Your order placed successfully</span><br /><br />
                     <span class="stitle">Thank you for placing order. We will contact you shortly for the sample collection.</span><br /><br />
-                    <?= anchor('user/orders', 'Go to my orders', 'class="text-dark"') ?>
+                    <?= anchor('user', 'Go to my orders', 'class="text-dark"') ?>
                 </div>
             </div>
         </div>

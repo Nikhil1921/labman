@@ -56,16 +56,16 @@
                            <ul class="top-user-area-list list list-horizontal list-border">
                            <?php if($this->session->userId): ?>
                               <li class="top-user-area-avatar">
-                                 <?= anchor('user-profile', img($this->config->item('users').$this->user['image']).$this->user['name']); ?>
+                                 <?= anchor('user', img($this->config->item('users').$this->user['image']).$this->user['name']); ?>
                                  <ul class="list logout">
                                        <li>
-                                          <?= anchor('user', 'My Profile'); ?>
+                                          <?= anchor('user/profile', 'My Profile'); ?>
                                        </li>
                                        <li>
-                                          <?= anchor('user/orders', 'My Order'); ?>
+                                          <?= anchor('user', 'My Order'); ?>
                                        </li>
                                        <li>
-                                          <?= anchor('user/reports', 'Test Reports'); ?>
+                                          <?= anchor('user/test-report', 'Test Reports'); ?>
                                        </li>
                                        <li>
                                           <?= anchor('logout', 'Sign Out'); ?>
@@ -303,6 +303,11 @@
          <script src="<?= base_url('assets/js/bootstrap-datepicker.js') ?>"></script>
          <script src="<?= base_url('assets/js/bootstrap-timepicker.js') ?>"></script>
          <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+      <?php endif ?>
+      <?php if(in_array($name, ['test_report', 'dashboard', 'booking_history'])): ?>
+         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css">
+         <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+         <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
       <?php endif ?>
       <script src="<?= base_url('assets/js/custom.js?v='.time()) ?>"></script>
    </body>

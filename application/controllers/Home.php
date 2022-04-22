@@ -35,6 +35,15 @@ class Home extends Public_controller {
         return $this->template->load('template', 'test', $data);
 	}
     
+	public function tests($id)
+	{
+        $data['title'] = 'Tests';
+        $data['name'] = 'tests';
+        $data['tests'] = $this->main->getAll('tests', 'id, t_name', ['dep_id' => d_id($id)]);
+        
+        return $this->template->load('template', 'tests', $data);
+	}
+    
 	public function lab($id)
 	{
         $data['title'] = 'Lab';
