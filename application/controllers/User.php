@@ -41,6 +41,7 @@ class User extends Public_controller {
         {
             $sub_array = [];
             $sub_array[] = $sr;
+            $sub_array[] = $row->or_id;
             $sub_array[] = $row->name;
             $sub_array[] = $row->lab;
 			$ts = '';
@@ -89,6 +90,7 @@ class User extends Public_controller {
         {
             $sub_array = [];
             $sub_array[] = $sr;
+            $sub_array[] = $row->or_id;
             $sub_array[] = $row->name;
             $sub_array[] = $row->lab;
 			$ts = '';
@@ -127,6 +129,7 @@ class User extends Public_controller {
         {
             $sub_array = [];
             $sub_array[] = $sr;
+            $sub_array[] = $row->or_id;
             $sub_array[] = $row->name;
             $sub_array[] = $row->t_name;
             $sub_array[] = $row->upload_date ? $row->upload_date : "Report Not Uploaded";
@@ -211,7 +214,7 @@ class User extends Public_controller {
 			'user_id'	  => $this->session->userId,
 			'faddress' 	  => $this->input->post('faddress'),
 			'ad_location' => $this->input->post('address'),
-			'ad_city' 	  => $this->main->getCart($this->session->userId)['cart']->c_name,
+			'ad_city' 	  => $this->input->post('city'),
 			'latitude' 	  => $this->input->post('lat'),
 			'longitude'	  => $this->input->post('lng')
 		];

@@ -9,6 +9,8 @@ class Orders extends Admin_controller  {
 	
 	public function index()
 	{
+        check_access($this->name, 'view');
+
 		$data['title'] = $this->title;
         $data['name'] = $this->name;
         $data['url'] = $this->redirect;
@@ -22,6 +24,7 @@ class Orders extends Admin_controller  {
     public function get()
     {
         check_ajax();
+        // $delete = verify_access($this->name, 'delete');
         $output = [
             "draw"              => intval($this->input->get('draw')),  
             "recordsTotal"      => 0,

@@ -9,6 +9,8 @@ class Lab_test extends Admin_controller  {
 	
 	public function index()
 	{
+        check_access($this->name, 'view');
+        
 		$data['title'] = $this->title;
         $data['name'] = $this->name;
         $data['url'] = $this->redirect;
@@ -36,22 +38,6 @@ class Lab_test extends Admin_controller  {
             $sub_array[] = $row->ltl_price;
             $sub_array[] = $row->t_price;
             $sub_array[] = $row->total;
-
-            /* $sub_array[] = form_open($this->redirect.'/change-status', 'id="status_'.e_id($row->id).'"', ['id' => e_id($row->id), 'status' => $row->is_blocked ? 0 : 1]).
-                '<a class="btn btn-pill btn-outline-'.($row->is_blocked ? 'success' : 'danger').' btn-air-'.($row->is_blocked ? 'success' : 'danger').' btn-xs" onclick=\'script.delete("status_'.e_id($row->id).'"); return false;\' href="javascript:;">'.($row->is_blocked ? 'Unblock' : 'Block').'</a>'.
-                form_close();
-            
-            $action = '<div class="btn-group" role="group"><button class="btn btn-success dropdown-toggle" id="btnGroupVerticalDrop1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="icon-settings"></span></button><div class="dropdown-menu" aria-labelledby="btnGroupVerticalDrop1" x-placement="bottom-start">';
-            
-            $action .= anchor($this->redirect."/update/".e_id($row->id), '<i class="fa fa-edit"></i> Edit</a>', 'class="dropdown-item"');
-        
-            $action .= form_open($this->redirect.'/delete', 'id="'.e_id($row->id).'"', ['id' => e_id($row->id)]).
-                '<a class="dropdown-item" onclick="script.delete('.e_id($row->id).'); return false;" href=""><i class="fa fa-trash"></i> Delete</a>'.
-                form_close();
-
-            $action .= '</div></div>';
-            $sub_array[] = $action; */
 
             $data[] = $sub_array;  
             $sr++;

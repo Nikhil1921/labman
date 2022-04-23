@@ -189,6 +189,10 @@ $(document).ready(function () {
             rules: {
                 faddress: {
                     required: true,
+                    maxlength: 255
+                },
+                city: {
+                    required: true,
                     maxlength: 100
                 },
                 address: {
@@ -306,11 +310,9 @@ $(document).ready(function () {
                     required: true,
                 },
                 ref_doctor: {
-                    required: true,
                     maxlength: 100,
                 },
                 remarks: {
-                    required: true,
                     maxlength: 255,
                 },
                 pay_method: {

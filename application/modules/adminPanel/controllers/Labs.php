@@ -15,6 +15,8 @@ class Labs extends Admin_controller  {
 	
 	public function index()
 	{
+        check_access($this->name, 'view');
+
 		$data['title'] = $this->title;
         $data['name'] = $this->name;
         $data['url'] = $this->redirect;
@@ -43,7 +45,7 @@ class Labs extends Admin_controller  {
             $sub_array[] = $row->certificate;
 
             $sub_array[] = form_open($this->redirect.'/change-status', 'id="status_'.e_id($row->id).'"', ['id' => e_id($row->id), 'status' => $row->is_blocked ? 0 : 1]).
-                '<a class="btn btn-pill btn-outline-'.($row->is_blocked ? 'success' : 'danger').' btn-air-'.($row->is_blocked ? 'success' : 'danger').' btn-xs" onclick=\'script.delete("status_'.e_id($row->id).'"); return false;\' href="javascript:;">'.($row->is_blocked ? 'Unblock' : 'Block').'</a>'.
+                '<a class="btn btn-pill btn-outline-'.($row->is_blocked ? 'danger' : 'success').' btn-air-'.($row->is_blocked ? 'success' : 'danger').' btn-xs" onclick=\'script.delete("status_'.e_id($row->id).'"); return false;\' href="javascript:;">'.($row->is_blocked ? 'Blocked' : 'Unblocked').'</a>'.
                 form_close();
             
             $action = '<div class="btn-group" role="group"><button class="btn btn-success dropdown-toggle" id="btnGroupVerticalDrop1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -74,6 +76,8 @@ class Labs extends Admin_controller  {
 
     public function add()
 	{
+        check_access($this->name, 'add');
+
         $this->form_validation->set_rules($this->validate);
 
         $data['title'] = $this->title;
@@ -106,6 +110,8 @@ class Labs extends Admin_controller  {
 
 	public function update($id)
 	{
+        check_access($this->name, 'update');
+
         $this->form_validation->set_rules($this->validate);
         $this->load->model('Labs_model', 'lab');
 
@@ -150,6 +156,8 @@ class Labs extends Admin_controller  {
 
 	public function delete()
     {
+        check_access($this->name, 'delete');
+
         $this->form_validation->set_rules('id', 'id', 'required|is_natural');
         
         if ($this->form_validation->run() == FALSE)
@@ -162,6 +170,8 @@ class Labs extends Admin_controller  {
 
 	public function change_status()
     {
+        check_access($this->name, 'status');
+        
         $this->form_validation->set_rules('id', '', 'required|is_natural');
         $this->form_validation->set_rules('status', '', 'required|is_natural');
         

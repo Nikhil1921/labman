@@ -9,6 +9,8 @@ class Tests extends Admin_controller  {
 	
 	public function index()
 	{
+        check_access($this->name, 'view');
+        
 		$data['title'] = $this->title;
         $data['name'] = $this->name;
         $data['url'] = $this->redirect;
@@ -67,6 +69,8 @@ class Tests extends Admin_controller  {
 
     public function add()
 	{
+        check_access($this->name, 'add');
+        
         $this->form_validation->set_rules($this->validate);
 
         $data['title'] = $this->title;
@@ -102,6 +106,8 @@ class Tests extends Admin_controller  {
 
 	public function update($id)
 	{
+        check_access($this->name, 'update');
+        
         $this->form_validation->set_rules($this->validate);
 
         if ($this->form_validation->run() == FALSE)
@@ -137,6 +143,8 @@ class Tests extends Admin_controller  {
 
 	public function delete()
     {
+        check_access($this->name, 'delete');
+        
         $this->form_validation->set_rules('id', 'id', 'required|is_natural');
         
         if ($this->form_validation->run() == FALSE)

@@ -19,7 +19,7 @@
                 <th>Contact no.</th>
                 <th>Address</th>
                 <th>Certificates</th>
-                <th class="target">Approval</th>
+                <th class="target">Status</th>
                 <th class="target">Action</th>
             </thead>
             <tbody>

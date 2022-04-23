@@ -15,6 +15,8 @@ class Users extends Admin_controller  {
 	
 	public function index()
 	{
+        check_access($this->name, 'view');
+
 		$data['title'] = $this->title;
         $data['name'] = $this->name;
         $data['url'] = $this->redirect;
@@ -30,6 +32,8 @@ class Users extends Admin_controller  {
         $this->load->model('Users_model', 'data');
         $fetch_data = $this->data->make_datatables();
         $sr = $this->input->get('start') + 1;
+        $delete = verify_access($this->name, 'delete');
+        $status = verify_access($this->name, 'status');
         $data = [];
 
         foreach($fetch_data as $row)
@@ -42,24 +46,27 @@ class Users extends Admin_controller  {
             $sub_array[] = $row->create_date;
             $sub_array[] = $row->create_time;
             $sub_array[] = date_diff(date_create(date('Y-m-d')), date_create($row->dob))->format('%y');
+            if ($status)
+                $sub_array[] = form_open($this->redirect.'/change-status', 'id="status_'.e_id($row->id).'"', ['id' => e_id($row->id), 'status' => $row->is_blocked ? 0 : 1]).
+                '<a class="btn btn-pill btn-outline-'.($row->is_blocked ? 'danger' : 'success').' btn-air-'.($row->is_blocked ? 'success' : 'danger').' btn-xs" onclick=\'script.delete("status_'.e_id($row->id).'"); return false;\' href="javascript:;">'.($row->is_blocked ? 'Blocked' : 'Unblocked').'</a>'.
+                form_close();
+            else
+                $sub_array[] = '<a class="btn btn-pill btn-outline-'.($row->is_blocked ? 'danger' : 'success').' btn-air-'.($row->is_blocked ? 'success' : 'danger').' btn-xs" href="javascript:;">'.($row->is_blocked ? 'Blocked' : 'Unblocked').'</a>';
 
-            $sub_array[] = form_open($this->redirect.'/change-status', 'id="status_'.e_id($row->id).'"', ['id' => e_id($row->id), 'status' => $row->is_blocked ? 0 : 1]).
-                '<a class="btn btn-pill btn-outline-'.($row->is_blocked ? 'success' : 'danger').' btn-air-'.($row->is_blocked ? 'success' : 'danger').' btn-xs" onclick=\'script.delete("status_'.e_id($row->id).'"); return false;\' href="javascript:;">'.($row->is_blocked ? 'Unblock' : 'Block').'</a>'.
-                form_close();
-            
             $action = '<div class="btn-group" role="group"><button class="btn btn-success dropdown-toggle" id="btnGroupVerticalDrop1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="icon-settings"></span></button><div class="dropdown-menu" aria-labelledby="btnGroupVerticalDrop1" x-placement="bottom-start">';
-            
-            $action .= anchor($this->redirect."/update/".e_id($row->id), '<i class="fa fa-edit"></i> Edit</a>', 'class="dropdown-item"');
+                <span class="icon-settings"></span></button><div class="dropdown-menu" aria-labelledby="btnGroupVerticalDrop1" x-placement="bottom-start">';
+                
+            if ($delete)
+                $action .= anchor($this->redirect."/update/".e_id($row->id), '<i class="fa fa-edit"></i> Edit</a>', 'class="dropdown-item"');
         
-            $action .= form_open($this->redirect.'/delete', 'id="'.e_id($row->id).'"', ['id' => e_id($row->id)]).
+            /* $action .= form_open($this->redirect.'/delete', 'id="'.e_id($row->id).'"', ['id' => e_id($row->id)]).
                 '<a class="dropdown-item" onclick="script.delete('.e_id($row->id).'); return false;" href=""><i class="fa fa-trash"></i> Delete</a>'.
-                form_close();
+                form_close(); */
 
             $action .= '</div></div>';
             $sub_array[] = $action;
 
-            $data[] = $sub_array;  
+            $data[] = $sub_array;
             $sr++;
         }
 
@@ -75,6 +82,8 @@ class Users extends Admin_controller  {
 
     public function change_status()
     {
+        check_access($this->name, 'status');
+
         $this->form_validation->set_rules('id', '', 'required|is_natural');
         $this->form_validation->set_rules('status', '', 'required|is_natural');
         
@@ -88,6 +97,8 @@ class Users extends Admin_controller  {
 
     public function update($id)
 	{
+        check_access($this->name, 'update');
+
         $this->form_validation->set_rules($this->validate);
 
         if ($this->form_validation->run() == FALSE)

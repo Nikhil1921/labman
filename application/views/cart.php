@@ -107,14 +107,14 @@
                     </div>
                     <div class="form-group form-group-filled col-md-6">
                         <label>Collection Time</label>
-                        <input type="text" name="collection_time" class="time-pick form-control" placeholder="Select Time" required>
+                        <input type="text" name="collection_time" class="time-pick form-control" placeholder="Select Time">
                     </div>
                     <div class="form-group col-md-12">
-                        <label>Refer by Doctor</label>
+                        <label>Refer by Doctor (Optional)</label>
                          <input type="text" name="ref_doctor" maxlength="100" class="form-control" placeholder="Refer by Doctor">
                     </div>
                     <div class="form-group col-md-12">
-                        <label>Doctor Remarks</label>
+                        <label>Doctor Remarks (Optional)</label>
                         <textarea class="form-control" maxlength="255" name="remarks"></textarea>
                     </div>
                     <div class="form-group col-md-12">
@@ -155,16 +155,20 @@
             <?= form_open('add-address', 'class="address-form" onsubmit="return false;"'); ?>
                 <div class="modal-body row">
                     <div class="form-group col-md-12">
-                        <label>Flate No / House No / Socity</label>
-                        <input type="text" name="faddress" maxlength="100" class="form-control" placeholder="Flate No / House No / Socity" required>    
+                        <label>Full Address (With landmark)</label>
+                        <input type="text" name="faddress" maxlength="255" class="form-control" placeholder="Address" required>    
                     </div>
                     <div class="form-group col-md-12 location">
-                        <label>Address</label>
-                        <input type="text" name="address" maxlength="255" class="form-control geocomplete" placeholder="Enter Address" id="address" required />
+                        <label>Location</label>
+                        <input type="text" name="address" maxlength="255" class="form-control geocomplete" placeholder="Enter Location" id="address" required />
                         <fieldset class="details" style="display: none;">
                             <input name="lat" type="text" value="" />
                             <input name="lng" type="text" value="" />
                         </fieldset>
+                    </div>
+                    <div class="form-group col-md-12 location">
+                        <label>City</label>
+                        <input type="text" name="city" value="<?= $cart->c_name ?>" maxlength="100" class="form-control" readonly required>
                     </div>
                 </div>
                 <div class="modal-footer">

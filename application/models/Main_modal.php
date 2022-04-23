@@ -27,6 +27,8 @@ class Main_modal extends MY_Model
         
         $order = [
             'name' => $user['name'],
+            'or_id' => 'LABDIG'.rand(10000, 99999),
+            'coll_otp' => rand(1000, 9999),
             'mobile' => $user['mobile'],
             'email' => $user['email'],
             'relation' => isset($user['relation']) ? $user['relation'] : 'Self',
@@ -42,8 +44,8 @@ class Main_modal extends MY_Model
             'add_id' => d_id($this->input->post('address')),
             'collection_date' => date('Y-m-d', strtotime($this->input->post('collection_date'))),
             'collection_time' => date('H:i:s', strtotime($this->input->post('collection_time'))),
-            'ref_doctor' => $this->input->post('ref_doctor'),
-            'doc_remarks' => $this->input->post('remarks'),
+            'ref_doctor' => $this->input->post('ref_doctor') ? $this->input->post('ref_doctor') : 'NA',
+            'doc_remarks' => $this->input->post('remarks') ? $this->input->post('remarks') : 'NA',
             'phlebotomist_id' => 0,
             'pay_type' => $this->input->post('pay_method'),
             'pay_id' => $this->input->post('pay_method') === 'Cash' ? 'Cash' : $this->input->post('payment_id'),
@@ -68,8 +70,22 @@ class Main_modal extends MY_Model
         
         if ($this->db->trans_status() === FALSE)
             return ['error' => true, 'message' => 'Order not placed.'];
-        else
+        else{
+            // send email start
+            $message = $this->load->view('send-order-mail', compact('cart', 'user', 'order'), true);
+            $subject = "Your Test Request Is Successfull.";
+            send_email($user['email'], $message, $subject);
+            // send email end
+            
+            // send notification start
+            /* $title = APP_NAME;
+            $body = "Your New Test Request";
+            $tokens = [];
+            foreach ($tokens as $token) send_notification($title, $body, $token); */
+            // send notification end
+
             return ['error' => false, 'message' => 'Order placed successfully.', 'redirect' => 'thankyou.html'];
+        }
     }
 
     public function getCart($userId)
@@ -114,7 +130,7 @@ class Main_modal extends MY_Model
 
 	public function getCities()
     {
-        return $this->getAll('cities', "c_name", ['is_deleted' => 0]);
+        return $this->getAll('cities', "id, c_name", ['is_deleted' => 0]);
     }
 
 	public function searchLab($tests_in=[])
@@ -139,7 +155,7 @@ class Main_modal extends MY_Model
 
             $this->db->where_in('test_id', $ts)
                      ->join('logins l', 'l.id = lt.lab_id')
-                     ->where('is_blocked', 0)
+                     ->where('l.is_blocked', 0)
                      ->join('lab_partners lp', 'lp.id = lt.lab_id')
                      ->join('tests t', 't.id = lt.test_id')
                      ->join('report_time rt', 'rt.id = lp.del_time');

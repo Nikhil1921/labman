@@ -78,6 +78,14 @@ class Home extends Admin_controller  {
         }
     } */
 
+	public function forbidden()
+    {
+        $data['title'] = 'Forbidden';
+        $data['name'] = 'forbidden';
+
+		return $this->template->load('template', 'forbidden', $data);
+    }
+
 	public function logout()
     {
         $this->session->sess_destroy();

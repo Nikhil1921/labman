@@ -11,6 +11,7 @@
                     <thead>
                         <tr>
                             <th class="target">No</th>
+                            <th>Order #</th>
                             <th>Name</th>
                             <th>Lab Name</th>
                             <th class="target">Test Name</th>

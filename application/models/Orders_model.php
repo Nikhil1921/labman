@@ -6,9 +6,9 @@
 class Orders_model extends MY_Model
 {
 	public $table = "orders o";
-	public $select_column = ['o.id', 'o.name', 'l.name AS lab', 'o.collection_date', 'o.pay_type', 'o.coll_otp', 'o.status', '(SUM(ot.price + ot.margin) - o.discount + IF(SUM(ot.price + ot.margin) <= o.fix_price, o.home_visit, 0) + o.hardcopy) total'];
-	public $search_column = ['o.name', 'l.name', 'o.collection_date', 'o.pay_type', 'o.coll_otp', 'o.status'];
-    public $order_column = [null, 'o.name', 'l.name', null, 'o.collection_date', null, 'o.pay_type', 'o.coll_otp', 'o.status', null];
+	public $select_column = ['o.id', 'o.or_id', 'o.name', 'l.name AS lab', 'o.collection_date', 'o.pay_type', 'o.coll_otp', 'o.status', '(SUM(ot.price + ot.margin) - o.discount + IF(SUM(ot.price + ot.margin) <= o.fix_price, o.home_visit, 0) + o.hardcopy) total'];
+	public $search_column = ['o.or_id', 'o.name', 'l.name', 'o.collection_date', 'o.pay_type', 'o.coll_otp', 'o.status'];
+    public $order_column = [null, 'o.or_id', 'o.name', 'l.name', null, 'o.collection_date', null, 'o.pay_type', 'o.coll_otp', 'o.status', null];
 	public $order = ['o.id' => 'DESC'];
 	
 	public function make_query()

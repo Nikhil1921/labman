@@ -92,14 +92,67 @@ if ( ! function_exists('send_email'))
 		$CI->load->library('email');
 		$CI->email->clear(TRUE);
 		$CI->email->set_newline("\r\n");
-		$CI->email->from('support@utpadakse.com', APP_NAME);
+		$CI->email->from($CI->email->smtp_user, APP_NAME);
 		$CI->email->to($email);
 		$CI->email->subject($subject);
 		$CI->email->message($message);
-		/* if ($pdf)
+        /* if ($pdf)
             $CI->email->attach($_SERVER['DOCUMENT_ROOT'] . str_replace(basename($_SERVER["SCRIPT_NAME"]), "", $_SERVER["SCRIPT_NAME"])."Exam-procedure.pdf"); */
         
 		$CI->email->send(FALSE);
-        $CI->email->print_debugger(array('headers'));
+        /* $CI->email->print_debugger(array('headers')); */
+        return;
 	}
+}
+
+if ( ! function_exists('send_notification'))
+{
+    function send_notification($title, $body, $token)
+	{
+        $url = "https://fcm.googleapis.com/fcm/send";
+        $serverKey = 'AAAAIQ-IBUw:APA91bHegjkBRXbw4i5ECh6BZ1OD7f1pMsdXVk3Zg35PsmXHbJXArBjI89UPe94pjxOPCiEiO9TQbwRI3DPcwXsLWjPOqy24mHBf7ckVbngYAPA4L5CgmX0VvtwbgH9VFNKEoqwunBoP';
+        
+        $notification = array('title' => $title, 'body' => $body, 'sound' => 'default', 'badge' => '1');
+        $arrayToSend = array('to' => $token, 'notification' => $notification, 'priority'=>'high');
+        $json = json_encode($arrayToSend);
+        $headers = array();
+        $headers[] = 'Content-Type: application/json';
+        $headers[] = 'Authorization: key='.$serverKey;
+        
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
+        curl_setopt($ch, CURLOPT_HTTPHEADER,$headers);
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+        
+        $response = curl_exec($ch);
+
+        curl_close($ch);
+        return;
+	}
+}
+
+if ( ! function_exists('check_access'))
+{
+    function check_access($name, $operation)
+    {
+        $CI =& get_instance();
+        
+        if ($CI->user->role === 'Admin')
+            return true;
+        else
+            return $CI->main->check('permissions', ['nav' => $name, 'role' => $CI->user->role, 'operation' => $operation], 'operation') ? true : redirect(admin('forbidden'));
+    }
+}
+
+if ( ! function_exists('verify_access'))
+{
+    function verify_access($name, $operation)
+    {
+        $CI =& get_instance();
+        /* if ($CI->user->role === 'Admin')
+            return true;
+        else */
+            return $CI->main->check('permissions', ['nav' => $name, 'role' => $CI->user->role, 'operation' => $operation], 'operation');
+    }
 }

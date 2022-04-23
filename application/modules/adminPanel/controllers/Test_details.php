@@ -9,6 +9,8 @@ class Test_details extends Admin_controller  {
 	
 	public function index()
 	{
+        check_access($this->name, 'view');
+        
 		$data['title'] = $this->title;
         $data['name'] = $this->name;
         $data['url'] = $this->redirect;
@@ -57,6 +59,8 @@ class Test_details extends Admin_controller  {
 
 	public function update($id)
 	{
+        check_access($this->name, 'update');
+
         $this->form_validation->set_rules($this->validate);
 
         if ($this->form_validation->run() == FALSE)
