@@ -15,6 +15,14 @@ class Admin_controller extends MY_Controller
 		$this->redirect = admin($this->redirect);
 	}
 
+    public function getOrderDetails()
+    {
+        $this->load->model('Order_model', 'order');
+        $data['order'] = $this->order->getOrder(d_id($this->input->get('id')));
+        
+        return $this->load->view('order', $data);
+    }
+
     /* public function getSubCats()
     {
         check_ajax();

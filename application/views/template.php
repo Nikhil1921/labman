@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <!DOCTYPE html>
-<html lang="en" <?= in_array($name, ['login']) ? 'class="full"' : '' ?>>
+<html lang="en">
    <head>
       <title><?= "$title | " . APP_NAME ?></title>
       <meta charset="UTF-8">
@@ -19,8 +19,8 @@
          <?= link_tag('assets/css/switcher.css" ') ?>
       <?php endif ?>
    </head>
-   <body <?= in_array($name, ['login']) ? 'class="full"' : '' ?>>
-      <?php if(!in_array($name, ['login'])): ?>
+   <body>
+      
       <div class="global-wrap">
          <header id="main-header">
             <div class="header-top">
@@ -183,11 +183,10 @@
             </div>
          </div>
       </div>
-      <?php endif ?>
       
       <?= $contents; ?>
 
-      <?php if(!in_array($name, ['login'])): ?>
+      
          <footer id="main-footer">
          <div class="container">
             <div class="row row-wrap">
@@ -269,25 +268,28 @@
             <p>All Right Reserved & Copyright @ 2020 by Labman Diagnostic Private Limited</p>
          </div>
       </div>
-      <?php endif ?>
+
       <div class='toast' style='display:none'></div>
       <input type="hidden" name="base_url" value="<?= base_url(); ?>" />
       <input type="hidden" name="is_login" value="<?= $this->session->userId ? TRUE : FALSE ?>" />
+      <input type="hidden" name="error" value="<?= $this->session->error ?>" />
+      <input type="hidden" name="success" value="<?= $this->session->success ?>" />
       
       <script src="<?= base_url('assets/js/jquery.js') ?>"></script>
       <script src="<?= base_url('assets/js/bootstrap.js') ?>"></script>
       <script src="<?= base_url('assets/js/select2.min.js') ?>"></script>
       <script src="<?= base_url('assets/js/nicescroll.js') ?>"></script>
+      
       <?php if(in_array($name, ['home', 'gallery', 'lab'])): ?>
          <script src="<?= base_url('assets/js/owl-carousel.js') ?>"></script>
       <?php endif ?>
-      <?php if(in_array($name, ['lab_registration', 'cart'])): ?>
+      <?php if(in_array($name, ['lab_registration', 'cart', 'employee_registration'])): ?>
          <script src="<?= base_url('assets/js/icheck.js') ?>"></script>
       <?php endif ?>
       <?php if(in_array($name, ['gallery', 'lab'])): ?>
          <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
       <?php endif ?>
-      <?php if(in_array($name, ['home', 'login', 'contact', 'institute', 'franchise_inquiry', 'cart'])): ?>
+      <?php if(in_array($name, ['home', 'login', 'contact', 'institute', 'franchise_inquiry', 'cart', 'employee_registration'])): ?>
          <input type="hidden" name="form_validate" value="true" />
          <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
          <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/additional-methods.min.js"></script>
@@ -299,9 +301,11 @@
          <script type='text/javascript' src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDiWWB6yJd6ilpII5N89O-vXAo2eXiVD9g&libraries=places"></script>
          <script src="<?= base_url('assets/js/jquery.geocomplete.js') ?>"></script>
       <?php endif ?>
-      <?php if(in_array($name, ['cart'])): ?>
+      <?php if(in_array($name, ['cart', 'employee_registration'])): ?>
          <script src="<?= base_url('assets/js/bootstrap-datepicker.js') ?>"></script>
          <script src="<?= base_url('assets/js/bootstrap-timepicker.js') ?>"></script>
+      <?php endif ?>
+      <?php if(in_array($name, ['cart'])): ?>
          <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
       <?php endif ?>
       <?php if(in_array($name, ['test_report', 'dashboard', 'booking_history'])): ?>
@@ -310,5 +314,11 @@
          <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
       <?php endif ?>
       <script src="<?= base_url('assets/js/custom.js?v='.time()) ?>"></script>
+      <script>
+         let tagArr = document.getElementsByTagName("input");
+         for (let i = 0; i < tagArr.length; i++) {
+            tagArr[i].autocomplete = 'off';
+         }
+      </script>
    </body>
 </html>

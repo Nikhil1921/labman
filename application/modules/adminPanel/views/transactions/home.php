@@ -1,7 +1,8 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <div class="card-header">
     <div class="row">
-        <div class="col-md-4">
+        <?php $add = verify_access($name, 'add') ?>
+        <div class="col-md-<?= $add ? 4 : 6 ?>">
             <h5><?= $title ?> <?= $operation ?></h5>
         </div>
         <div class="col-md-6">
@@ -11,9 +12,11 @@
                 <?php endforeach ?>
             </select>
         </div>
+        <?php if($add): ?>
         <div class="col-md-2">
             <?= anchor("$url/add", '<span class="fa fa-plus"></span> Add new', 'class="btn btn-outline-success btn-sm float-right"'); ?>
         </div>
+        <?php endif ?>
     </div>
 </div>
 <div class="card-body">

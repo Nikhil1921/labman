@@ -1,4 +1,5 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
+$pers = $this->user->role === 'Admin' ? [] : $this->main->getAll('permissions', 'nav', ['role' => $this->user->role, 'operation' => 'view']); ?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -70,48 +71,94 @@
                             <li>
                                 <?= anchor(admin('dashboard'), '<i data-feather="home"></i><span> Dashboard</span>', 'class="sidebar-header '.($name === 'dashboard' ? 'active' : '').'"') ?>
                             </li>
-                            <li>
-                                <?= anchor(admin('users'), '<i data-feather="users"></i><span> Users</span>', 'class="sidebar-header '.($name === 'users' ? 'active' : '').'"') ?>
-                            </li>
+                            <?php if(verify_nav('users', $pers)): ?>
+                                <li>
+                                    <?= anchor(admin('users'), '<i data-feather="users"></i><span> Users</span>', 'class="sidebar-header '.($name === 'users' ? 'active' : '').'"') ?>
+                                </li>
+                            <?php endif ?>
+                            <?php if(verify_nav('orders', $pers)): ?>
                             <li>
                                 <?= anchor(admin('orders'), '<i data-feather="file-text"></i><span> Completed orders</span>', 'class="sidebar-header '.($name === 'orders' ? 'active' : '').'"') ?>
                             </li>
-                            <li <?= in_array($name, ['category', 'department', 'methods', 'samples', 'report_time', 'tests', 'test_details']) ? 'class="active"' : '' ?>>
+                            <?php endif;
+                            
+                            $cat_nav = ['category', 'department', 'methods', 'samples', 'report_time', 'tests', 'test_details'];
+                            $cat_nav_check = false;
+                            foreach ($cat_nav as $v) if(verify_nav($v, $pers)) $cat_nav_check = true;
+
+                            if($cat_nav_check): ?>
+                            <li <?= in_array($name, $cat_nav) ? 'class="active"' : '' ?>>
                                 <a class="sidebar-header" href="javascript:;" >
                                     <i data-feather="thermometer"></i><span>Test</span><i class="fa fa-angle-right pull-right"></i>
                                 </a>
-                                <ul class="sidebar-submenu <?= in_array($name, ['category', 'department', 'methods', 'samples', 'report_time', 'tests', 'test_details']) ? 'menu-open' : '' ?>">
-                                    <li><?= anchor(admin('category'), '<i class="fa fa-circle"></i> Test Category', 'class="'.($name === 'category' ? 'active' : '').'"') ?></li>
-                                    <li><?= anchor(admin('department'), '<i class="fa fa-circle"></i> Test Department', 'class="'.($name === 'department' ? 'active' : '').'"') ?></li>
-                                    <li><?= anchor(admin('methods'), '<i class="fa fa-circle"></i> Test Method', 'class="'.($name === 'methods' ? 'active' : '').'"') ?></li>
-                                    <li><?= anchor(admin('samples'), '<i class="fa fa-circle"></i> Sample  Type', 'class="'.($name === 'samples' ? 'active' : '').'"') ?></li>
-                                    <li><?= anchor(admin('report_time'), '<i class="fa fa-circle"></i> Report Time', 'class="'.($name === 'report_time' ? 'active' : '').'"') ?></li>
-                                    <li><?= anchor(admin('tests'), '<i class="fa fa-circle"></i> Test', 'class="'.($name === 'tests' ? 'active' : '').'"') ?></li>
-                                    <li><?= anchor(admin('test_details'), '<i class="fa fa-circle"></i> Test details', 'class="'.($name === 'test_details' ? 'active' : '').'"') ?></li>
+                                <ul class="sidebar-submenu <?= in_array($name, $cat_nav) ? 'menu-open' : '' ?>">
+                                    <?php if(verify_nav('category', $pers)): ?>
+                                        <li><?= anchor(admin('category'), '<i class="fa fa-circle"></i> Test Category', 'class="'.($name === 'category' ? 'active' : '').'"') ?></li>
+                                    <?php endif ?>
+                                    <?php if(verify_nav('department', $pers)): ?>
+                                        <li><?= anchor(admin('department'), '<i class="fa fa-circle"></i> Test Department', 'class="'.($name === 'department' ? 'active' : '').'"') ?></li>
+                                    <?php endif ?>
+                                    <?php if(verify_nav('methods', $pers)): ?>
+                                        <li><?= anchor(admin('methods'), '<i class="fa fa-circle"></i> Test Method', 'class="'.($name === 'methods' ? 'active' : '').'"') ?></li>
+                                    <?php endif ?>
+                                    <?php if(verify_nav('samples', $pers)): ?>
+                                        <li><?= anchor(admin('samples'), '<i class="fa fa-circle"></i> Sample  Type', 'class="'.($name === 'samples' ? 'active' : '').'"') ?></li>
+                                    <?php endif ?>
+                                    <?php if(verify_nav('report_time', $pers)): ?>
+                                        <li><?= anchor(admin('report_time'), '<i class="fa fa-circle"></i> Report Time', 'class="'.($name === 'report_time' ? 'active' : '').'"') ?></li>
+                                    <?php endif ?>
+                                    <?php if(verify_nav('tests', $pers)): ?>
+                                        <li><?= anchor(admin('tests'), '<i class="fa fa-circle"></i> Test', 'class="'.($name === 'tests' ? 'active' : '').'"') ?></li>
+                                    <?php endif ?>
+                                    <?php if(verify_nav('test_details', $pers)): ?>
+                                        <li><?= anchor(admin('test_details'), '<i class="fa fa-circle"></i> Test details', 'class="'.($name === 'test_details' ? 'active' : '').'"') ?></li>
+                                    <?php endif ?>
                                 </ul>
                             </li>
-                            <li>
-                                <?= anchor(admin('banners'), '<i data-feather="image"></i><span> Banners</span>', 'class="sidebar-header '.($name === 'banners' ? 'active' : '').'"') ?>
-                            </li>
-                            <li>
-                                <?= anchor(admin('city'), '<i data-feather="file-text"></i><span> City</span>', 'class="sidebar-header '.($name === 'city' ? 'active' : '').'"') ?>
-                            </li>
-                            <li>
-                                <?= anchor(admin('gallery'), '<i data-feather="image"></i><span> Gallery</span>', 'class="sidebar-header '.($name === 'gallery' ? 'active' : '').'"') ?>
-                            </li>
-                            <li>
-                                <?= anchor(admin('labs'), '<i data-feather="truck"></i><span> Lab Partner</span>', 'class="sidebar-header '.($name === 'labs' ? 'active' : '').'"') ?>
-                            </li>
-                            <li>
-                                <?= anchor(admin('packages'), '<i data-feather="shopping-bag"></i><span> Packages / Organs / Offer</span>', 'class="sidebar-header '.($name === 'packages' ? 'active' : '').'"') ?>
-                            </li>
-                            <li>
-                                <?= anchor(admin('lab_test'), '<i data-feather="dollar-sign"></i><span> Test by Lab</span>', 'class="sidebar-header '.($name === 'lab_test' ? 'active' : '').'"') ?>
-                            </li>
-                            <?php if ($this->user->role === 'Admin'): ?>
-                            <!-- <li>
-                                <?= anchor(admin('charges'), '<i data-feather="dollar-sign"></i><span> Report Charges</span>', 'class="sidebar-header '.($name === 'charges' ? 'active' : '').'"') ?>
-                            </li> -->
+                            <?php endif; if(verify_nav('banners', $pers)): ?>
+                                <li>
+                                    <?= anchor(admin('banners'), '<i data-feather="image"></i><span> Banners</span>', 'class="sidebar-header '.($name === 'banners' ? 'active' : '').'"') ?>
+                                </li>
+                            <?php endif ?>
+                            <?php if(verify_nav('city', $pers)): ?>
+                                <li>
+                                    <?= anchor(admin('city'), '<i data-feather="file-text"></i><span> City</span>', 'class="sidebar-header '.($name === 'city' ? 'active' : '').'"') ?>
+                                </li>
+                            <?php endif ?>
+                            <?php if(verify_nav('gallery', $pers)): ?>
+                                <li>
+                                    <?= anchor(admin('gallery'), '<i data-feather="image"></i><span> Gallery</span>', 'class="sidebar-header '.($name === 'gallery' ? 'active' : '').'"') ?>
+                                </li>
+                            <?php endif ?>
+                            <?php if(verify_nav('labs', $pers)): ?>
+                                <li>
+                                    <?= anchor(admin('labs'), '<i data-feather="truck"></i><span> Lab Partner</span>', 'class="sidebar-header '.($name === 'labs' ? 'active' : '').'"') ?>
+                                </li>
+                            <?php endif ?>
+                            <?php if(verify_nav('employees', $pers)): ?>
+                                <li>
+                                    <?= anchor(admin('employees'), '<i data-feather="users"></i><span> Employees</span>', 'class="sidebar-header '.($name === 'employees' ? 'active' : '').'"') ?>
+                                </li>
+                            <?php endif ?>
+                            <?php if(verify_nav('employees_applications', $pers)): ?>
+                                <li>
+                                    <?= anchor(admin('employees_applications'), '<i data-feather="users"></i><span> Employee applications</span>', 'class="sidebar-header '.($name === 'employees_applications' ? 'active' : '').'"') ?>
+                                </li>
+                            <?php endif ?>
+                            <?php if(verify_nav('packages', $pers)): ?>
+                                <li>
+                                    <?= anchor(admin('packages'), '<i data-feather="shopping-bag"></i><span> Packages / Organs / Offer</span>', 'class="sidebar-header '.($name === 'packages' ? 'active' : '').'"') ?>
+                                </li>
+                            <?php endif ?>
+                            <?php if(verify_nav('lab_test', $pers)): ?>
+                                <li>
+                                    <?= anchor(admin('lab_test'), '<i data-feather="dollar-sign"></i><span> Test by Lab</span>', 'class="sidebar-header '.($name === 'lab_test' ? 'active' : '').'"') ?>
+                                </li>
+                            <?php endif ?>
+                            <?php if(verify_nav('permissions', $pers)): ?>
+                                <li>
+                                    <?= anchor(admin('permissions'), '<i data-feather="lock"></i><span> Permissions</span>', 'class="sidebar-header '.($name === 'permissions' ? 'active' : '').'"') ?>
+                                </li>
                             <?php endif ?>
                         </ul>
                     </div>
@@ -160,10 +207,16 @@
         <script src="<?= base_url('assets/back/js/sidebar-menu.js') ?>"></script>
         <script src="<?= base_url('assets/back/js/notify/bootstrap-notify.min.js') ?>"></script>
         <input type="hidden" id="base_url" value="<?= base_url(admin()) ?>" />
+        <input type="hidden" name="admin" value="<?= ADMIN ?>" />
         <?php if(isset($datatable)): ?>
         <input type="hidden" name="dataTableUrl" value="<?= base_url($datatable) ?>" />
         <script src="<?= base_url('assets/back/js/datatable/datatables/jquery.dataTables.min.js') ?>"></script>
-        <script src="<?= base_url('assets/back/js/datatable/datatables/datatable.custom.js?v=1.0.1') ?>"></script>
+        <script src="<?= base_url('assets/back/js/datatable/datatable-extension/dataTables.buttons.min.js') ?>"></script>
+        <script src="<?= base_url('assets/back/js/datatable/datatable-extension/buttons.colVis.min.js') ?>"></script>
+        <script src="<?= base_url('assets/back/js/datatable/datatable-extension/buttons.bootstrap4.min.js') ?>"></script>
+        <script src="<?= base_url('assets/back/js/datatable/datatable-extension/buttons.html5.min.js') ?>"></script>
+        <script src="<?= base_url('assets/back/js/datatable/datatable-extension/buttons.print.min.js') ?>"></script>
+        <script src="<?= base_url('assets/back/js/datatable/datatables/datatable.custom.js?v=1.0.2') ?>"></script>
         <script src="<?= base_url('assets/back/js/sweet-alert/sweetalert.min.js') ?>"></script>
         <?php endif ?>
         <script src="<?= base_url('assets/back/js/datepicker/date-picker/datepicker.js') ?>"></script>

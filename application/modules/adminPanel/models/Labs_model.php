@@ -40,17 +40,18 @@ class Labs_model extends MY_Model
 						->get()->row_array();
 	}
 
-	public function add_update($id = false)
+	public function add_update($id = false, $logo=null, $cert_image=null, $block=0)
 	{
 		$this->db->trans_start();
 
 		$login = [
-			'name'      => $this->input->post('l_name'),
-			'mobile'      => $this->input->post('mobile'),
-			'email'       => $this->input->post('email'),
-			'role'       => 'Lab partner',
+			'name'     	  => $this->input->post('l_name'),
+			'mobile'   	  => $this->input->post('mobile'),
+			'email'    	  => $this->input->post('email'),
+			'is_blocked'  => $block,
+			'role'     	  => 'Lab partner',
 		];
-
+		
 		if($this->input->post('password'))
 			$login['password'] = my_crypt($this->input->post('password'));
 
@@ -62,6 +63,9 @@ class Labs_model extends MY_Model
 			'del_time'    => d_id($this->input->post('del_time')),
 		];
 
+		if ($logo != null) $lab['logo'] = $logo;
+		if ($cert_image != null) $lab['cert_image'] = $cert_image;
+		
 		if ($id === false){
 			$this->db->insert('logins', $login);
 			$id = $this->db->insert_id();

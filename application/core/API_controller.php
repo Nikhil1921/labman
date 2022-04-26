@@ -5,13 +5,12 @@
  */
 class API_controller extends MY_Controller
 {
-	public function __construct()
+	public function __construct($table)
 	{
 		parent::__construct();
 		$this->load->helper('api');
+        $this->table = $table;
 	}
-
-	private $table = 'users';
 
 	public function verify_api_key()
 	{

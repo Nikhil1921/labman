@@ -5,7 +5,7 @@ class Home extends Public_controller {
 	
 	public function index()
 	{
-		$data['title'] = 'Home';
+        $data['title'] = 'Home';
         $data['name'] = 'home';
         $data['banners'] = $this->main->getBanners();
         $data['tests'] = $this->main->getPopularTests();

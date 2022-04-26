@@ -29,12 +29,17 @@ class Login extends Public_controller {
 			$post = [
 				'mobile' => $this->input->post('mobile'),
 				'otp' => rand(1000, 9999),
-				'otp' => 9999,
 				'validity' => date('Y-m-d H:i:s', strtotime('+15 minutes')),
 			];
 
 			$this->main->delete('check_otp', ['mobile' => $post['mobile']]);
+
 			if($this->main->add($post, 'check_otp')) {
+				// sms for otp start
+				$sms = $this->config->item('otp');
+				$sms = str_replace('{#var#}', $post['otp'], $sms);
+				send_sms($post['mobile'], $sms['sms'], $sms['temp']);
+				// sms for otp end
 				$this->session->set_tempdata('login_check', $post['mobile'], 900);
 				flashMsg(1, "OTP send success.", "", 'verify-otp');
 			}else{

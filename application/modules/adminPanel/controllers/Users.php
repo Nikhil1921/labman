@@ -32,8 +32,8 @@ class Users extends Admin_controller  {
         $this->load->model('Users_model', 'data');
         $fetch_data = $this->data->make_datatables();
         $sr = $this->input->get('start') + 1;
-        $delete = verify_access($this->name, 'delete');
         $status = verify_access($this->name, 'status');
+        $update = verify_access($this->name, 'update');
         $data = [];
 
         foreach($fetch_data as $row)
@@ -56,7 +56,7 @@ class Users extends Admin_controller  {
             $action = '<div class="btn-group" role="group"><button class="btn btn-success dropdown-toggle" id="btnGroupVerticalDrop1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="icon-settings"></span></button><div class="dropdown-menu" aria-labelledby="btnGroupVerticalDrop1" x-placement="bottom-start">';
                 
-            if ($delete)
+            if ($update)
                 $action .= anchor($this->redirect."/update/".e_id($row->id), '<i class="fa fa-edit"></i> Edit</a>', 'class="dropdown-item"');
         
             /* $action .= form_open($this->redirect.'/delete', 'id="'.e_id($row->id).'"', ['id' => e_id($row->id)]).

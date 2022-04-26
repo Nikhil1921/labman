@@ -4,6 +4,7 @@
         <div class="col-md-9">
             <h5><?= $title ?> <?= $operation ?></h5>
         </div>
+        <?php if(verify_access($name, 'add')): ?>
         <div class="col-md-3">
             <?= form_open_multipart("$url/upload") ?>
                 <?= form_label("<i class='fa fa-upload'></i> Upload", 'image', 'class="btn btn-outline-success btn-sm float-right"'); ?>
@@ -17,6 +18,7 @@
                 ]); ?>
             <?= form_close() ?>
         </div>
+        <?php endif ?>
     </div>
 </div>
 <div class="card-body">

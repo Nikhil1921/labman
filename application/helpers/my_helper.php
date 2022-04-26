@@ -84,6 +84,27 @@ if ( ! function_exists('script'))
     }
 }
 
+if ( ! function_exists('send_sms'))
+{
+    function send_sms($contact, $sms, $template)
+	{
+        $from = 'LABMEN';
+        $key = '360D9C8FC652FA';
+
+        $url = "key=".$key."&campaign=11316&routeid=7&type=text&contacts=".$contact."&senderid=".$from."&msg=".urlencode($sms)."&template_id=".$template;
+
+        $base_URL = 'http://densetek.tk/app/smsapi/index?'.$url;
+
+        $curl_handle = curl_init();
+        curl_setopt($curl_handle,CURLOPT_URL,$base_URL);
+        curl_setopt($curl_handle,CURLOPT_CONNECTTIMEOUT,2);
+        curl_setopt($curl_handle,CURLOPT_RETURNTRANSFER,1);
+        $result = curl_exec($curl_handle);
+        curl_close($curl_handle);
+        return $result;
+	}
+}
+
 if ( ! function_exists('send_email'))
 {
     function send_email($email, $message, $subject, $pdf=null)
@@ -150,9 +171,21 @@ if ( ! function_exists('verify_access'))
     function verify_access($name, $operation)
     {
         $CI =& get_instance();
-        /* if ($CI->user->role === 'Admin')
+        if ($CI->user->role === 'Admin')
             return true;
-        else */
+        else
             return $CI->main->check('permissions', ['nav' => $name, 'role' => $CI->user->role, 'operation' => $operation], 'operation');
+    }
+}
+
+if ( ! function_exists('verify_nav'))
+{
+    function verify_nav($name, $pers)
+    {
+        $CI =& get_instance();
+        if ($CI->user->role === 'Admin')
+            return true;
+        else
+            return array_search($name, array_column($pers, 'nav')) !== false ? true : false;
     }
 }

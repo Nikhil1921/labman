@@ -7,7 +7,7 @@ if (isset($_SERVER['PATH_INFO']))
     else if(strpos($_SERVER['PATH_INFO'], 'lab-partner') !== false)
         define('ADMIN', 'lab-partner');
     else
-        define('ADMIN', 'lab-partner');
+        define('ADMIN', 'adminPanel');
 else
     define('ADMIN', 'adminPanel');
 

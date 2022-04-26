@@ -16326,13 +16326,13 @@ header h1 {
 .border-tab.nav-tabs .nav-item .nav-link.show,
 .border-tab.nav-tabs .nav-item .nav-link:focus,
 .border-tab.nav-tabs .nav-item .nav-link:hover {
-    color: #4466f2
+    color: #22af47
 }
 
 .border-tab.nav-tabs .nav-item .nav-link.active,
 .border-tab.nav-tabs .nav-item .nav-link.show,
 .border-tab.nav-tabs .nav-item .nav-link:focus {
-    border-bottom: 2px solid #4466f2
+    border: 2px solid #22af47
 }
 
 .border-tab.nav-left .nav-link {
@@ -16340,6 +16340,9 @@ header h1 {
     -webkit-transition: all 0.3s ease;
     transition: all 0.3s ease;
     color: #2a3142
+}
+.nav-tabs{
+    border: none;
 }
 
 .border-tab.nav-left .nav-link.active,

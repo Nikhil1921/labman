@@ -11,7 +11,7 @@ function bs_input_file() {
         function() {
             if ( ! $(this).prev().hasClass('input-ghost') ) {
                 let element = $("<input type='file' class='input-ghost' style='visibility:hidden; height:0' />");
-                element.attr("name", $(this).attr("name"));
+                element.attr("name", $(this).data("name"));
                 element.change(function(){
                     element.next(element).find('input').val((element.val()).split('\\').pop());
                 });
@@ -200,7 +200,7 @@ $(document).ready(function () {
                     maxlength: 255
                 }
             },
-            errorPlacement: function(error, element) {},
+            /* errorPlacement: function(error, element) {}, */
             submitHandler: function (form) {
                 $.ajax({
                     url: $(form).attr("action"),
@@ -226,6 +226,15 @@ $(document).ready(function () {
                         toast("Something is not going good.");
                     },
                 });
+            },
+        });
+    }
+
+    if ($("#employee-form").length > 0) {
+        $("#employee-form").validate({
+            /* errorPlacement: function(error, element) {}, */
+            submitHandler: function (form) {
+                form.submit();
             },
         });
     }
@@ -262,7 +271,7 @@ $(document).ready(function () {
                     required: true,
                 },
             },
-            errorPlacement: function(error, element) {},
+            /* errorPlacement: function(error, element) {}, */
             submitHandler: function (form) {
                 $.ajax({
                     url: $(form).attr("action"),
@@ -319,7 +328,7 @@ $(document).ready(function () {
                     required: true,
                 },
             },
-            errorPlacement: function(error, element) {},
+            /* errorPlacement: function(error, element) {}, */
             submitHandler: function (form) {
                 if ($("input[name='pay_method']:checked").val() === "Cash") {
                     submitForm(form);
@@ -400,7 +409,7 @@ $(document).ready(function () {
                     maxlength: 255
                 }
             },
-            errorPlacement: function(error, element) {},
+            /* errorPlacement: function(error, element) {}, */
             submitHandler: function (form) {
                 submitForm(form);
             },
@@ -451,7 +460,7 @@ $(document).ready(function () {
                     maxlength: 255
                 }
             },
-            errorPlacement: function(error, element) {},
+            /* errorPlacement: function(error, element) {}, */
             submitHandler: function (form) {
                 submitForm(form);
             },
@@ -481,7 +490,7 @@ $(document).ready(function () {
                     maxlength: 100
                 }
             },
-            errorPlacement: function(error, element) {},
+            /* errorPlacement: function(error, element) {}, */
             submitHandler: function (form) {
                 submitForm(form);
             },
@@ -551,6 +560,9 @@ const submitForm = (form) => {
 const toast = (msg) => {
     $(".toast").stop().html(msg).fadeIn(400).delay(3000).fadeOut(500);
 };
+
+if($('input[name=error]').val() !== '') toast($("input[name=error]").val());
+if($('input[name=success]').val() !== '') toast($("input[name=success]").val());
 
 if($('input.date-pick').length >0){
     $("input.date-pick").datepicker("setDate", "today");

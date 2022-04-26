@@ -24,14 +24,8 @@ class Orders extends Admin_controller  {
     public function get()
     {
         check_ajax();
-        // $delete = verify_access($this->name, 'delete');
-        $output = [
-            "draw"              => intval($this->input->get('draw')),  
-            "recordsTotal"      => 0,
-            "recordsFiltered"   => 0,
-            "data"              => []
-        ];
-        /* $this->load->model('Users_model', 'data');
+
+        $this->load->model('Order_model', 'data');
         $fetch_data = $this->data->make_datatables();
         $sr = $this->input->get('start') + 1;
         $data = [];
@@ -42,10 +36,18 @@ class Orders extends Admin_controller  {
             $sub_array[] = $sr;
             $sub_array[] = $row->name;
             $sub_array[] = $row->mobile;
-            $sub_array[] = $row->email;
-            $sub_array[] = $row->create_date;
-            $sub_array[] = $row->create_time;
-            $sub_array[] = date_diff(date_create(date('Y-m-d')), date_create($row->dob))->format('%y');
+            $sub_array[] = $row->collection_date;
+            $sub_array[] = $row->collection_time;
+            $sub_array[] = $row->total;
+            $sub_array[] = $row->labman;
+
+            $action = '<div class="btn-group" role="group"><button class="btn btn-success dropdown-toggle" id="btnGroupVerticalDrop1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="icon-settings"></span></button><div class="dropdown-menu" aria-labelledby="btnGroupVerticalDrop1" x-placement="bottom-start">';
+            
+            $action .= '<a class="dropdown-item" onclick="getOrderDetails('.e_id($row->id).')" href="javascript:;"><i class="fa fa-flask"></i> Tests</a>';
+            
+            $action .= '</div></div>';
+            $sub_array[] = $action;
 
             $data[] = $sub_array;  
             $sr++;
@@ -56,7 +58,7 @@ class Orders extends Admin_controller  {
             "recordsTotal"      => $this->data->count(),
             "recordsFiltered"   => $this->data->get_filtered_data(),
             "data"              => $data
-        ]; */
+        ];
         
         die(json_encode($output));
     }

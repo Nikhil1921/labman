@@ -8,11 +8,6 @@ class Main_modal extends MY_Model
     {
         return $this->db->insert_batch($table, $post);
     }
-
-    public function roles()
-    {
-        return ['Administrative', 'Receptionist', 'Call center', 'Accountant', 'Marketing'];
-    }
     
     public function navs($role)
     {
@@ -44,7 +39,7 @@ class Main_modal extends MY_Model
             [
                 'name' => 'city',
                 'title' => 'City',
-                'permissions' => ['view', 'status', 'update'],
+                'permissions' => ['view', 'add', 'update', 'delete'],
                 'added' => array_map(function($arr){
                     return $arr['operation'];
                 }, $this->getall('permissions', 'operation', ['role' => $role, 'nav' => 'city']))
@@ -52,7 +47,7 @@ class Main_modal extends MY_Model
             [
                 'name' => 'department',
                 'title' => 'Test Department',
-                'permissions' => ['view', 'status', 'update'],
+                'permissions' => ['view', 'add', 'update', 'delete'],
                 'added' => array_map(function($arr){
                     return $arr['operation'];
                 }, $this->getall('permissions', 'operation', ['role' => $role, 'nav' => 'department']))
@@ -60,7 +55,7 @@ class Main_modal extends MY_Model
             [
                 'name' => 'gallery',
                 'title' => 'Gallery',
-                'permissions' => ['view', 'status', 'update'],
+                'permissions' => ['view', 'add', 'update', 'delete'],
                 'added' => array_map(function($arr){
                     return $arr['operation'];
                 }, $this->getall('permissions', 'operation', ['role' => $role, 'nav' => 'gallery']))
@@ -76,7 +71,7 @@ class Main_modal extends MY_Model
             [
                 'name' => 'labs',
                 'title' => 'Lab partners',
-                'permissions' => ['view'],
+                'permissions' => ['view', 'status', 'add', 'update', 'delete'],
                 'added' => array_map(function($arr){
                     return $arr['operation'];
                 }, $this->getall('permissions', 'operation', ['role' => $role, 'nav' => 'labs']))
@@ -84,7 +79,7 @@ class Main_modal extends MY_Model
             [
                 'name' => 'methods',
                 'title' => 'Test methods',
-                'permissions' => ['view'],
+                'permissions' => ['view', 'add', 'update', 'delete'],
                 'added' => array_map(function($arr){
                     return $arr['operation'];
                 }, $this->getall('permissions', 'operation', ['role' => $role, 'nav' => 'methods']))
@@ -100,7 +95,7 @@ class Main_modal extends MY_Model
             [
                 'name' => 'packages',
                 'title' => 'Packages',
-                'permissions' => ['view'],
+                'permissions' => ['view', 'add', 'update', 'delete'],
                 'added' => array_map(function($arr){
                     return $arr['operation'];
                 }, $this->getall('permissions', 'operation', ['role' => $role, 'nav' => 'packages']))
@@ -108,7 +103,7 @@ class Main_modal extends MY_Model
             [
                 'name' => 'report_time',
                 'title' => 'Report time',
-                'permissions' => ['view'],
+                'permissions' => ['view', 'add', 'update', 'delete'],
                 'added' => array_map(function($arr){
                     return $arr['operation'];
                 }, $this->getall('permissions', 'operation', ['role' => $role, 'nav' => 'report_time']))
@@ -116,7 +111,7 @@ class Main_modal extends MY_Model
             [
                 'name' => 'samples',
                 'title' => 'Test samples',
-                'permissions' => ['view'],
+                'permissions' => ['view', 'add', 'update', 'delete'],
                 'added' => array_map(function($arr){
                     return $arr['operation'];
                 }, $this->getall('permissions', 'operation', ['role' => $role, 'nav' => 'samples']))
@@ -124,7 +119,7 @@ class Main_modal extends MY_Model
             [
                 'name' => 'test_details',
                 'title' => 'Test details',
-                'permissions' => ['view'],
+                'permissions' => ['view', 'update'],
                 'added' => array_map(function($arr){
                     return $arr['operation'];
                 }, $this->getall('permissions', 'operation', ['role' => $role, 'nav' => 'test_details']))
@@ -132,7 +127,7 @@ class Main_modal extends MY_Model
             [
                 'name' => 'tests',
                 'title' => 'Tests',
-                'permissions' => ['view'],
+                'permissions' => ['view', 'add', 'update', 'delete'],
                 'added' => array_map(function($arr){
                     return $arr['operation'];
                 }, $this->getall('permissions', 'operation', ['role' => $role, 'nav' => 'tests']))
@@ -140,7 +135,7 @@ class Main_modal extends MY_Model
             [
                 'name' => 'transactions',
                 'title' => 'Transactions',
-                'permissions' => ['view'],
+                'permissions' => ['view', 'add'],
                 'added' => array_map(function($arr){
                     return $arr['operation'];
                 }, $this->getall('permissions', 'operation', ['role' => $role, 'nav' => 'transactions']))
@@ -166,5 +161,10 @@ class Main_modal extends MY_Model
         $this->db->trans_complete();
         
 		return $this->db->trans_status();
+    }
+
+    public function getCities()
+    {
+        return $this->getAll('cities', "id, c_name", ['is_deleted' => 0]);
     }
 }

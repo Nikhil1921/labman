@@ -16,9 +16,16 @@ class Home extends API_controller {
 		];
 
 		$id = $this->main->check($this->table, $post, 'id');
+		$otp = rand(1000, 9999);
+		
+		// sms for otp start
+		$sms = $this->config->item('otp');
+		$sms = str_replace('{#var#}', $otp, $sms);
+		send_sms($post['mobile'], $sms['sms'], $sms['temp']);
+		// sms for otp end
 		
 		$response['row']['id'] = $id ? $id : '0';
-		$response['row']['otp'] = 9999;
+		$response['row']['otp'] = $otp;
 		$response['error'] = false;
 		$response['message'] = "OTP send.";
 

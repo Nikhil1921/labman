@@ -30,3 +30,5 @@ uploads/users/*
 !uploads/users/user.png
 uploads/test-reports/*
 !uploads/test-reports/index.html
+uploads/employee/*
+!uploads/employee/index.html

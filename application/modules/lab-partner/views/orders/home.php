@@ -6,11 +6,9 @@
         </div>
         <div class="col-md-3">
             <select name="status" id="status" class="form-control">
-                <option value="Pending">Pending</option>
-                <option value="Ongoing">Ongoing</option>
-                <option value="Collect Sample">Collect Sample</option>
-                <option value="In Process">In Process</option>
-                <option value="Completed">Completed</option>
+                <?php foreach($this->main->status() as $status): ?>
+                    <option value="<?= $status ?>"><?= $status ?></option>
+                <?php endforeach ?>
             </select>
         </div>
     </div>
@@ -30,16 +28,28 @@
             </thead>
             <tbody>
             </tbody>
+            <tfoot>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </tfoot>
         </table>
     </div>
 </div>
 <div class="modal fade order-modal" tabindex="-1" role="dialog" aria-labelledby="order-modal" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <!-- <div class="modal-header">
+            <div class="modal-header">
             <h4 class="modal-title" id="order-modal">Tests details</h4>
             <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-            </div> -->
+            </div>
             <div class="modal-body">
                 <div class="text-center">Order details not available</div>
             </div>

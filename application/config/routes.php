@@ -40,8 +40,10 @@ $route["contact"]['get'] = "pages/contact";
 $route["corporate"] = "pages/corporate";
 $route["institute"] = "pages/institute";
 $route["franchise-inquiry"] = "pages/franchise_inquiry";
-$route["lab-registration"] = "pages/lab_registration";
-$route["employee-registration"] = "pages/employee_registration";
+$route["lab-registration"]['get'] = "pages/lab_registration";
+$route["lab-registration"]['post'] = "pages/lab_register";
+$route["employee-registration"]['get'] = "pages/employee_registration";
+$route["employee-registration"]['post'] = "pages/employee_register";
 $route["terms-condition"] = "pages/terms_condition";
 $route["refund"] = "pages/refund";
 

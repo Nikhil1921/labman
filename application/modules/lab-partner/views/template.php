@@ -83,7 +83,7 @@
                                 <?= anchor(admin('gallery'), '<i data-feather="image"></i><span> Gallery</span>', 'class="sidebar-header '.($name === 'gallery' ? 'active' : '').'"') ?>
                             </li>
                             <li>
-                                <?= anchor(admin('orders'), '<i data-feather="file-text"></i><span> Orders</span>', 'class="sidebar-header '.($name === 'orders' ? 'active' : '').'"') ?>
+                                <?= anchor(admin('orders'), '<i data-feather="file-text"></i><span> Completed Orders</span>', 'class="sidebar-header '.($name === 'orders' ? 'active' : '').'"') ?>
                             </li>
                         </ul>
                     </div>
@@ -132,10 +132,18 @@
         <script src="<?= base_url('assets/back/js/sidebar-menu.js') ?>"></script>
         <script src="<?= base_url('assets/back/js/notify/bootstrap-notify.min.js') ?>"></script>
         <input type="hidden" id="base_url" value="<?= base_url(admin()) ?>" />
+        <input type="hidden" name="admin" value="<?= ADMIN ?>" />
         <?php if(isset($datatable)): ?>
         <input type="hidden" name="dataTableUrl" value="<?= base_url($datatable) ?>" />
         <script src="<?= base_url('assets/back/js/datatable/datatables/jquery.dataTables.min.js') ?>"></script>
-        <script src="<?= base_url('assets/back/js/datatable/datatables/datatable.custom.js?v=1.0.1') ?>"></script>
+        <script src="<?= base_url('assets/back/js/datatable/datatable-extension/dataTables.buttons.min.js') ?>"></script>
+        <script src="<?= base_url('assets/back/js/datatable/datatable-extension/buttons.colVis.min.js') ?>"></script>
+        <script src="<?= base_url('assets/back/js/datatable/datatable-extension/buttons.bootstrap4.min.js') ?>"></script>
+        <script src="<?= base_url('assets/back/js/datatable/datatable-extension/buttons.html5.min.js') ?>"></script>
+        <script src="<?= base_url('assets/back/js/datatable/datatable-extension/buttons.print.min.js') ?>"></script>
+        <script src="<?= base_url('assets/back/js/datatable/datatable-extension/dataTables.bootstrap4.min.js') ?>"></script>
+        <script src="<?= base_url('assets/back/js/datatable/datatable-extension/dataTables.responsive.min.js') ?>"></script>
+        <script src="<?= base_url('assets/back/js/datatable/datatables/datatable.custom.js?v=1.0.2') ?>"></script>
         <script src="<?= base_url('assets/back/js/sweet-alert/sweetalert.min.js') ?>"></script>
         <?php endif ?>
         <script src="<?= base_url('assets/back/js/datepicker/date-picker/datepicker.js') ?>"></script>
