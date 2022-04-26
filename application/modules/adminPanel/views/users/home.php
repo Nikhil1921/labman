@@ -17,7 +17,7 @@
                 <th>Date</th>
                 <th>Time</th>
                 <th>Age</th>
-                <th class="target">Block</th>
+                <th class="target">Status</th>
                 <th class="target">Action</th>
             </thead>
             <tbody>

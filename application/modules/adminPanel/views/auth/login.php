@@ -36,10 +36,12 @@
                 <?= form_radio('role', "Admin", set_radio('role', 'Admin', true), 'id="admin"') ?>
                 <?= form_label("Admin", "admin", 'class="mb-0"') ?>
             </div>
-            <div class="radio radio-danger">
-                <?= form_radio('role', "Lab partner", set_radio('role', 'Lab partner'), 'id="lab_partner"') ?>
-                <?= form_label("Lab partner", "lab_partner", 'class="mb-0"') ?>
-            </div>
+            <?php foreach($this->main->roles() as $role): ?>
+                <div class="radio radio-danger">
+                    <?= form_radio('role', $role, set_radio('role', 'Lab partner'), 'id="'.$role.'"') ?>
+                    <?= form_label($role, $role, 'class="mb-0"') ?>
+                </div>
+            <?php endforeach ?>
         </div>
     </div>
     <div class="col-12">

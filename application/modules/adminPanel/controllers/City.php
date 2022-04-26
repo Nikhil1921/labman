@@ -9,6 +9,8 @@ class City extends Admin_controller  {
 	
 	public function index()
 	{
+        check_access($this->name, 'view');
+        
 		$data['title'] = $this->title;
         $data['name'] = $this->name;
         $data['url'] = $this->redirect;
@@ -23,6 +25,8 @@ class City extends Admin_controller  {
         check_ajax();
         $this->load->model('city_model', 'data');
         $fetch_data = $this->data->make_datatables();
+        $update = verify_access($this->name, 'update');
+        $delete = verify_access($this->name, 'delete');
         $sr = $this->input->get('start') + 1;
         $data = [];
 
@@ -37,12 +41,12 @@ class City extends Admin_controller  {
             
             $action = '<div class="btn-group" role="group"><button class="btn btn-success btn-xs dropdown-toggle" id="btnGroupVerticalDrop1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="icon-settings"></span></button><div class="dropdown-menu" aria-labelledby="btnGroupVerticalDrop1" x-placement="bottom-start">';
-            
-            $action .= anchor($this->redirect."/update/".e_id($row->id), '<i class="fa fa-edit"></i> Edit</a>', 'class="dropdown-item"');
-        
-            $action .= form_open($this->redirect.'/delete', 'id="'.e_id($row->id).'"', ['id' => e_id($row->id)]).
-                '<a class="dropdown-item" onclick="script.delete('.e_id($row->id).'); return false;" href=""><i class="fa fa-trash"></i> Delete</a>'.
-                form_close();
+            if($update)
+                $action .= anchor($this->redirect."/update/".e_id($row->id), '<i class="fa fa-edit"></i> Edit</a>', 'class="dropdown-item"');
+            if($delete)
+                $action .= form_open($this->redirect.'/delete', 'id="'.e_id($row->id).'"', ['id' => e_id($row->id)]).
+                    '<a class="dropdown-item" onclick="script.delete('.e_id($row->id).'); return false;" href=""><i class="fa fa-trash"></i> Delete</a>'.
+                    form_close();
 
             $action .= '</div></div>';
             $sub_array[] = $action;
@@ -63,6 +67,8 @@ class City extends Admin_controller  {
 
     public function add()
 	{
+        check_access($this->name, 'add');
+        
         $this->form_validation->set_rules($this->validate);
 
         $data['title'] = $this->title;
@@ -95,6 +101,8 @@ class City extends Admin_controller  {
 
 	public function update($id)
 	{
+        check_access($this->name, 'update');
+        
         $this->form_validation->set_rules($this->validate);
 
         if ($this->form_validation->run() == FALSE)
@@ -128,6 +136,8 @@ class City extends Admin_controller  {
 
 	public function delete()
     {
+        check_access($this->name, 'delete');
+        
         $this->form_validation->set_rules('id', 'id', 'required|is_natural');
         
         if ($this->form_validation->run() == FALSE)

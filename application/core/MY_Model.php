@@ -5,6 +5,11 @@
  */
 class MY_Model extends CI_Model
 {
+    public function roles()
+    {
+        return ['Administrative', 'Receptionist', 'Call center', 'Accountant', 'Marketing', 'Phlebetomist'];
+    }
+
 	public function add($post, $table)
 	{
 		if ($this->db->insert($table, $post)) {
@@ -115,5 +120,10 @@ class MY_Model extends CI_Model
             $order = $this->order;
             $this->db->order_by(key($order), $order[key($order)]);
         }
+	}
+
+	public function status()
+	{
+		return ['Pending', 'Ongoing', 'Collect Sample', 'In Process', 'Completed'];
 	}
 }

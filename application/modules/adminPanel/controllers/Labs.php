@@ -15,6 +15,8 @@ class Labs extends Admin_controller  {
 	
 	public function index()
 	{
+        check_access($this->name, 'view');
+
 		$data['title'] = $this->title;
         $data['name'] = $this->name;
         $data['url'] = $this->redirect;
@@ -29,6 +31,9 @@ class Labs extends Admin_controller  {
         check_ajax();
         $this->load->model('Labs_model', 'data');
         $fetch_data = $this->data->make_datatables();
+        $status = verify_access($this->name, 'status');
+        $update = verify_access($this->name, 'update');
+        $delete = verify_access($this->name, 'delete');
         $sr = $this->input->get('start') + 1;
         $data = [];
 
@@ -42,18 +47,21 @@ class Labs extends Admin_controller  {
             $sub_array[] = "<p style='white-space: normal;'>$row->address</p>";
             $sub_array[] = $row->certificate;
 
-            $sub_array[] = form_open($this->redirect.'/change-status', 'id="status_'.e_id($row->id).'"', ['id' => e_id($row->id), 'status' => $row->is_blocked ? 0 : 1]).
-                '<a class="btn btn-pill btn-outline-'.($row->is_blocked ? 'success' : 'danger').' btn-air-'.($row->is_blocked ? 'success' : 'danger').' btn-xs" onclick=\'script.delete("status_'.e_id($row->id).'"); return false;\' href="javascript:;">'.($row->is_blocked ? 'Unblock' : 'Block').'</a>'.
-                form_close();
+            if($status)
+                $sub_array[] = form_open($this->redirect.'/change-status', 'id="status_'.e_id($row->id).'"', ['id' => e_id($row->id), 'status' => $row->is_blocked ? 0 : 1]).
+                    '<a class="btn btn-pill btn-outline-'.($row->is_blocked ? 'danger' : 'success').' btn-air-'.($row->is_blocked ? 'success' : 'danger').' btn-xs" onclick=\'script.delete("status_'.e_id($row->id).'"); return false;\' href="javascript:;">'.($row->is_blocked ? 'Blocked' : 'Unblocked').'</a>'.
+                    form_close();
+            else
+                $sub_array[] = '<a class="btn btn-pill btn-outline-'.($row->is_blocked ? 'danger' : 'success').' btn-air-'.($row->is_blocked ? 'success' : 'danger').' btn-xs" href="javascript:;">'.($row->is_blocked ? 'Blocked' : 'Unblocked').'</a>';
             
             $action = '<div class="btn-group" role="group"><button class="btn btn-success dropdown-toggle" id="btnGroupVerticalDrop1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="icon-settings"></span></button><div class="dropdown-menu" aria-labelledby="btnGroupVerticalDrop1" x-placement="bottom-start">';
-            
-            $action .= anchor($this->redirect."/update/".e_id($row->id), '<i class="fa fa-edit"></i> Edit</a>', 'class="dropdown-item"');
-        
-            $action .= form_open($this->redirect.'/delete', 'id="'.e_id($row->id).'"', ['id' => e_id($row->id)]).
-                '<a class="dropdown-item" onclick="script.delete('.e_id($row->id).'); return false;" href=""><i class="fa fa-trash"></i> Delete</a>'.
-                form_close();
+            if($update)
+                $action .= anchor($this->redirect."/update/".e_id($row->id), '<i class="fa fa-edit"></i> Edit</a>', 'class="dropdown-item"');
+            if($delete)
+                $action .= form_open($this->redirect.'/delete', 'id="'.e_id($row->id).'"', ['id' => e_id($row->id)]).
+                    '<a class="dropdown-item" onclick="script.delete('.e_id($row->id).'); return false;" href=""><i class="fa fa-trash"></i> Delete</a>'.
+                    form_close();
 
             $action .= '</div></div>';
             $sub_array[] = $action;
@@ -74,6 +82,8 @@ class Labs extends Admin_controller  {
 
     public function add()
 	{
+        check_access($this->name, 'add');
+
         $this->form_validation->set_rules($this->validate);
 
         $data['title'] = $this->title;
@@ -106,6 +116,8 @@ class Labs extends Admin_controller  {
 
 	public function update($id)
 	{
+        check_access($this->name, 'update');
+
         $this->form_validation->set_rules($this->validate);
         $this->load->model('Labs_model', 'lab');
 
@@ -150,18 +162,22 @@ class Labs extends Admin_controller  {
 
 	public function delete()
     {
+        check_access($this->name, 'delete');
+
         $this->form_validation->set_rules('id', 'id', 'required|is_natural');
         
         if ($this->form_validation->run() == FALSE)
             flashMsg(0, "", "Some required fields are missing.", $this->redirect);
         else{
-            $id = $this->main->update(['id' => d_id($this->input->post('id'))], ['is_deleted' => 1], $this->table);
+            $id = $this->main->update(['id' => d_id($this->input->post('id'))], ['is_deleted' => 1], 'logins');
             flashMsg($id, "$this->title deleted.", "$this->title not deleted.", $this->redirect);
         }
     }
 
 	public function change_status()
     {
+        check_access($this->name, 'status');
+        
         $this->form_validation->set_rules('id', '', 'required|is_natural');
         $this->form_validation->set_rules('status', '', 'required|is_natural');
         

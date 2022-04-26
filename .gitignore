@@ -25,3 +25,10 @@ uploads/packages/*
 !uploads/packages/index.html
 uploads/prescription/*
 !uploads/prescription/index.html
+uploads/users/*
+!uploads/users/index.html
+!uploads/users/user.png
+uploads/test-reports/*
+!uploads/test-reports/index.html
+uploads/employee/*
+!uploads/employee/index.html

@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <!DOCTYPE html>
-<html lang="en" <?= in_array($name, ['login']) ? 'class="full"' : '' ?>>
+<html lang="en">
    <head>
       <title><?= "$title | " . APP_NAME ?></title>
       <meta charset="UTF-8">
@@ -19,8 +19,8 @@
          <?= link_tag('assets/css/switcher.css" ') ?>
       <?php endif ?>
    </head>
-   <body <?= in_array($name, ['login']) ? 'class="full"' : '' ?>>
-      <?php if(!in_array($name, ['login'])): ?>
+   <body>
+      
       <div class="global-wrap">
          <header id="main-header">
             <div class="header-top">
@@ -31,14 +31,16 @@
                         </div>
                         <div class="col-md-6 m-my">
                            <div class="row-100 overflow-hidden">
-                              <form>
+                              <?= form_open('search', 'method="get"') ?>
                                  <div class="city-select-top">
                                     <select class="select2-icon form-control main-search" name="city">
-                                       <option data-icon="fa fa-map-marker" selected="">Deesa</option>
+                                       <?php foreach($this->main->getCities() as $city): ?>
+                                          <option data-icon="fa fa-map-marker" <?= $this->input->get('city') === $city['c_name'] ? 'selected' : '' ?>><?= $city['c_name'] ?></option>
+                                       <?php endforeach ?>
                                     </select>
                                  </div>
                                  <div class="main-search">
-                                    <select class="js-example-placeholder-multiple main-search" name="tests[]" multiple="multiple" required></select>
+                                    <select class="js-example-placeholder-multiple main-search" name="tests[]" multiple="multiple" id="tests-list"></select>
                                  </div>
                                  <div class="serch-lab">
                                     <button class="test-search-btn"><i class="fa fa-search" aria-hidden="true"></i></button>                                           
@@ -54,18 +56,16 @@
                            <ul class="top-user-area-list list list-horizontal list-border">
                            <?php if($this->session->userId): ?>
                               <li class="top-user-area-avatar">
-                                 <a href="user-profile.php">
-                                       <img class="origin round" src="images/profile/<?= $data_profile['u_image']; ?>"/><?= $_SESSION['name']; ?>
-                                 </a>
+                                 <?= anchor('user', img($this->config->item('users').$this->user['image']).$this->user['name']); ?>
                                  <ul class="list logout">
                                        <li>
-                                          <?= anchor('user', 'My Profile'); ?>
+                                          <?= anchor('user/profile', 'My Profile'); ?>
                                        </li>
                                        <li>
-                                          <?= anchor('user/orders', 'My Order'); ?>
+                                          <?= anchor('user', 'My Order'); ?>
                                        </li>
                                        <li>
-                                          <?= anchor('user/reports', 'Test Reports'); ?>
+                                          <?= anchor('user/test-report', 'Test Reports'); ?>
                                        </li>
                                        <li>
                                           <?= anchor('logout', 'Sign Out'); ?>
@@ -78,7 +78,7 @@
                               </li>
                            <?php endif ?>
                               <li>
-                                 <?= anchor('cart', '<i class="fa fa-shopping-cart" aria-hidden="true"></i> <span class="add-to-cart-counter">0</span>', 'class="add-to-cart-icon"'); ?>
+                                 <?= anchor('cart', '<i class="fa fa-shopping-cart" aria-hidden="true"></i> <span class="add-to-cart-counter">'.$this->main->cart_count().'</span>', 'class="add-to-cart-icon"'); ?>
                               </li>
                            </ul>
                         </div>
@@ -92,12 +92,12 @@
                            <div class="col-md-12 p-0">
                            <nav class="navbar my-navbar">
                               <div class="navbar-header">
-                                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#example-1" aria-expanded="false">
-                                       <span class="sr-only">Toggle navigation</span>
-                                       <span class="icon-bar"></span>
-                                       <span class="icon-bar"></span>
-                                       <span class="icon-bar"></span>
-                                    </button>
+                                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#example-1" aria-expanded="false">
+                                    <span class="sr-only">Toggle navigation</span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                 </button>
                               </div>
                               <div class="collapse navbar-collapse p-0" id="example-1">
                                  <ul class="nav navbar-nav">
@@ -109,14 +109,14 @@
                                     <li><?= anchor('career', 'Career'); ?></li>
                                     <li class="sub-drop"><a href="javascript:;">Contact Us<i class="fa fa-caret-down" aria-hidden="true"></i></a>
                                        <ul class="sub-menu">
-                                             <li><?= anchor('contact', 'Contact Us'); ?></li>
-                                             <li><?= anchor('corporate', 'Corporate Information'); ?></li>
-                                             <li><?= anchor('institute', 'Institutional Inquiry'); ?></li>
-                                             <li><?= anchor('franchise-inquiry', 'Become Franchise'); ?></li>
-                                             <li><?= anchor('lab-registration', 'Become Lab Partner'); ?></li>
+                                          <li><?= anchor('contact', 'Contact Us'); ?></li>
+                                          <li><?= anchor('corporate', 'Corporate Information'); ?></li>
+                                          <li><?= anchor('institute', 'Institutional Inquiry'); ?></li>
+                                          <li><?= anchor('franchise-inquiry', 'Become Franchise'); ?></li>
+                                          <li><?= anchor('lab-registration', 'Become Lab Partner'); ?></li>
                                        </ul> 
                                     </li>
-                                    <li class="sub-drop"><a href="#" class="last">More<i class="fa fa-caret-down" aria-hidden="true"></i></a>
+                                    <li class="sub-drop"><a href="javascript:;" class="last">More<i class="fa fa-caret-down" aria-hidden="true"></i></a>
                                        <ul class="sub-menu">
                                           <li><?= anchor('faq', 'FAQs'); ?></li>
                                           <li><?= anchor('gallery', 'Gallery'); ?></li>
@@ -134,7 +134,7 @@
          <div class="right-side-bar">
             <div class="side-header">
                <div class="side-logo text-center">
-                        <?= img('assets/images/logo.gif'); ?>
+                  <?= img('assets/images/logo.gif'); ?>
                </div>
                <p class="side-text">A leader in diagnostic tests and procedures, health check ups and counseling services.</p>
                <div class="side-menu-close">
@@ -183,11 +183,10 @@
             </div>
          </div>
       </div>
-      <?php endif ?>
       
       <?= $contents; ?>
 
-      <?php if(!in_array($name, ['login'])): ?>
+      
          <footer id="main-footer">
          <div class="container">
             <div class="row row-wrap">
@@ -254,7 +253,7 @@
                         <?= anchor('refund', 'Refund & Cancellation Policy'); ?>
                      </li>
                      <li>
-                        <?= anchor('terms-condition', 'Term And Conditions'); ?>
+                        <?= anchor('terms-condition', 'Term & Conditions'); ?>
                      </li>
                   </ul>
                </div>
@@ -269,23 +268,57 @@
             <p>All Right Reserved & Copyright @ 2020 by Labman Diagnostic Private Limited</p>
          </div>
       </div>
-      <?php endif ?>
+
       <div class='toast' style='display:none'></div>
+      <input type="hidden" name="base_url" value="<?= base_url(); ?>" />
       <input type="hidden" name="is_login" value="<?= $this->session->userId ? TRUE : FALSE ?>" />
+      <input type="hidden" name="error" value="<?= $this->session->error ?>" />
+      <input type="hidden" name="success" value="<?= $this->session->success ?>" />
+      
       <script src="<?= base_url('assets/js/jquery.js') ?>"></script>
       <script src="<?= base_url('assets/js/bootstrap.js') ?>"></script>
       <script src="<?= base_url('assets/js/select2.min.js') ?>"></script>
       <script src="<?= base_url('assets/js/nicescroll.js') ?>"></script>
-      <?php if(in_array($name, ['home'])): ?>
+      
+      <?php if(in_array($name, ['home', 'gallery', 'lab'])): ?>
          <script src="<?= base_url('assets/js/owl-carousel.js') ?>"></script>
       <?php endif ?>
-      <?php if(in_array($name, ['home', 'login'])): ?>
+      <?php if(in_array($name, ['lab_registration', 'cart', 'employee_registration'])): ?>
+         <script src="<?= base_url('assets/js/icheck.js') ?>"></script>
+      <?php endif ?>
+      <?php if(in_array($name, ['gallery', 'lab'])): ?>
+         <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+      <?php endif ?>
+      <?php if(in_array($name, ['home', 'login', 'contact', 'institute', 'franchise_inquiry', 'cart', 'employee_registration'])): ?>
+         <input type="hidden" name="form_validate" value="true" />
          <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
          <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/additional-methods.min.js"></script>
       <?php endif ?>
       <?php if(in_array($name, ['login'])): ?>
          <script src="<?= base_url('assets/js/switcher.js') ?>"></script>
       <?php endif ?>
+      <?php if(in_array($name, ['cart'])): ?>
+         <script type='text/javascript' src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDiWWB6yJd6ilpII5N89O-vXAo2eXiVD9g&libraries=places"></script>
+         <script src="<?= base_url('assets/js/jquery.geocomplete.js') ?>"></script>
+      <?php endif ?>
+      <?php if(in_array($name, ['cart', 'employee_registration'])): ?>
+         <script src="<?= base_url('assets/js/bootstrap-datepicker.js') ?>"></script>
+         <script src="<?= base_url('assets/js/bootstrap-timepicker.js') ?>"></script>
+      <?php endif ?>
+      <?php if(in_array($name, ['cart'])): ?>
+         <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+      <?php endif ?>
+      <?php if(in_array($name, ['test_report', 'dashboard', 'booking_history'])): ?>
+         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css">
+         <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+         <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+      <?php endif ?>
       <script src="<?= base_url('assets/js/custom.js?v='.time()) ?>"></script>
+      <script>
+         let tagArr = document.getElementsByTagName("input");
+         for (let i = 0; i < tagArr.length; i++) {
+            tagArr[i].autocomplete = 'off';
+         }
+      </script>
    </body>
 </html>
