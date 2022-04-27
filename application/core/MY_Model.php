@@ -122,8 +122,13 @@ class MY_Model extends CI_Model
         }
 	}
 
+	public function counter($table, $where)
+	{
+		return $this->db->get_where($table, $where)->num_rows();
+	}
+
 	public function status()
 	{
-		return ['Pending', 'Ongoing', 'Collect Sample', 'In Process', 'Completed'];
+		return ['Pending', 'Ongoing', 'Collect Sample', 'In Process', 'Completed', 'Canceled'];
 	}
 }

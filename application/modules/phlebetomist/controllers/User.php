@@ -14,6 +14,32 @@ class User extends API_controller {
 
 		echoRespnse(200, $response);
 	}
+	
+    public function ongoing_orders()
+	{
+		get();
+		
+		$orders = $this->api_model->getOngoingOrders();
+
+		$response['row'] = $orders ? $orders : [];
+		$response['error'] = $orders ? false : true;
+		$response['message'] = $orders ? "Orders list success." : "Orders list not success.";
+
+		echoRespnse(200, $response);
+	}
+	
+    public function collect_orders()
+	{
+		get();
+		
+		$orders = $this->api_model->getCollectOrders();
+
+		$response['row'] = $orders ? $orders : [];
+		$response['error'] = $orders ? false : true;
+		$response['message'] = $orders ? "Orders list success." : "Orders list not success.";
+
+		echoRespnse(200, $response);
+	}
 
     public function change_on_off()
 	{

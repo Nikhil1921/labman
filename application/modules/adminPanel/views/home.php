@@ -17,23 +17,25 @@
             </div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card">
-            <div class="card-body">
-                <div class="chart-widget-dashboard">
-                    <div class="media">
-                        <div class="media-body">
-                            <h5 class="mt-0 mb-0 f-w-600">
-                                <span class="counter">0</span>
-                            </h5>
-                            <p>Ongoing Order</p>
+    <?php foreach($this->main->status() as $status): ?>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="chart-widget-dashboard">
+                        <div class="media">
+                            <div class="media-body">
+                                <h5 class="mt-0 mb-0 f-w-600">
+                                    <span class="counter"><?= $this->main->counter('orders', ['status' => $status]) ?></span>
+                                </h5>
+                                <p><?= $status ?> Order</p>
+                            </div>
+                            <i class="fa fa-file-text-o fa-2x"></i>
                         </div>
-                        <i class="fa fa-file-text-o fa-2x"></i>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    <?php endforeach ?>
     <div class="col-md-3">
         <div class="card">
             <div class="card-body">
@@ -41,26 +43,9 @@
                     <div class="media">
                         <div class="media-body">
                             <h5 class="mt-0 mb-0 f-w-600">
-                                <span class="counter">0</span>
+                                <span class="counter"><?= $this->main->counter('orders', []) ?></span>
                             </h5>
-                            <p>Completed Order</p>
-                        </div>
-                        <i class="fa fa-file-text-o fa-2x"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card">
-            <div class="card-body">
-                <div class="chart-widget-dashboard">
-                    <div class="media">
-                        <div class="media-body">
-                            <h5 class="mt-0 mb-0 f-w-600">
-                                <span class="counter">0</span>
-                            </h5>
-                            <p>Canceled Order</p>
+                            <p>Total Order</p>
                         </div>
                         <i class="fa fa-file-text-o fa-2x"></i>
                     </div>
@@ -83,10 +68,12 @@
                     <th class="target">Sr.</th>
                     <th>Name</th>
                     <th>Mobile</th>
-                    <th>Lab</th>
-                    <th>Ref. Doctor</th>
-                    <th>Doctor Remark</th>
-                    <th>Address</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th class="target">Lab</th>
+                    <th class="target">Ref. Doctor</th>
+                    <th class="target">Doctor Remark</th>
+                    <th class="target">Phlebetomist</th>
                     <th class="target">Action</th>
                 </thead>
                 <tbody>

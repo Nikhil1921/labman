@@ -16,6 +16,28 @@ class Home extends Admin_controller  {
         return $this->template->load('template', 'home', $data);
 	}
 
+    public function getPendingTests()
+    {
+        $return = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell"><path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3zm-8.27 4a2 2 0 0 1-3.46 0"></path></svg>';
+        $tests = $this->main->getAll('orders', 'name, DATE_FORMAT(collection_date, "%d-%m-%Y") date, DATE_FORMAT(collection_time, "%I:%i %p") time', ['status' => 'Pending']);
+        if($tests){
+            $return .= '<span class="dot"></span><ul class="notification-dropdown onhover-show-div">';
+            $return .= '<li>New Test Request <span class="badge badge-pill badge-primary pull-right">'.count($tests).'</span></li>';
+
+            foreach ($tests as $v)
+                $return .= '<li><div class="media">
+                                <div class="media-body">
+                                    <small class="pull-right">'.$v['date'].' '.$v['time'].'</small>
+                                    <p class="mb-0">'.$v['name'].'</p>
+                                </div>
+                            </div></li>';
+
+            $return .= '</ul>';
+        }
+
+        die($return);
+    }
+
     public function get()
     {
         check_ajax();
@@ -33,13 +55,25 @@ class Home extends Admin_controller  {
             $sub_array[] = $row->mobile;
             $sub_array[] = $row->collection_date;
             $sub_array[] = $row->collection_time;
-            $sub_array[] = $row->total;
-            $sub_array[] = $row->labman;
+            $sub_array[] = "<p style='white-space: normal;'>$row->lab</p>";
+            $sub_array[] = "<p style='white-space: normal;'>$row->ref_doctor</p>";
+            $sub_array[] = "<p style='white-space: normal;'>$row->doc_remarks</p>";
+            $sub_array[] = $row->phlebetomist ? "<p style='white-space: normal;'>$row->phlebetomist</p>" : "NA";
 
             $action = '<div class="btn-group" role="group"><button class="btn btn-success dropdown-toggle" id="btnGroupVerticalDrop1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="icon-settings"></span></button><div class="dropdown-menu" aria-labelledby="btnGroupVerticalDrop1" x-placement="bottom-start">';
             
             $action .= '<a class="dropdown-item" onclick="getOrderDetails('.e_id($row->id).')" href="javascript:;"><i class="fa fa-flask"></i> Tests</a>';
+
+            switch ($row->status) {
+                case 'Completed':
+                    $action .= anchor(admin('view-reports/'.e_id($row->id)), '<i class="fa fa-eye"></i> View reports', 'class="dropdown-item"');
+                    break;
+                
+                default:
+                    
+                    break;
+            }
             
             $action .= '</div></div>';
             $sub_array[] = $action;
@@ -86,6 +120,19 @@ class Home extends Admin_controller  {
 
             flashMsg($id, "Profile updated.", "Profile not updated. Try again.", admin("profile"));
         }
+    }
+
+    public function view_reports($id)
+    {
+        $data['title'] = "View reports";
+        $data['name'] = "dashboard";
+        $data['operation'] = "View reports";
+        $data['url'] = $this->redirect;
+        $this->load->model('order_model');
+        $data['data'] = $this->order_model->getOrder(d_id($id));
+        $data['path'] = $this->config->item('test-reports');
+        
+        return $this->template->load('template', "view_reports", $data);
     }
 
 	/* public function charges()

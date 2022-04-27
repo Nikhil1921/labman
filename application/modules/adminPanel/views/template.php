@@ -44,16 +44,17 @@ $pers = $this->user->role === 'Admin' ? [] : $this->main->getAll('permissions', 
                     </div>
                     <div class="nav-right col p-0">
                         <ul class="nav-menus">
-                        <li></li>
-                        <li class="onhover-dropdown">
-                            <div class="media align-items-center">
-                                <?= img(['class' => "align-self-center pull-right img-50 rounded-circle", 'src' => "assets/images/user.png"]) ?>
-                            </div>
-                            <ul class="profile-dropdown onhover-show-div p-20">
-                                <li><?= anchor(admin('profile'), '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg> Edit Profile') ?></li>
-                                <li><?= anchor(admin('logout'), '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-out"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>Logout') ?></li>
-                            </ul>
-                        </li>
+                            <li></li>
+                            <li class="onhover-dropdown" id="get-pending-tests"></li>
+                            <li class="onhover-dropdown">
+                                <div class="media align-items-center">
+                                    <?= img(['class' => "align-self-center pull-right img-50 rounded-circle", 'src' => "assets/images/user.png"]) ?>
+                                </div>
+                                <ul class="profile-dropdown onhover-show-div p-20">
+                                    <li><?= anchor(admin('profile'), '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg> Edit Profile') ?></li>
+                                    <li><?= anchor(admin('logout'), '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-out"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>Logout') ?></li>
+                                </ul>
+                            </li>
                         </ul>
                         <div class="d-lg-none mobile-toggle pull-right"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-horizontal"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg></div>
                     </div>
@@ -248,5 +249,13 @@ $pers = $this->user->role === 'Admin' ? [] : $this->main->getAll('permissions', 
         </script>
         <?php endif ?>
         <script src="<?= base_url('assets/back/js/script.js?v=1.0.1') ?>"></script>
+        <script>
+            $.ajax({
+                url: "<?= base_url(admin('getPendingTests')) ?>",
+                success: function (tests) {
+                    $("#get-pending-tests").html(tests);
+                }
+            });
+        </script>
     </body>
 </html>

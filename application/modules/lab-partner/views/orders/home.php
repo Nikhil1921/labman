@@ -4,13 +4,6 @@
         <div class="col-md-9">
             <h5><?= $title ?> <?= $operation ?></h5>
         </div>
-        <div class="col-md-3">
-            <select name="status" id="status" class="form-control">
-                <?php foreach($this->main->status() as $status): ?>
-                    <option value="<?= $status ?>"><?= $status ?></option>
-                <?php endforeach ?>
-            </select>
-        </div>
     </div>
 </div>
 <div class="card-body">
@@ -56,3 +49,4 @@
         </div>
     </div>
 </div>
+<?= form_hidden('approval', 'Completed') ?>

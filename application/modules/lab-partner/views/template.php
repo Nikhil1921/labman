@@ -44,6 +44,7 @@
                     <div class="nav-right col p-0">
                         <ul class="nav-menus">
                         <li></li>
+                        <li class="onhover-dropdown" id="get-pending-tests"></li>
                         <li class="onhover-dropdown">
                             <div class="media align-items-center">
                                 <?= img(['class' => "align-self-center pull-right img-50 rounded-circle", 'src' => "assets/images/user.png"]) ?>
@@ -141,8 +142,6 @@
         <script src="<?= base_url('assets/back/js/datatable/datatable-extension/buttons.bootstrap4.min.js') ?>"></script>
         <script src="<?= base_url('assets/back/js/datatable/datatable-extension/buttons.html5.min.js') ?>"></script>
         <script src="<?= base_url('assets/back/js/datatable/datatable-extension/buttons.print.min.js') ?>"></script>
-        <script src="<?= base_url('assets/back/js/datatable/datatable-extension/dataTables.bootstrap4.min.js') ?>"></script>
-        <script src="<?= base_url('assets/back/js/datatable/datatable-extension/dataTables.responsive.min.js') ?>"></script>
         <script src="<?= base_url('assets/back/js/datatable/datatables/datatable.custom.js?v=1.0.2') ?>"></script>
         <script src="<?= base_url('assets/back/js/sweet-alert/sweetalert.min.js') ?>"></script>
         <?php endif ?>
@@ -154,5 +153,13 @@
         <script src="<?= base_url('assets/back/js/select2/select2-custom.js') ?>"></script>
         <script src="<?= base_url('assets/back/js/editor/ckeditor/ckeditor.js') ?>"></script>
         <script src="<?= base_url('assets/back/js/script.js?v=1.0.1') ?>"></script>
+        <script>
+            $.ajax({
+                url: "<?= base_url(admin('getPendingTests')) ?>",
+                success: function (tests) {
+                    $("#get-pending-tests").html(tests);
+                }
+            });
+        </script>
     </body>
 </html>
