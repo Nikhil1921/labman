@@ -535,5 +535,6 @@ $config['proxy_ips'] = '';
 
 
 spl_autoload_register(function($class) {
-    include_once( APPPATH . 'core'. DIRECTORY_SEPARATOR . $class . '.php' );
+    if(in_array($class, ['Admin_controller', 'Public_controller', 'API_controller']))
+        include_once( APPPATH . 'core'. DIRECTORY_SEPARATOR . $class . '.php' );
 });

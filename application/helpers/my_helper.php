@@ -88,20 +88,22 @@ if ( ! function_exists('send_sms'))
 {
     function send_sms($contact, $sms, $template)
 	{
-        $from = 'LABMEN';
-        $key = '360D9C8FC652FA';
+        if($_SERVER['SERVER_NAME'] != 'localhost'){
+            $from = 'LABMEN';
+            $key = '360D9C8FC652FA';
 
-        $url = "key=".$key."&campaign=11316&routeid=7&type=text&contacts=".$contact."&senderid=".$from."&msg=".urlencode($sms)."&template_id=".$template;
+            $url = "key=".$key."&campaign=11316&routeid=7&type=text&contacts=".$contact."&senderid=".$from."&msg=".urlencode($sms)."&template_id=".$template;
 
-        $base_URL = 'http://densetek.tk/app/smsapi/index?'.$url;
+            $base_URL = 'http://densetek.tk/app/smsapi/index?'.$url;
 
-        $curl_handle = curl_init();
-        curl_setopt($curl_handle,CURLOPT_URL,$base_URL);
-        curl_setopt($curl_handle,CURLOPT_CONNECTTIMEOUT,2);
-        curl_setopt($curl_handle,CURLOPT_RETURNTRANSFER,1);
-        $result = curl_exec($curl_handle);
-        curl_close($curl_handle);
-        return $result;
+            $curl_handle = curl_init();
+            curl_setopt($curl_handle,CURLOPT_URL,$base_URL);
+            curl_setopt($curl_handle,CURLOPT_CONNECTTIMEOUT,2);
+            curl_setopt($curl_handle,CURLOPT_RETURNTRANSFER,1);
+            $result = curl_exec($curl_handle);
+            curl_close($curl_handle);
+            return $result;
+        }
 	}
 }
 
@@ -117,8 +119,9 @@ if ( ! function_exists('send_email'))
 		$CI->email->to($email);
 		$CI->email->subject($subject);
 		$CI->email->message($message);
-        /* if ($pdf)
-            $CI->email->attach($_SERVER['DOCUMENT_ROOT'] . str_replace(basename($_SERVER["SCRIPT_NAME"]), "", $_SERVER["SCRIPT_NAME"])."Exam-procedure.pdf"); */
+        
+        if ($pdf && is_file($pdf))
+            $CI->email->attach($_SERVER['DOCUMENT_ROOT'] . str_replace(basename($_SERVER["SCRIPT_NAME"]), "", $_SERVER["SCRIPT_NAME"]) . $pdf);
         
 		$CI->email->send(FALSE);
         /* $CI->email->print_debugger(array('headers')); */
@@ -132,6 +135,7 @@ if ( ! function_exists('send_notification'))
 	{
         $url = "https://fcm.googleapis.com/fcm/send";
         $serverKey = 'AAAAIQ-IBUw:APA91bHegjkBRXbw4i5ECh6BZ1OD7f1pMsdXVk3Zg35PsmXHbJXArBjI89UPe94pjxOPCiEiO9TQbwRI3DPcwXsLWjPOqy24mHBf7ckVbngYAPA4L5CgmX0VvtwbgH9VFNKEoqwunBoP';
+        $serverKey = 'AAAA8Lquu9E:APA91bH-tQURFDzys17YTorOst496mLgjtr4eSbI2LPZkoAsl7qKcPZzsOuQwn2pzU4KAo035TXviShTCqp7fIYwl1bmEjMwbUZFYPAW-w0cwHm8tHMvi_YQjf0-MiB8x6xHb2r015-2';
         
         $notification = array('title' => $title, 'body' => $body, 'sound' => 'default', 'badge' => '1');
         $arrayToSend = array('to' => $token, 'notification' => $notification, 'priority'=>'high');

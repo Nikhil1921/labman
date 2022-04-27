@@ -187,7 +187,7 @@
       <?= $contents; ?>
 
       
-         <footer id="main-footer">
+         <footer id="main-footer" class="remove-footer">
          <div class="container">
             <div class="row row-wrap">
                <div class="col-md-4">

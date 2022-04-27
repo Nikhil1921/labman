@@ -32,3 +32,5 @@ uploads/test-reports/*
 !uploads/test-reports/index.html
 uploads/employee/*
 !uploads/employee/index.html
+uploads/invoices/*
+!uploads/invoices/index.html

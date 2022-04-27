@@ -2,7 +2,7 @@
 
 class Home extends API_controller {
 
-	private $table = 'users';
+	protected $table = 'users';
 	
 	public function send_otp()
 	{
@@ -137,4 +137,9 @@ class Home extends API_controller {
 
 		echoRespnse(200, $response);
 	}
+
+	public function __construct()
+    {
+        parent::__construct($this->table);
+    }
 }

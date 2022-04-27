@@ -16,6 +16,7 @@ class Home extends API_controller {
 
 		$this->form_validation->set_rules('mobile', 'Mobile', 'required|is_natural|exact_length[10]', ['required' => "%s is required", 'is_natural' => "%s is invalid", 'exact_length' => "%s is invalid"]);
 		$this->form_validation->set_rules('password', 'Password', 'required', ['required' => "%s is required"]);
+		$this->form_validation->set_rules('token', 'Token', 'required', ['required' => "%s is required"]);
 		verifyRequiredParams();
 		
 		$post = [
@@ -24,6 +25,8 @@ class Home extends API_controller {
 		];
 
 		$user = $this->api->getProfile($post);
+
+		if($user) $this->api->update(['id' => $user['id']], ['token' => $this->input->post('token')], $this->table);
 		
 		$response['row'] = $user ? $user : [];
 		$response['error'] = $user ? false : true;

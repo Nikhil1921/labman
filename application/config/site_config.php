@@ -12,4 +12,5 @@ $config['users'] = 'uploads/users/';
 $config['prescription'] = 'uploads/prescription/';
 $config['test-reports'] = 'uploads/test-reports/';
 $config['employee'] = 'uploads/employee/';
+$config['invoices'] = 'uploads/invoices/';
 $config['otp'] = ['temp' => '1207162434695164685', 'sms' => '{#var#} is Your Labman verification  code. for Login'];

@@ -1,4 +1,5 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
+use setasign\Fpdi\Fpdi;
 
 class Home extends Admin_controller  {
 
@@ -133,6 +134,31 @@ class Home extends Admin_controller  {
     {
         $this->session->sess_destroy();
         return redirect(admin('login'));
+    }
+
+	public function makepdf()
+    {
+        $lab = "DENSETEK INFOTECH";
+        $city = "Palanpur";
+
+        $this->load->library('make_pdf');
+
+        $this->make_pdf->setLab($lab);
+        $this->make_pdf->setCity($city);
+
+        $path = 'assets/test.pdf';
+        $totoalPages = $this->make_pdf->countPages($path);
+        
+        $this->make_pdf->setSourceFile($path);
+
+        for ($i=1; $i <= $totoalPages; $i++) { 
+            $this->make_pdf->AddPage(); 
+            $this->make_pdf->AliasNbPages();
+            $tplIdx = $this->make_pdf->importPage($i); 
+            $this->make_pdf->useTemplate($tplIdx); 
+        }
+        $this->make_pdf->Output();
+        // $this->make_pdf->Output('assets/images/test.pdf', "F");
     }
 
 	public function backup()

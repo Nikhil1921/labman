@@ -73,8 +73,14 @@ class User extends API_controller {
         get();
         
         $data = $this->main->getCart($this->api);
-        $data['family'] = $this->main->getAll('user_members', 'id, name', ['u_id' => $this->api]);
-        $data['address'] = $this->main->getAll('addresses', 'id, ad_location', ['user_id' => $this->api, 'is_deleted' => 0]);
+        
+        $data['family'] = array_map(function($add){
+            return ['id' => e_id($add['id']), 'name' => $add['name']];
+        }, $this->main->getAll('user_members', 'id, name', ['u_id' => $this->api]));
+
+        $data['address'] = array_map(function($add){
+            return ['id' => e_id($add['id']), 'ad_location' => $add['ad_location']];
+        }, $this->main->getAll('addresses', 'id, ad_location', ['user_id' => $this->api, 'is_deleted' => 0]));
 
         $response['row'] = $data;
         $response['error'] = false;
@@ -87,7 +93,9 @@ class User extends API_controller {
     {
         get();
         
-        $data['family'] = $this->main->getAll('user_members', 'id, name', ['u_id' => $this->api]);
+        $data['family'] = array_map(function($add){
+            return ['id' => e_id($add['id']), 'name' => $add['name']];
+        }, $this->main->getAll('user_members', 'id, name', ['u_id' => $this->api]));
         
         $response['row'] = $data;
         $response['error'] = false;
@@ -100,7 +108,9 @@ class User extends API_controller {
     {
         get();
         
-        $data['address'] = $this->main->getAll('addresses', 'id, ad_location', ['user_id' => $this->api, 'is_deleted' => 0]);
+        $data['address'] = array_map(function($add){
+            return ['id' => e_id($add['id']), 'ad_location' => $add['ad_location']];
+        }, $this->main->getAll('addresses', 'id, ad_location', ['user_id' => $this->api, 'is_deleted' => 0]));
 
         $response['row'] = $data;
         $response['error'] = false;
@@ -130,7 +140,10 @@ class User extends API_controller {
 
 		$id = $this->main->add($post, 'addresses');
 
-		$response['row'] = $this->main->getAll('addresses', 'id, ad_location', ['user_id' => $this->api, 'is_deleted' => 0]);
+		$response['row'] = array_map(function($add){
+            return ['id' => e_id($add['id']), 'ad_location' => $add['ad_location']];
+        }, $this->main->getAll('addresses', 'id, ad_location', ['user_id' => $this->api, 'is_deleted' => 0]));
+
         $response['error'] = $id ? false : true;
         $response['message'] = $id ? 'Address added successfully.' : 'Address not added.';
 
@@ -162,7 +175,9 @@ class User extends API_controller {
 
 		$id = $this->main->add($post, 'user_members');
 
-		$response['row'] = $this->main->getAll('user_members', 'id, name', ['u_id' => $this->api]);
+		$response['row'] = array_map(function($add){
+            return ['id' => e_id($add['id']), 'name' => $add['name']];
+        }, $this->main->getAll('user_members', 'id, name', ['u_id' => $this->api]));
         $response['error'] = $id ? false : true;
         $response['message'] = $id ? 'Member added successfully.' : 'Member not added.';
 
@@ -221,6 +236,35 @@ class User extends API_controller {
         echoRespnse(200, $response);
     }
 
+    public function clear_cart()
+	{
+        post();
+
+        $id = $this->main->delete('cart', ['user_id' => $this->api]);
+        
+        $response['error'] = $id ? false : true;
+        $response['message'] = $id ? "Cart clear" : "Cart not clear.";
+
+        echoRespnse(200, $response);
+	}
+
+    public function add_order()
+    {
+		post();
+
+        $this->form_validation->set_rules('address', 'Address', 'required|is_natural', ['required' => "%s is required", 'is_natural' => "%s is invalid"]);
+        $this->form_validation->set_rules('family', 'Family', 'required|is_natural', ['required' => "%s is required", 'is_natural' => "%s is invalid"]);
+        $this->form_validation->set_rules('ref_doctor', 'Ref doctor', 'max_length[100]', ['max_length' => "Max 100 chars allowed."]);
+        $this->form_validation->set_rules('remarks', 'Doctor Remarks', 'max_length[100]', ['max_length' => "Max 100 chars allowed."]);
+        $this->form_validation->set_rules('pay_method', 'Payment method', 'required|max_length[10]', ['required' => "%s is required", 'max_length' => "Max 10 chars allowed."]);
+        $this->form_validation->set_rules('collection_date', 'Collection date', 'required', ['required' => "%s is required"]);
+        $this->form_validation->set_rules('collection_time', 'Collection time', 'required', ['required' => "%s is required"]);
+        $this->form_validation->set_rules('payment_id', 'Payment id', 'max_length[255]', ['max_length' => "Max 255 chars allowed."]);
+        verifyRequiredParams();
+        
+		echoRespnse(200, $this->main->addOrder($this->api));
+    }
+
     public function __construct()
     {
         parent::__construct($this->table);
@@ -265,10 +309,10 @@ class User extends API_controller {
 		[
             'field' => 'gender',
             'label' => 'Gender',
-            'rules' => 'required|max_length[5]|alpha|trim',
+            'rules' => 'required|max_length[6]|alpha|trim',
             'errors' => [
                 'required' => "%s is required",
-                'max_length' => "Max 5 chars allowed.",
+                'max_length' => "Max 6 chars allowed.",
                 'alpha' => "Only characters are allowed.",
             ],
         ],
