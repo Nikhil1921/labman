@@ -122,7 +122,7 @@
                                        <ul class="sub-menu">
                                           <li><?= anchor('faq', 'FAQs'); ?></li>
                                           <li><?= anchor('gallery', 'Gallery'); ?></li>
-                                          <li><?= anchor('lab-partner', 'Lab login'); ?></li>
+                                          <li><?= anchor('lab-partner/login', 'Lab login'); ?></li>
                                        </ul>
                                     </li>
                                  </ul>

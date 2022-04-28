@@ -84,7 +84,7 @@
             <tr>
             <td colspan="1"  class="total-line balance">Net Pay Amount</td>
               <td class="total-value balance">
-                <div class="due">Rs. <?= $total + $order['home_visit'] + $order['hardcopy'] - $order['discount'] ?></div>
+                <div class="due">Rs. <?= $total + ($total < $order['fix_price'] ? $order['home_visit'] : 0) + $order['hardcopy'] - $order['discount'] ?></div>
               </td>
             </tr>   
         </table>

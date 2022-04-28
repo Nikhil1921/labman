@@ -160,11 +160,10 @@ class User extends Public_controller {
             $this->make_pdf->setCity($data['city']);
     
             $path = $this->config->item('test-reports').$data['test_report'];
-            $totoalPages = $this->make_pdf->countPages($path);
             
-            $this->make_pdf->setSourceFile($path);
+            $pageCount = $this->make_pdf->setSourceFile($path);
     
-            for ($i=1; $i <= $totoalPages; $i++) { 
+            for ($i=1; $i <= $pageCount; $i++) { 
                 $this->make_pdf->AddPage();
                 $this->make_pdf->AliasNbPages();
                 $tplIdx = $this->make_pdf->importPage($i);
