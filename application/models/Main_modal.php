@@ -218,12 +218,13 @@ class Main_modal extends MY_Model
         $return = array_map(function($arr){
             $price = $this->packages($arr);
             return [
-                'id' => e_id($arr['id']),
-                'mrp'   => $price['mrp'],
-                'price' => $price['total'] - $arr['price'],
-                'p_type' => $arr['p_type'],
-                'p_name' => $arr['p_name'],
-                'image' => $arr['image'],
+                'id'          => e_id($arr['id']),
+                'mrp'         => $price['mrp'],
+                'lab_id'      => $arr['lab_id'],
+                'price'       => $price['total'] - $arr['price'],
+                'p_type'      => $arr['p_type'],
+                'p_name'      => $arr['p_name'],
+                'image'       => $arr['image'],
                 'description' => $arr['description'],
             ];
         }, $this->getAll('packages', "id, description, lab_id, price, p_type, p_name, tests, CONCAT('".base_url($this->packages)."', image) image", ['is_deleted' => 0], 'p_type ASC'));
