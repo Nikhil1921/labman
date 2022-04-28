@@ -50,9 +50,20 @@ class Orders_model extends MY_Model
 
 	public function getOrder($id)
     {
-        return $this->db->select('t_name')
-						->from('orders_tests')
-						->where('o_id', $id)
+        return $this->db->select('t.t_name')
+						->from('orders_tests ot')
+						->join('tests t', 'ot.test_id = t.id')
+						->where('ot.o_id', $id)
 						->get()->result_array();
+    }
+
+	public function getPdf($id)
+    {
+        return $this->db->select('ot.test_report, o.city, l.name')
+                        ->from('orders_tests ot')
+						->join('orders o', 'ot.o_id = o.id')
+						->join('logins l', 'l.id = o.lab_id')
+                        ->where('ot.id', $id)
+                        ->get()->row_array();
     }
 }

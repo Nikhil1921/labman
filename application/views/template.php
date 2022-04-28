@@ -20,7 +20,6 @@
       <?php endif ?>
    </head>
    <body>
-      
       <div class="global-wrap">
          <header id="main-header">
             <div class="header-top">
@@ -34,8 +33,11 @@
                               <?= form_open('search', 'method="get"') ?>
                                  <div class="city-select-top">
                                     <select class="select2-icon form-control main-search" name="city">
-                                       <?php foreach($this->main->getCities() as $city): ?>
-                                          <option data-icon="fa fa-map-marker" <?= $this->input->get('city') === $city['c_name'] ? 'selected' : '' ?>><?= $city['c_name'] ?></option>
+                                       <?php foreach($this->main->getCities() as $k => $city):
+                                       if(!$this->session->city && $k === 0) $this->session->set_userdata('city', $city['c_name']);
+                                       if($this->input->get('city')) $this->session->set_userdata('city', $this->input->get('city'));
+                                       ?>
+                                          <option data-icon="fa fa-map-marker" <?= $this->session->city === $city['c_name'] ? 'selected' : '' ?>><?= $city['c_name'] ?></option>
                                        <?php endforeach ?>
                                     </select>
                                  </div>

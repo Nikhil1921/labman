@@ -72,6 +72,11 @@ $pers = $this->user->role === 'Admin' ? [] : $this->main->getAll('permissions', 
                             <li>
                                 <?= anchor(admin('dashboard'), '<i data-feather="home"></i><span> Dashboard</span>', 'class="sidebar-header '.($name === 'dashboard' ? 'active' : '').'"') ?>
                             </li>
+                            <?php if(verify_nav('prescriptions', $pers)): ?>
+                                <li>
+                                    <?= anchor(admin('prescriptions'), '<i data-feather="heart"></i><span> Prescriptions </span><span class="badge badge-pill badge-danger">'.$this->main->counter('prescription', ['is_booked' => 0]).'</span>', 'class="sidebar-header '.($name === 'prescriptions' ? 'active' : '').'"') ?>
+                                </li>
+                            <?php endif ?>
                             <?php if(verify_nav('users', $pers)): ?>
                                 <li>
                                     <?= anchor(admin('users'), '<i data-feather="users"></i><span> Users</span>', 'class="sidebar-header '.($name === 'users' ? 'active' : '').'"') ?>

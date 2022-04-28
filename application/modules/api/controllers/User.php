@@ -157,7 +157,7 @@ class User extends API_controller {
         $this->form_validation->set_rules('relation', 'Relation', 'required|max_length[15]', ['required' => "%s is required", 'max_length' => 'Max 15 chars allowed.']);
         $this->form_validation->set_rules('name', 'Name', 'required|max_length[100]', ['required' => "%s is required", 'max_length' => 'Max 100 chars allowed.']);
         $this->form_validation->set_rules('email', 'Email', 'required|max_length[100]|valid_email', ['required' => "%s is required", 'valid_email' => "%s is invalid", 'max_length' => "Max 100 chars allowed"]);
-        $this->form_validation->set_rules('gender', 'Gender', 'required|max_length[5]', ['required' => "%s is required", 'max_length' => 'Max 5 chars allowed.']);
+        $this->form_validation->set_rules('gender', 'Gender', 'required|max_length[6]', ['required' => "%s is required", 'max_length' => 'Max 6 chars allowed.']);
         $this->form_validation->set_rules('dob', 'Date of birth', 'required', ['required' => "%s is required"]);
         $this->form_validation->set_rules('mobile', 'Mobile', 'required|is_natural|exact_length[10]', ['required' => "%s is required", 'is_natural' => "%s is invalid", 'exact_length' => "%s is invalid",]);
         

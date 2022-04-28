@@ -54,10 +54,19 @@ class Order_model extends MY_Model
                         ->where('o.id', $id)
                         ->get()->row_array();
 
-        $order['tests'] = $this->db->select('t_name, price, test_report, DATE_FORMAT(upload_date, "%d-%m-%Y %I:%i %p") AS date')
-                                    ->from('orders_tests')
-                                    ->where('o_id', $id)
+        $order['tests'] = $this->db->select('ot.id, t_name, price, test_report, DATE_FORMAT(upload_date, "%d-%m-%Y %I:%i %p") AS date')
+                                    ->from('orders_tests ot')
+                                    ->join('tests t', 'ot.test_id = t.id')
+                                    ->where('ot.o_id', $id)
                                     ->get()->result_array();
         return $order;
+    }
+
+    public function getPdf($id)
+    {
+        return $this->db->select('test_report')
+                        ->from('orders_tests ot')
+                        ->where('ot.id', $id)
+                        ->get()->row_array();
     }
 }

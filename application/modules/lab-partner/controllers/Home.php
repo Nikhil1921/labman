@@ -47,7 +47,7 @@ class Home extends Admin_controller  {
                                 '<a class="dropdown-item" onclick="script.delete(\'change_'.e_id($row->id).'\'); return false;" href=""><i class="fa fa-spinner"></i> In Process</a>'.
                                 form_close();
                     break;
-                case 'In Process':
+                case 'In process':
                     if($this->main->check('orders_tests', ['o_id' => $row->id, 'test_report' => null], 'o_id'))
                         $action .= anchor(admin('upload-reports/'.e_id($row->id)), '<i class="fa fa-upload"></i> Upload reports', 'class="dropdown-item"');
                     else

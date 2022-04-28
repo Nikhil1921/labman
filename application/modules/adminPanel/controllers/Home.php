@@ -130,9 +130,35 @@ class Home extends Admin_controller  {
         $data['url'] = $this->redirect;
         $this->load->model('order_model');
         $data['data'] = $this->order_model->getOrder(d_id($id));
-        $data['path'] = $this->config->item('test-reports');
         
         return $this->template->load('template', "view_reports", $data);
+    }
+
+    public function report($id)
+    {
+        $this->load->model('orders_model');
+        $data = $this->orders_model->getPdf(d_id($id));
+        if($data && is_file($this->config->item('test-reports').$data['test_report'])){
+            $this->load->library('make_pdf');
+    
+            $this->make_pdf->setLab($data['name']);
+            $this->make_pdf->setCity($data['city']);
+    
+            $path = $this->config->item('test-reports').$data['test_report'];
+            $totoalPages = $this->make_pdf->countPages($path);
+            
+            $this->make_pdf->setSourceFile($path);
+    
+            for ($i=1; $i <= $totoalPages; $i++) { 
+                $this->make_pdf->AddPage();
+                $this->make_pdf->AliasNbPages();
+                $tplIdx = $this->make_pdf->importPage($i);
+                $this->make_pdf->useTemplate($tplIdx);
+            }
+            return $this->make_pdf->Output();
+        }else{
+            return $this->error_404();
+        }
     }
 
 	/* public function charges()

@@ -59,7 +59,7 @@ class Main_modal extends MY_Model
         $or_id = $this->db->insert_id();
         foreach ($cart['tests'] as $test)
             $or_test[] = [
-                't_name' => $test->t_name,
+                'test_id' => $test->test_id,
                 'mrp'    => $test->ltl_mrp,
                 'price'  => $test->ltl_price,
                 'margin' => $test->t_price,
@@ -114,7 +114,7 @@ class Main_modal extends MY_Model
                          ->join('packages p', 'p.id = c.pack_id', 'left')
                          ->get()->row();
         if($cart)
-            $tests = $this->db->select('(t_price + ltl_price) AS total, t_name, ltl_mrp, t_price, ltl_price')
+            $tests = $this->db->select('(t_price + ltl_price) AS total, t_name, ltl_mrp, t_price, ltl_price, t.id AS test_id')
                                 ->from('lab_tests lt')
                                 ->where_in('t.id', explode(',', $cart->test_ids))
                                 ->where('lt.lab_id', $cart->lab_id)

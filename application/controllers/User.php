@@ -132,8 +132,8 @@ class User extends Public_controller {
             $sub_array[] = $row->or_id;
             $sub_array[] = $row->name;
             $sub_array[] = $row->t_name;
-            $sub_array[] = $row->upload_date ? $row->upload_date : "Report Not Uploaded";
-            $sub_array[] = $row->test_report ? anchor($this->config->item('test-reports').$row->test_report, '', 'target="_blank" class="btn btn-default btn-sm"') : "Report Not Uploaded";
+            $sub_array[] = $row->upload_date ? date('d-m-Y', strtotime($row->upload_date)) : "Report Not Uploaded";
+            $sub_array[] = $row->test_report ? anchor('user/report/'.e_id($row->id), 'View', 'target="_blank" class="btn btn-default btn-sm"') : "Report Not Uploaded";
 
             $data[] = $sub_array;
             $sr++;
@@ -148,6 +148,33 @@ class User extends Public_controller {
         
         die(json_encode($output));
 	}
+
+	public function report($id)
+    {
+        $this->load->model('orders_model');
+        $data = $this->orders_model->getPdf(d_id($id));
+        if($data && is_file($this->config->item('test-reports').$data['test_report'])){
+            $this->load->library('make_pdf');
+    
+            $this->make_pdf->setLab($data['name']);
+            $this->make_pdf->setCity($data['city']);
+    
+            $path = $this->config->item('test-reports').$data['test_report'];
+            $totoalPages = $this->make_pdf->countPages($path);
+            
+            $this->make_pdf->setSourceFile($path);
+    
+            for ($i=1; $i <= $totoalPages; $i++) { 
+                $this->make_pdf->AddPage();
+                $this->make_pdf->AliasNbPages();
+                $tplIdx = $this->make_pdf->importPage($i);
+                $this->make_pdf->useTemplate($tplIdx);
+            }
+            return $this->make_pdf->Output();
+        }else{
+            return $this->error_404();
+        }
+    }
 
 	public function profile()
 	{
@@ -192,9 +219,10 @@ class User extends Public_controller {
 		$data = $this->main->getCart($this->session->userId);
 		$data['title'] = 'Cart';
         $data['name'] = 'cart';
+        
 		if($data['cart']){
 			$data['family'] = $this->main->getAll('user_members', 'id, name', ['u_id' => $this->session->userId]);
-			$data['address'] = $this->main->getAll('addresses', 'id, ad_location', ['user_id' => $this->session->userId, 'is_deleted' => 0]);
+			$data['address'] = $this->main->getAll('addresses', 'id, ad_location', ['user_id' => $this->session->userId, 'is_deleted' => 0, 'ad_city' => $data['cart']->c_name]);
 		}
 		
 		return $this->template->load('template', 'cart', $data);

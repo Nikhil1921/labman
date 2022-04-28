@@ -38,9 +38,10 @@ class Api_model extends MY_Model
         $where = ['o.status' => 'Pending', 'o.city' => $this->city];
         
         return array_map(function($or){
-            $or['tests'] = $this->db->select('t_name')
-                                    ->from('orders_tests')
-                                    ->where('o_id', $or['id'])
+            $or['tests'] = $this->db->select('t.t_name')
+                                    ->from('orders_tests ot')
+                                    ->join('tests t', 'ot.test_id = t.id')
+                                    ->where('ot.o_id', $id)
                                     ->get()
                                     ->result_array();
             return $or;
@@ -52,9 +53,10 @@ class Api_model extends MY_Model
         $where = ['o.status' => 'Ongoing', 'o.phlebotomist_id' => $this->api];
         
         return array_map(function($or){
-            $or['tests'] = $this->db->select('t_name')
-                                    ->from('orders_tests')
-                                    ->where('o_id', $or['id'])
+            $or['tests'] = $this->db->select('t.t_name')
+                                    ->from('orders_tests ot')
+                                    ->join('tests t', 'ot.test_id = t.id')
+                                    ->where('ot.o_id', $id)
                                     ->get()
                                     ->result_array();
             return $or;
@@ -66,9 +68,10 @@ class Api_model extends MY_Model
         $where = ['o.status' => 'Collect Sample', 'o.phlebotomist_id' => $this->api];
         
         return array_map(function($or){
-            $or['tests'] = $this->db->select('t_name')
-                                    ->from('orders_tests')
-                                    ->where('o_id', $or['id'])
+            $or['tests'] = $this->db->select('t.t_name')
+                                    ->from('orders_tests ot')
+                                    ->join('tests t', 'ot.test_id = t.id')
+                                    ->where('ot.o_id', $id)
                                     ->get()
                                     ->result_array();
             return $or;
