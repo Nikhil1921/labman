@@ -36,7 +36,7 @@
                 <?= form_radio('role', "Admin", set_radio('role', 'Admin', true), 'id="admin"') ?>
                 <?= form_label("Admin", "admin", 'class="mb-0"') ?>
             </div>
-            <?php foreach($this->main->roles() as $role): ?>
+            <?php foreach($this->main->roles() as $role): if(in_array($role, ['Phlebetomist'])) continue; ?>
                 <div class="radio radio-danger">
                     <?= form_radio('role', $role, set_radio('role', 'Lab partner'), 'id="'.$role.'"') ?>
                     <?= form_label($role, $role, 'class="mb-0"') ?>

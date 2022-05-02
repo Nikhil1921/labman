@@ -48,6 +48,7 @@ class Home extends Admin_controller  {
                                 form_close();
                     break;
                 case 'In process':
+                case 'In Process':
                     if($this->main->check('orders_tests', ['o_id' => $row->id, 'test_report' => null], 'o_id'))
                         $action .= anchor(admin('upload-reports/'.e_id($row->id)), '<i class="fa fa-upload"></i> Upload reports', 'class="dropdown-item"');
                     else

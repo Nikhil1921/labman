@@ -4,7 +4,7 @@
  */
 class Main_modal extends MY_Model
 {
-	public function bulk_upload($post, $table)
+    public function bulk_upload($post, $table)
     {
         return $this->db->insert_batch($table, $post);
     }
@@ -166,5 +166,38 @@ class Main_modal extends MY_Model
     public function getCities()
     {
         return $this->getAll('cities', "id, c_name", ['is_deleted' => 0]);
+    }
+
+    public function searchLab($tests_in=[])
+    {
+        $city = $this->db->select('lab_ids')
+                         ->from('cities')
+                         ->where('c_name', $this->input->get('city'))
+                         ->where('is_deleted', 0)
+                         ->get()->row();
+
+        if($city)
+        {
+            $this->db->select("lab_id, SUM(lt.ltl_mrp) AS mrp, SUM(lt.ltl_price + t.t_price) as total, l.name, rt.re_time, CONCAT('".base_url($this->config->item('lab-partner'))."', lp.logo) logo, lp.certificate")
+                     ->from('lab_tests lt');
+                     
+            $ts = [0];
+            if($tests_in){
+                $ts = array_map(function($arr){
+                    return d_id($arr);
+                }, $tests_in);
+            }
+
+            $return = $this->db->where_in('test_id', $ts)
+                     ->join('logins l', 'l.id = lt.lab_id')
+                     ->where('l.is_blocked', 0)
+                     ->join('lab_partners lp', 'lp.id = lt.lab_id')
+                     ->join('tests t', 't.id = lt.test_id')
+                     ->join('report_time rt', 'rt.id = lp.del_time')
+                     ->order_by('total ASC')->group_by('lab_id')->get()->result_array();
+            
+            return $return ? $return : [];
+        }else
+            return [];
     }
 }

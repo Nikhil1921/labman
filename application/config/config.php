@@ -1,13 +1,4 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
-define('APP_NAME', 'Labman');
-define('PATH_INFO', $_SERVER["HTTP_HOST"] == 'localhost' ? $_SERVER['PATH_INFO'] : $_SERVER['SCRIPT_URL']);
-
-if(strpos(PATH_INFO, 'adminPanel') !== false)
-    define('ADMIN', 'adminPanel');
-else if(strpos(PATH_INFO, 'lab-partner') !== false)
-    define('ADMIN', 'lab-partner');
-else
-    define('ADMIN', 'lab-partner');
 
 /*
 |--------------------------------------------------------------------------
@@ -387,7 +378,7 @@ $config['encryption_key'] = '';
 |
 */
 $config['sess_driver'] = 'files';
-$config['sess_cookie_name'] = isset($_SERVER['PATH_INFO']) && strpos($_SERVER['PATH_INFO'], ADMIN) !== false ? md5(ADMIN.APP_NAME) : md5(APP_NAME);
+$config['sess_cookie_name'] = strpos(PATH_INFOS, ADMIN) !== false ? md5(ADMIN.APP_NAME) : md5(APP_NAME);
 $config['sess_expiration'] = 7200;
 $config['sess_save_path'] = null;
 $config['sess_match_ip'] = FALSE;

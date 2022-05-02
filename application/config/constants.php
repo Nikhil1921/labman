@@ -1,6 +1,14 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 
+define('APP_NAME', 'Labman');
+define('PATH_INFOS', $_SERVER["HTTP_HOST"] == 'localhost' ? (isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : '') : $_SERVER['SCRIPT_URL']);
+
+if(strpos(PATH_INFOS, 'adminPanel') !== false)
+    define('ADMIN', 'adminPanel');
+else if(strpos(PATH_INFOS, 'lab-partner') !== false)
+    define('ADMIN', 'lab-partner');
+else
+    define('ADMIN', 'adminPanel');
 /*
 |--------------------------------------------------------------------------
 | Display Debug backtrace

@@ -131,11 +131,9 @@ if ( ! function_exists('send_email'))
 
 if ( ! function_exists('send_notification'))
 {
-    function send_notification($title, $body, $token)
+    function send_notification($title, $body, $token, $serverKey)
 	{
         $url = "https://fcm.googleapis.com/fcm/send";
-        $serverKey = 'AAAAIQ-IBUw:APA91bHegjkBRXbw4i5ECh6BZ1OD7f1pMsdXVk3Zg35PsmXHbJXArBjI89UPe94pjxOPCiEiO9TQbwRI3DPcwXsLWjPOqy24mHBf7ckVbngYAPA4L5CgmX0VvtwbgH9VFNKEoqwunBoP';
-        $serverKey = 'AAAA8Lquu9E:APA91bH-tQURFDzys17YTorOst496mLgjtr4eSbI2LPZkoAsl7qKcPZzsOuQwn2pzU4KAo035TXviShTCqp7fIYwl1bmEjMwbUZFYPAW-w0cwHm8tHMvi_YQjf0-MiB8x6xHb2r015-2';
         
         $notification = array('title' => $title, 'body' => $body, 'sound' => 'default', 'badge' => '1');
         $arrayToSend = array('to' => $token, 'notification' => $notification, 'priority'=>'high');
@@ -145,14 +143,14 @@ if ( ! function_exists('send_notification'))
         $headers[] = 'Authorization: key='.$serverKey;
         
         $ch = curl_init();
+
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
         curl_setopt($ch, CURLOPT_HTTPHEADER,$headers);
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
-        
-        $response = curl_exec($ch);
-
+        curl_exec($ch);
         curl_close($ch);
+        
         return;
 	}
 }

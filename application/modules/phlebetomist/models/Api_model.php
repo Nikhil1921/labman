@@ -8,7 +8,7 @@ class Api_model extends MY_Model
 
     public function getProfile($where)
     {
-        return $this->db->select('l.id, l.name, l.mobile, l.email, society, area')
+        return $this->db->select('l.id, l.name, l.mobile, l.email, society, area, CONCAT("'.$this->config->item('employee').'", e.photo) AS photo')
                         ->from($this->table)
                         ->where($where)
                         ->where(['e.approval' => 'Yes', 'is_blocked' => 0, 'is_deleted' => 0])
@@ -33,6 +33,18 @@ class Api_model extends MY_Model
                         ->result_array();
     }
 
+    public function getUserToken($id)
+    {
+        $token = $this->db->select('u.token')
+                          ->from('orders o')
+                          ->where('o.id', $id)
+                          ->join('users u', 'u.id = o.u_id')
+                          ->get()
+                          ->row_array();
+
+        return $token ? $token : ['token' => ''];
+    }
+
     public function getNewOrders()
     {
         $where = ['o.status' => 'Pending', 'o.city' => $this->city];
@@ -41,7 +53,7 @@ class Api_model extends MY_Model
             $or['tests'] = $this->db->select('t.t_name')
                                     ->from('orders_tests ot')
                                     ->join('tests t', 'ot.test_id = t.id')
-                                    ->where('ot.o_id', $id)
+                                    ->where('ot.o_id', $or['id'])
                                     ->get()
                                     ->result_array();
             return $or;
@@ -50,7 +62,7 @@ class Api_model extends MY_Model
 
     public function getOngoingOrders()
     {
-        $where = ['o.status' => 'Ongoing', 'o.phlebotomist_id' => $this->api];
+        $where = ['o.status' => $this->input->get('status'), 'o.phlebotomist_id' => $this->api];
         
         return array_map(function($or){
             $or['tests'] = $this->db->select('t.t_name')
@@ -89,5 +101,16 @@ class Api_model extends MY_Model
                         ->row_array();
 
         return $city ? $city['c_name'] : 'NA';
+    }
+
+    public function getSamples($id)
+    {
+        $this->db->select('s_name')
+                    ->from('samples s')
+                    ->where(['ot.o_id' => $id])
+                    ->where(['s.is_deleted' => 0])
+                    ->join('orders_tests ot', 's.id = ot.test_id');
+
+        return $this->db->get()->result_array();
     }
 }

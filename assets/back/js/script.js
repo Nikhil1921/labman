@@ -202,4 +202,61 @@ var script = {
     }
 };
 
+const submitForm = (form, button) => {
+    $.ajax({
+        url: $(form).attr("action"),
+        type: $(form).attr("method"),
+        data: new FormData(form),
+        dataType: "json",
+        cache: false,
+        contentType: false,
+        processData: false,
+        async: false,
+        beforeSend: function () {
+            $(button).attr("disabled", true);
+        },
+        success: function (result) {
+            if (result.error == true){
+                flash_msg("", result.message, "danger");
+                $(button).attr("disabled", false);
+            }else{
+                form.reset();
+                flash_msg("Success : ", result.message, "success");
+                setInterval(function () { location.reload(); }, 1000);
+            }
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            $(button).attr("disabled", false);
+            flash_msg('Error : ', "Something is not going good.", 'danger');
+        },
+    });
+};
+
+if ($(".geocompletes").length > 0) {
+    $(".geocompletes").geocomplete({
+        details: ".details",
+        detailsScope: ".location",
+        types: ["geocode", "establishment"],
+    });
+
+    $(".find").click(function () {
+        $(this).parents(".location").find(".geocompletes").trigger("geocode");
+    });
+}
+
+const checkNewOrders = () => {
+  $.ajax({
+    url: url + "getPendingTests",
+    success: function (tests) {
+      $("#get-pending-tests").html(tests);
+    },
+  });
+};
+
+setInterval(function () {
+  checkNewOrders();
+}, 1000 * 60 * 5);
+
+checkNewOrders();
+
 // custom code end here

@@ -152,14 +152,6 @@
         <script src="<?= base_url('assets/back/js/select2/select2.full.min.js') ?>"></script>
         <script src="<?= base_url('assets/back/js/select2/select2-custom.js') ?>"></script>
         <script src="<?= base_url('assets/back/js/editor/ckeditor/ckeditor.js') ?>"></script>
-        <script src="<?= base_url('assets/back/js/script.js?v=1.0.1') ?>"></script>
-        <script>
-            $.ajax({
-                url: "<?= base_url(admin('getPendingTests')) ?>",
-                success: function (tests) {
-                    $("#get-pending-tests").html(tests);
-                }
-            });
-        </script>
+        <script src="<?= base_url('assets/back/js/script.js?v=1.0.2') ?>"></script>
     </body>
 </html>

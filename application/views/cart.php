@@ -166,7 +166,7 @@
                             <input name="lng" type="text" value="" />
                         </fieldset>
                     </div>
-                    <div class="form-group col-md-12 location">
+                    <div class="form-group col-md-12">
                         <label>City</label>
                         <input type="text" name="city" value="<?= $cart->c_name ?>" maxlength="100" class="form-control" readonly required>
                     </div>

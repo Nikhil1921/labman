@@ -74,9 +74,7 @@ class User extends API_controller {
         
         $data = $this->main->getCart($this->api);
         
-        $data['family'] = array_map(function($add){
-            return ['id' => e_id($add['id']), 'name' => $add['name']];
-        }, $this->main->getAll('user_members', 'id, name', ['u_id' => $this->api]));
+        $data['family'] = $this->members();
 
         $data['address'] = array_map(function($add){
             return ['id' => e_id($add['id']), 'ad_location' => $add['ad_location']];
@@ -93,9 +91,7 @@ class User extends API_controller {
     {
         get();
         
-        $data['family'] = array_map(function($add){
-            return ['id' => e_id($add['id']), 'name' => $add['name']];
-        }, $this->main->getAll('user_members', 'id, name', ['u_id' => $this->api]));
+        $data['family'] = $this->members();
         
         $response['row'] = $data;
         $response['error'] = false;
@@ -175,13 +171,18 @@ class User extends API_controller {
 
 		$id = $this->main->add($post, 'user_members');
 
-		$response['row'] = array_map(function($add){
-            return ['id' => e_id($add['id']), 'name' => $add['name']];
-        }, $this->main->getAll('user_members', 'id, name', ['u_id' => $this->api]));
+		$response['row'] = $this->members();
         $response['error'] = $id ? false : true;
         $response['message'] = $id ? 'Member added successfully.' : 'Member not added.';
 
         echoRespnse(200, $response);
+    }
+
+    private function members()
+    {
+        return array_map(function($member){
+            return ['id' => e_id($member['id']), 'name' => $member['name'], 'age' => $member['age'], 'gender' => $member['gender']];
+        }, $this->main->getAll('user_members', 'id, name, DATE_FORMAT(FROM_DAYS(DATEDIFF(CURRENT_DATE, dob)), "%y") AS age, gender', ['u_id' => $this->api]));
     }
 
     public function profile()
@@ -264,6 +265,36 @@ class User extends API_controller {
         
 		echoRespnse(200, $this->main->addOrder($this->api));
     }
+
+    public function prescription()
+	{
+        post();
+        
+        $this->path = $this->config->item('prescription');
+
+        if(empty($_FILES['prescription']['name'])) {
+            $this->form_validation->set_rules('prescription', 'Prescription', 'required', ['required' => "%s is required"]);
+            verifyRequiredParams();
+        }
+
+        $prescription = $this->uploadImage('prescription');
+        
+        if ($prescription['error'] == TRUE) echoRespnse(200, $prescription);
+
+        $post = [
+            'prescription' => $prescription['message'],
+            'u_id'         => $this->api,
+            'created_date' => date('Y-m-d'),
+            'created_time' => date('H:i:s')
+        ];
+        
+        if($this->main->add($post, 'prescription'))
+            $res = ['error' => false, 'message' => 'Thank you. We will get back to you soon.'];
+        else
+            $res = ['error' => true, 'message' => 'Something is not going good.'];
+
+		echoRespnse(200, $res);
+	}
 
     public function __construct()
     {

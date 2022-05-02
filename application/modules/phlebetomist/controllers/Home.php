@@ -21,12 +21,15 @@ class Home extends API_controller {
 		
 		$post = [
 			'mobile'     => $this->input->post('mobile'),
-			'password'   => my_crypt($this->input->post('password'))
+			'password'   => my_crypt($this->input->post('password')),
 		];
 
 		$user = $this->api->getProfile($post);
 
-		if($user) $this->api->update(['id' => $user['id']], ['token' => $this->input->post('token')], $this->table);
+		if($user){
+			$user['photo'] = base_url($user['photo']);
+			$this->api->update(['id' => $user['id']], ['token' => $this->input->post('token')], $this->table);
+		}
 		
 		$response['row'] = $user ? $user : [];
 		$response['error'] = $user ? false : true;

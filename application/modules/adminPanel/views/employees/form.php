@@ -58,7 +58,6 @@
                         'id' => "password",
                         'name' => "password",
                         'maxlength' => 100,
-                        'value' => 123456,
                         (! isset($data['mobile']) ? 'required' : ''),
                     ]); ?>
                     <?= form_error('password') ?>
@@ -123,7 +122,7 @@
                     <label for="role">Select Role</label>
                     <select class="form-control" name="role" id="role" required="">
                         <?php foreach($this->main->roles() as $role): ?>
-                            <option <?= set_select('role', $role) ?> value=<?= $role ?>><?= $role ?></option>
+                            <option <?= set_value('role') ? set_select('role', $role) : (isset($data['role']) && $data['role'] === $role ? 'selected' : '') ?> value=<?= $role ?>><?= $role ?></option>
                         <?php endforeach ?>
                     </select>
                     <?= form_error('role') ?>

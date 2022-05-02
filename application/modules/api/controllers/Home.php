@@ -67,13 +67,46 @@ class Home extends API_controller {
 		echoRespnse(200, $response);
 	}
 
+	public function getLabs()
+	{
+		get();
+
+		$data = array_map(function($lab){
+			return [
+				"id" => e_id($lab["id"]),
+				"name" => $lab["name"],
+				"logo" => $lab["logo"]
+			];
+		}, $this->main->getLabs());
+
+		$response['row'] = $data ? $data : [];
+		$response['error'] = false;
+		$response['message'] = "Lab list success.";
+
+		echoRespnse(200, $response);
+	}
+
+	/* public function getLabDetails()
+	{
+		get();
+		verifyRequiredParams(['lab_id']);
+		$data = $this->main->getLab($this->input->get('lab_id'));
+		
+		$response['bae_url'] = base_url();
+		$response['row'] = $data ? $data : [];
+		$response['error'] = false;
+		$response['message'] = "Lab list success.";
+
+		echoRespnse(200, $response);
+	} */
+
 	public function getPackages()
 	{
 		get();
 
-		$tests = $this->main->getPackages();
+		$packs = $this->main->getPackages();
 
-		$response['row'] = $tests;
+		$response['row'] = $packs ? $packs : [];
 		$response['error'] = false;
 		$response['message'] = "Packages list success.";
 
@@ -122,6 +155,22 @@ class Home extends API_controller {
 
 		echoRespnse(200, $response);
 	}
+
+	public function getDepTests()
+	{
+		get();
+		verifyRequiredParams(['dep_id']);
+
+		$data = array_map(function($v){
+			return ['id' => e_id($v['id']), 't_name' => $v['t_name']];
+		}, $this->main->getAll('tests', 'id, t_name', ['dep_id' => d_id($this->input->get('dep_id')), 'is_deleted' => 0]));
+
+		$response['row'] = $data ? $data : [];
+		$response['error'] = false;
+		$response['message'] = "Department list success.";
+
+		echoRespnse(200, $response);
+	}
 	
 	public function searchTests()
 	{
@@ -137,6 +186,35 @@ class Home extends API_controller {
 
 		echoRespnse(200, $response);
 	}
+
+	public function report()
+    {
+        get();
+        verifyRequiredParams(['report_id']);
+		$report = explode('.', $this->input->get('report_id'));
+        $this->load->model('orders_model');
+        $data = $this->orders_model->getPdf(reset($report));
+        if($data && is_file($this->config->item('test-reports').$data['test_report'])){
+            $this->load->library('make_pdf');
+    
+            $this->make_pdf->setLab($data['name']);
+            $this->make_pdf->setCity($data['city']);
+    
+            $path = $this->config->item('test-reports').$data['test_report'];
+            
+            $pageCount = $this->make_pdf->setSourceFile($path);
+    
+            for ($i=1; $i <= $pageCount; $i++) { 
+                $this->make_pdf->AddPage();
+                $this->make_pdf->AliasNbPages();
+                $tplIdx = $this->make_pdf->importPage($i);
+                $this->make_pdf->useTemplate($tplIdx);
+            }
+            return $this->make_pdf->Output();
+        }else{
+            return $this->error_404();
+        }
+    }
 
 	public function __construct()
     {

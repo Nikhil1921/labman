@@ -97,7 +97,7 @@ class Main_modal extends MY_Model
                                 ->join('cities c', 'e.city = c.id')
                                 ->get()->result_array();
 
-            foreach ($tokens as $token) send_notification($title, $body, $token['token']);
+            foreach ($tokens as $token) send_notification($title, $body, $token['token'], $this->config->item('phleb-token'));
             // send notification end
 
             return ['error' => false, 'message' => 'Order placed successfully.', 'redirect' => 'thankyou.html'];
@@ -282,5 +282,41 @@ class Main_modal extends MY_Model
         $lab['doctors'] = $this->getAll('doctors', 'name, quilification, CONCAT("'.$this->config->item('lab-partner').'", image) image', ['lab_id' => $id]);
         
         return $lab;
+    }
+
+	public function getOrders($id, $status = null)
+    {
+        $this->db->select(['o.id', 'o.or_id', 'o.name', 'l.name AS lab', 'p.mobile AS ph_mobile', 'p.name AS phlebotomist', 'o.collection_date', 'o.pay_type', 'o.coll_otp', 'o.status', '(SUM(ot.price + ot.margin) - o.discount + IF(SUM(ot.price + ot.margin) < o.fix_price, o.home_visit, 0) + o.hardcopy) total', 'longitude', 'lattitude', 'pk.p_type'])
+                            ->from('orders o')
+                            ->where('o.is_deleted', 0)
+                            ->where('o.u_id', $id);
+
+        if($status)
+			$this->db->where_in('o.status', ['Completed']);
+		else
+			$this->db->where_in('o.status', ['Pending','Ongoing','Collect Sample','In Process']);
+                        
+        return $this->db->join('logins l', 'l.id = o.lab_id')
+                        ->join('orders_tests ot', 'ot.o_id = o.id')
+                        ->join('logins p', 'p.id = o.phlebotomist_id', 'left')
+                        ->join('packages pk', 'pk.id = o.package', 'left')
+                        ->group_by('ot.o_id')
+                        ->get()->result_array();
+    }
+
+	public function getReports($id)
+    {
+        $this->db->select(['ot.id AS report_id', 'o.or_id', 'o.name', 't.t_name', 'IF(ot.upload_date, ot.upload_date, "Report Not Uploaded") AS upload_date'])
+                 ->from('orders_tests ot')
+                 ->where('o.u_id', $id)
+                 ->join('tests t', 't.id = ot.test_id')
+                 ->join('orders o', 'o.id = ot.o_id');
+
+        if($this->input->get('start_date'))
+            $this->db->where('ot.upload_date >= ', date('Y-m-d', strtotime($this->input->get('start_date'))));
+        if($this->input->get('end_date'))
+            $this->db->where('ot.upload_date <= ', date('Y-m-d', strtotime($this->input->get('end_date'))));
+                        
+        return $this->db->get()->result_array();
     }
 }

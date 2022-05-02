@@ -18,6 +18,7 @@ class User extends API_controller {
     public function ongoing_orders()
 	{
 		get();
+		verifyRequiredParams(['status']);
 		
 		$orders = $this->api_model->getOngoingOrders();
 
