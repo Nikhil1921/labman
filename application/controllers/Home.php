@@ -227,6 +227,12 @@ class Home extends Public_controller {
 		die(json_encode($res));
 	}
 
+	/* public function send_noti()
+    {   
+        send_notification(APP_NAME, "USER", 'ceCfkMZtSLSELT3ZAoVqqK:APA91bHVgIGabDDhuffcOQs5vofteGdeI5hCgTQTkhzw9LRJoK8WJ3G58SDnq4XI5htSn1NJH_VbrrKkPTQADXf4DqD27sZYxK0pQ5xSXgnCX44iNBkLoTQHlPY8fq5bVOUAFC4uxDZQ', $this->config->item('user-token'));
+        send_notification(APP_NAME, "PHLEBO", 'eZeNWwCyV1M:APA91bG4d8iKPA8XgaSUekXWMTQD9r0XTXy8GQQeqYKdwO_7UsZsUNQddZzpVQs01DW8oYxW3okpKG2f8sKvc_GjIsOM3sI_8DYxa9w8BSp4O0dWpOWtrx4FPkxFwzUND5zhIBut9pA8', $this->config->item('phleb-token'));
+    } */
+
 	public function error_404()
 	{
 		$data['title'] = 'Error 404';

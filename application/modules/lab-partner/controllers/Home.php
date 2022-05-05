@@ -146,6 +146,11 @@ class Home extends Admin_controller  {
                     ];
 
                 $uid = $this->order_model->upload_reports($post);
+
+                if($uid){
+                    $token = $this->api_model->getUserToken($this->input->post('id'));
+                    send_notification("Test update", 'Your test is in : '.$post['status'], $token['token'], $this->config->item('user-token'));
+                }
                 
                 if(!$uid && is_file($this->path.$report["message"]))
                     unlink($this->path.$report["message"]);
@@ -164,6 +169,10 @@ class Home extends Admin_controller  {
             flashMsg(0, "", "Some required fields are missing.", $this->redirect);
         else{
             $id = $this->main->update(['id' => d_id($this->input->post('id'))], ['status' => $this->input->post('status')], 'orders');
+            if($id){
+                $token = $this->api_model->getUserToken(d_id($this->input->post('id')));
+                send_notification("Test update", 'Your test is in : '.$this->input->post('status'), $token['token'], $this->config->item('user-token'));
+            }
             flashMsg($id, "Status changed success.", "Status not changed.", $this->redirect);
         }
     }

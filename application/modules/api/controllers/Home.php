@@ -104,7 +104,23 @@ class Home extends API_controller {
 	{
 		get();
 
-		$packs = $this->main->getPackages();
+		$packs = array_map(function($arr){
+			$ts = array_map(function($t){
+                return e_id($t);
+            }, explode(',', $this->main->check('packages', ['id' => d_id($arr["id"])], 'tests')));
+			
+			return [
+				"id"	        => $arr["id"],
+				"mrp"	        => $arr["mrp"],
+				"lab_id"	    => $arr["lab_id"],
+				"price"  	    => $arr["price"],
+				"p_type"	    => $arr["p_type"],
+				"p_name"	    => $arr["p_name"],
+				"image"	        => $arr["image"],
+				"description"	=> $arr["description"],
+				"tests"			=> $this->main->getTests($ts)
+			];
+		}, $this->main->getPackages());
 
 		$response['row'] = $packs ? $packs : [];
 		$response['error'] = false;
