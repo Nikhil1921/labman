@@ -3,11 +3,11 @@
     <h5><?= $title ?> <?= $operation ?></h5>
 </div>
 <div class="card-body">
-    <div class="col-md-12">
-        <?= img($data['prescription']) ?>
-    </div>
     <form action="" method="get">
         <div class="row">
+            <div class="col-md-12 mb-3">
+                <?= img($data['prescription'], '', 'width="100%"') ?>
+            </div>
             <div class="col-md-12">
                 <div class="text-center alert alert-danger">Search lab</div>
             </div>
