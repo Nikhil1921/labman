@@ -20,12 +20,14 @@
                         <th>Test</th>
                         <th>Date</th>
                         <th>View report</th>
+                        <th>View Labman report</th>
                     </thead>
                     <?php foreach($data['tests'] as $k => $test): ?>
                     <tr>
                         <td><?= $k+1 ?> </td>
                         <td><?= form_label($test['t_name'], '', 'class="col-form-label"') ?></td>
                         <td><?= $test['date'] ?></td>
+                        <td><a href="<?= base_url($this->config->item('test-reports').$test['test_report']) ?>" class="btn btn-outline-dark" target="_blank"><i class="fa fa-eye"></i></a></td>
                         <td><?= anchor(admin('report/'.e_id($test['id'])), '<i class="fa fa-eye"></i>', 'class="btn btn-outline-dark" target="_blank"') ?></td>
                     </tr>
                     <?php endforeach ?>

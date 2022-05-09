@@ -311,7 +311,8 @@ class Main_modal extends MY_Model
                  ->where('o.u_id', $id)
                  ->join('tests t', 't.id = ot.test_id')
                  ->join('orders o', 'o.id = ot.o_id');
-
+        if ($this->input->get('order_id')) 
+            $this->db->where('o.id', $this->input->get('order_id'));
         if($this->input->get('start_date'))
             $this->db->where('ot.upload_date >= ', date('Y-m-d', strtotime($this->input->get('start_date'))));
         if($this->input->get('end_date'))

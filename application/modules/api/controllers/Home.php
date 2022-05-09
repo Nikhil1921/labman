@@ -129,6 +129,19 @@ class Home extends API_controller {
 		echoRespnse(200, $response);
 	}
 
+	public function getBanners()
+	{
+		get();
+
+		$cities = $this->main->getBanners();
+
+		$response['row'] = $cities;
+		$response['error'] = false;
+		$response['message'] = "Banners list success.";
+
+		echoRespnse(200, $response);
+	}
+
 	public function getCities()
 	{
 		get();
@@ -193,6 +206,14 @@ class Home extends API_controller {
 		get();
 		verifyRequiredParams(['city', 'tests']);
 		
+		// search by test name start
+		/* $tests = array_map(function($t){
+			return e_id($this->main->check('tests', ['t_name' => $t], 'id'));
+		}, explode(',', $this->input->get('tests')));
+		$data['labs'] = $this->main->searchLab($tests);
+        $data['tests'] = $data['labs'] ? $this->main->getTests($tests) : []; */
+		// search by test name end
+
 		$data['labs'] = $this->main->searchLab(explode(',', $this->input->get('tests')));
         $data['tests'] = $data['labs'] ? $this->main->getTests(explode(',', $this->input->get('tests'))) : [];
 

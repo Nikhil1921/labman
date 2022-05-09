@@ -12,7 +12,7 @@ class Orders extends API_controller {
 
 		verifyRequiredParams();
 
-        /* if($this->input->post('status') === 'Collect Sample'){
+        if($this->input->post('status') === 'Collect Sample'){
             $this->form_validation->set_rules('otp', 'OTP', 'required', ['required' => "%s is required"]);
             verifyRequiredParams();
             $check = $this->api_model->get($this->orders, 'id', ['id' => $this->input->post('id'), 'coll_otp' => $this->input->post('otp')]);
@@ -21,7 +21,7 @@ class Orders extends API_controller {
 		        $response['message'] = "Invalid otp.";
                 echoRespnse(200, $response);
             }
-        } */
+        }
 
         $post = [
             'phlebotomist_id' => $this->api,
