@@ -304,7 +304,7 @@
                         'id' => "photo",
                         'name' => "photo",
                         'accept' => "image/jpg, image/jpeg, image/png",
-                        isset($data['photo']) ? 'required' : '',
+                        // isset($data['photo']) ? 'required' : '',
                     ]); ?>
                     <?= isset($photo) ? $photo : '' ?>
                 </div>

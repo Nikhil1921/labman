@@ -134,7 +134,7 @@ class Employees extends Admin_controller  {
                 return $this->form($data);
             }
 
-            $photo = $this->uploadImage('photo', 'png|jpg|jpeg', [], 'photo-'.microtime(true)*10000);
+            /* $photo = $this->uploadImage('photo', 'png|jpg|jpeg', [], 'photo-'.microtime(true)*10000);
             
             if($photo['error']){
                 $data['photo'] = '<span class="text-danger">'.$photo['message'].'</span>';
@@ -143,7 +143,9 @@ class Employees extends Admin_controller  {
                 unlink($this->path.$computer['message']);
                 unlink($this->path.$aadhar['message']);
                 return $this->form($data);
-            }
+            } */
+
+            $photo['message'] = 'user.png';
 
             $imgs = [
                 'photo'     => $photo['message'],
