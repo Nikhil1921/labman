@@ -228,6 +228,7 @@ class Main_modal extends MY_Model
                 'description' => $arr['description'],
             ];
         }, $this->getAll('packages', "id, description, lab_id, price, p_type, p_name, tests, CONCAT('".base_url($this->packages)."', image) image", ['is_deleted' => 0], 'p_type ASC'));
+        
         return $return;
     }
 

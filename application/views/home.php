@@ -196,6 +196,25 @@
         </div>
     </div>
 </section>
+<section class="category">
+    <div class="container">
+        <div class="text-center">
+            <h1 class="title-text">Offers</h1>
+        </div>
+        <div class="category-slider">
+            <?php foreach($packs as $pack): if($pack['p_type'] !== 'Offer') continue; ?>
+            <div class="items">
+                <?= anchor('package/'.$pack['id'], '<div class="thumb">
+                        <div class="category-icon text-center">'.img($pack['image']).'</div>
+                        <div class="category-name">
+                            <h3>'.$pack['p_name'].'
+                        </div>
+                    </div>'); ?>
+            </div>
+            <?php endforeach ?>
+        </div>
+    </div>
+</section>
 <section class="our-process">
     <?= img("assets/images/our-process.jpg"); ?>
 </section>
