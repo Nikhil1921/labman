@@ -33,6 +33,9 @@
     <div class="col-12">
         <div class="text-right mt-3">Forgot your password?&nbsp;&nbsp;<?= anchor(admin('forgot-password'), 'click here', 'class="btn-link text-capitalize"') ?></div>
     </div>
+    <div class="col-12">
+        <div class="text-right mt-3">Go to website&nbsp;&nbsp;<?= anchor('', 'click here', 'class="btn-link text-capitalize"') ?></div>
+    </div>
     <div class="form-group form-row mt-3 mb-0">
         <?= form_button([
             'type'    => 'submit',

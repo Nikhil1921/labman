@@ -124,7 +124,7 @@ if ( ! function_exists('send_email'))
             $CI->email->attach($_SERVER['DOCUMENT_ROOT'] . str_replace(basename($_SERVER["SCRIPT_NAME"]), "", $_SERVER["SCRIPT_NAME"]) . $pdf);
         
 		$CI->email->send(FALSE);
-        /* $CI->email->print_debugger(array('headers')); */
+        // echo $CI->email->print_debugger(array('headers'));
         return;
 	}
 }
