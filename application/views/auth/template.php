@@ -11,7 +11,7 @@
       <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700' rel='stylesheet' type='text/css'>
       <?= link_tag('assets/css/bootstrap.css') ?>
       <?= link_tag('assets/css/font-awesome.css') ?>
-      <?= link_tag('assets/css/login.css') ?>
+      <?= link_tag('assets/css/login.css?v=1.0.2') ?>
    </head>
    <body>
         <section class="fxt-template-animation fxt-template-layout15">

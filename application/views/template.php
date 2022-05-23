@@ -13,7 +13,7 @@
       <?= link_tag('assets/css/bootstrap.css') ?>
       <?= link_tag('assets/css/font-awesome.css') ?>
       <?= link_tag('assets/css/icomoon.css') ?>
-      <?= link_tag('assets/css/styles.css') ?>
+      <?= link_tag('assets/css/styles.css?v=1.0.2') ?>
       <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
       <?php if(in_array($name, ['login'])): ?>
          <?= link_tag('assets/css/switcher.css" ') ?>
@@ -316,7 +316,7 @@
          <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
          <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
       <?php endif ?>
-      <script src="<?= base_url('assets/js/custom.js?v='.time()) ?>"></script>
+      <script src="<?= base_url('assets/js/custom.js?v=1.0.1') ?>"></script>
       <script>
          let tagArr = document.getElementsByTagName("input");
          for (let i = 0; i < tagArr.length; i++) {
