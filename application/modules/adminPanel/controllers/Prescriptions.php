@@ -98,7 +98,7 @@ class Prescriptions extends Admin_controller  {
         if($data['data']){
             $data['user'] = $this->main->get('users', 'name', ['id' => $data['data']['u_id']]);
             $data['address'] = $this->main->getAll('addresses', 'id, ad_location, ad_city', ['user_id' => $data['data']['u_id'], 'is_deleted' => 0, 'ad_city' => $city]);
-            $data['members'] = $this->main->getAll('user_members', 'id, name', ['u_id' => $data['data']['u_id']]);
+            $data['members'] = $this->main->getAll('user_members', 'id, name', ['u_id' => $data['data']['u_id'], 'is_deleted' => 0]);
         }else{
             $data['user'] = ['name' => ''];
             $data['address'] = [];

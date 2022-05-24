@@ -36,7 +36,7 @@ class Prescription_model extends MY_Model
 		if($post['family'] == 0)
             $user = $this->main->get('users', 'name, email, mobile', ['id' => d_id($post['u_id'])]);
         else
-            $user = $this->main->get('user_members', 'name, email, mobile, relation', ['id' => d_id($post['family'])]);
+            $user = $this->main->get('user_members', 'name, email, mobile, relation', ['id' => d_id($post['family']), 'is_deleted' => 0]);
         
         $charges = $this->get('cities', 'fix_price, home_visit, hard_copy', ['c_name' => $post['city']]);
 

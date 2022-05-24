@@ -9,23 +9,8 @@ class Orders extends API_controller {
         $this->load->model('Orders_model', 'data');
 
         $data = array_map(function($order){
-            return [
-                "id" => $order["id"],
-                "or_id" => $order["or_id"],
-                "name" => $order["name"],
-                "lab" => $order["lab"],
-                "collection_date" => $order["collection_date"],
-                "pay_type" => $order["pay_type"],
-                "coll_otp" => $order["coll_otp"],
-                "status" => $order["status"],
-                "total" => $order["total"],
-                "phlebotomist" => $order["phlebotomist"],
-                "ph_mobile" => $order["ph_mobile"],
-                "longitude" => $order["longitude"],
-                "lattitude" => $order["lattitude"],
-                "p_type" => $order["p_type"],
-                "tests" => $this->data->getOrder($order["id"])
-            ];
+            $order['tests'] = $this->data->getOrder($order["id"]);
+            return $order;
         }, $this->main->getOrders($this->api, $this->input->get('status')));
 
         $response['row'] = $data ? $data : [];

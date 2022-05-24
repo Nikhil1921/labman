@@ -155,7 +155,8 @@ class User extends API_controller {
         $this->form_validation->set_rules('email', 'Email', 'required|max_length[100]|valid_email', ['required' => "%s is required", 'valid_email' => "%s is invalid", 'max_length' => "Max 100 chars allowed"]);
         $this->form_validation->set_rules('gender', 'Gender', 'required|max_length[6]', ['required' => "%s is required", 'max_length' => 'Max 6 chars allowed.']);
         $this->form_validation->set_rules('dob', 'Date of birth', 'required', ['required' => "%s is required"]);
-        $this->form_validation->set_rules('mobile', 'Mobile', 'required|is_natural|exact_length[10]', ['required' => "%s is required", 'is_natural' => "%s is invalid", 'exact_length' => "%s is invalid",]);
+        $this->form_validation->set_rules('mobile', 'Mobile', 'required|is_natural|exact_length[10]', ['required' => "%s is required", 'is_natural' => "%s is invalid", 'exact_length' => "%s is invalid"]);
+        $this->form_validation->set_rules('id', 'Id', 'is_natural', ['is_natural' => "%s is invalid"]);
         
         verifyRequiredParams();
 
@@ -168,8 +169,26 @@ class User extends API_controller {
 			'dob'      => date('Y-m-d', strtotime($this->input->post('dob'))),
 			'mobile'   => $this->input->post('mobile'),
 		];
+        
+        $id = ($this->input->post('id')) ? $this->main->update(['id' => d_id($this->input->post('id'))], $post, 'user_members') 
+                : $this->main->add($post, 'user_members');
 
-		$id = $this->main->add($post, 'user_members');
+		$response['row'] = $this->members();
+        $response['error'] = $id ? false : true;
+        $response['message'] = $id ? 'Member added successfully.' : 'Member not added.';
+
+        echoRespnse(200, $response);
+    }
+
+    public function delete_member()
+    {
+		post();
+
+        $this->form_validation->set_rules('id', 'id', 'required|is_natural', ['required' => "%s is required", 'is_natural' => "%s is invalid"]);
+        
+        verifyRequiredParams();
+
+		$id = $this->main->update(['id' => d_id($this->input->post('id'))], ['is_deleted' => 1], 'user_members');
 
 		$response['row'] = $this->members();
         $response['error'] = $id ? false : true;
@@ -182,7 +201,7 @@ class User extends API_controller {
     {
         return array_map(function($member){
             return ['id' => e_id($member['id']), 'name' => $member['name'], 'age' => $member['age'], 'gender' => $member['gender']];
-        }, $this->main->getAll('user_members', 'id, name, DATE_FORMAT(FROM_DAYS(DATEDIFF(CURRENT_DATE, dob)), "%y") AS age, gender', ['u_id' => $this->api]));
+        }, $this->main->getAll('user_members', 'id, name, DATE_FORMAT(FROM_DAYS(DATEDIFF(CURRENT_DATE, dob)), "%y") AS age, gender', ['u_id' => $this->api, 'is_deleted' => 0]));
     }
 
     public function profile()

@@ -220,7 +220,7 @@ class User extends Public_controller {
         $data['name'] = 'cart';
         
 		if($data['cart']){
-			$data['family'] = $this->main->getAll('user_members', 'id, name', ['u_id' => $this->session->userId]);
+			$data['family'] = $this->main->getAll('user_members', 'id, name', ['u_id' => $this->session->userId, 'is_deleted' => 0]);
 			$data['address'] = $this->main->getAll('addresses', 'id, ad_location', ['user_id' => $this->session->userId, 'is_deleted' => 0, 'ad_city' => $data['cart']->c_name]);
 		}
 		
@@ -278,7 +278,7 @@ class User extends Public_controller {
 
 		$return = '<option value="0">'.$this->user['name'].'</option>';
 		
-		foreach ($this->main->getAll('user_members', 'id, name', ['u_id' => $this->session->userId]) as $v)
+		foreach ($this->main->getAll('user_members', 'id, name', ['u_id' => $this->session->userId, 'is_deleted' => 0]) as $v)
 			$return .= '<option '.($id == $v['id'] ? 'selected' : '').' value="'.e_id($v['id']).'">'.$v['name'].'</option>';
 
 		die(json_encode(['message' => $msg, 'address' => $return]));
@@ -310,7 +310,7 @@ class User extends Public_controller {
 		if($this->input->get('family') == 0)
             $user = $this->main->get('users', 'name, email, mobile', ['id' => $this->session->userId]);
         else
-            $user = $this->main->get('user_members', 'name, email, mobile', ['id' => d_id($this->input->get('family'))]);
+            $user = $this->main->get('user_members', 'name, email, mobile', ['id' => d_id($this->input->get('family')), 'is_deleted' => 0]);
 		
 		$response = [
 			'name'		=> isset($user['name']) ? $user['name'] : '',

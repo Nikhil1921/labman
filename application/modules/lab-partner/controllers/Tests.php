@@ -79,7 +79,7 @@ class Tests extends Admin_controller  {
                 return $arr['test_id'];
             }, $this->main->getAll($this->table, 'test_id', ['lab_id' => $this->session->auth]));
 
-            $data['tests'] = $this->main->getAll("tests", 'id, t_name', 'id NOT IN ('.implode(',', $check).')');
+            $data['tests'] = $this->main->getAll("tests", 'id, t_name', 'id NOT IN ('.($check ? implode(',', $check) : 0).')');
             
             return $this->template->load('template', "$this->redirect/form", $data);
         }else{

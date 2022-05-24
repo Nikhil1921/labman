@@ -13,6 +13,7 @@ class Main_modal extends MY_Model
 		$this->department = $this->config->item('department');
 		$this->gallery = $this->config->item('gallery');
         $this->lab_partner = $this->config->item('lab-partner');
+        $this->employee = $this->config->item('employee');
 	}
 
     public function addOrder($userId)
@@ -24,7 +25,7 @@ class Main_modal extends MY_Model
         if($this->input->post('family') == 0)
             $user = $this->main->get('users', 'name, email, mobile', ['id' => $userId]);
         else
-            $user = $this->main->get('user_members', 'name, email, mobile, relation', ['id' => d_id($this->input->post('family'))]);
+            $user = $this->main->get('user_members', 'name, email, mobile, relation', ['id' => d_id($this->input->post('family')), 'is_deleted' => 0]);
         
         $order = [
             'name' => $user['name'],
@@ -174,7 +175,8 @@ class Main_modal extends MY_Model
                      ->where('l.is_blocked', 0)
                      ->join('lab_partners lp', 'lp.id = lt.lab_id')
                      ->join('tests t', 't.id = lt.test_id')
-                     ->join('report_time rt', 'rt.id = lp.del_time');
+                     ->join('report_time rt', 'rt.id = lp.del_time')
+                     ->having("count('lab_id')", count($ts));
             
             return $this->db->order_by('total ASC')->group_by('lab_id')->get()->result_array();
         }else
@@ -287,7 +289,7 @@ class Main_modal extends MY_Model
 
 	public function getOrders($id, $status = null)
     {
-        $this->db->select(['o.id', 'o.or_id', 'o.name', 'l.name AS lab', 'p.mobile AS ph_mobile', 'p.name AS phlebotomist', 'o.collection_date', 'o.pay_type', 'o.coll_otp', 'o.status', '(SUM(ot.price + ot.margin) - o.discount + IF(SUM(ot.price + ot.margin) < o.fix_price, o.home_visit, 0) + o.hardcopy) total', 'longitude', 'lattitude', 'pk.p_type'])
+        $this->db->select(['o.id', 'o.or_id', 'o.name', 'l.name AS lab', 'p.mobile AS ph_mobile', 'p.name AS phlebotomist', 'o.collection_date', 'o.pay_type', 'o.coll_otp', 'o.status', '(SUM(ot.price + ot.margin) - o.discount + IF(SUM(ot.price + ot.margin) < o.fix_price, o.home_visit, 0) + o.hardcopy) total', 'longitude', 'lattitude', 'pk.p_type', 'CONCAT("'.base_url($this->employee).'", e.photo) photo'])
                             ->from('orders o')
                             ->where('o.is_deleted', 0)
                             ->where('o.u_id', $id);
@@ -300,6 +302,7 @@ class Main_modal extends MY_Model
         return $this->db->join('logins l', 'l.id = o.lab_id')
                         ->join('orders_tests ot', 'ot.o_id = o.id')
                         ->join('logins p', 'p.id = o.phlebotomist_id', 'left')
+                        ->join('employees e', 'e.id = o.phlebotomist_id', 'left')
                         ->join('packages pk', 'pk.id = o.package', 'left')
                         ->group_by('ot.o_id')
                         ->get()->result_array();
