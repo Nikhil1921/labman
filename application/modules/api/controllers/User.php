@@ -200,8 +200,9 @@ class User extends API_controller {
     private function members()
     {
         return array_map(function($member){
-            return ['id' => e_id($member['id']), 'name' => $member['name'], 'age' => $member['age'], 'gender' => $member['gender']];
-        }, $this->main->getAll('user_members', 'id, name, DATE_FORMAT(FROM_DAYS(DATEDIFF(CURRENT_DATE, dob)), "%y") AS age, gender', ['u_id' => $this->api, 'is_deleted' => 0]));
+            $member['id'] = e_id($member['id']);
+            return $member;
+        }, $this->main->getAll('user_members', '*, DATE_FORMAT(FROM_DAYS(DATEDIFF(CURRENT_DATE, dob)), "%y") AS age', ['u_id' => $this->api, 'is_deleted' => 0]));
     }
 
     public function profile()
