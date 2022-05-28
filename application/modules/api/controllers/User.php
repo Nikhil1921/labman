@@ -76,9 +76,7 @@ class User extends API_controller {
         
         $data['family'] = $this->members();
 
-        $data['address'] = array_map(function($add){
-            return ['id' => e_id($add['id']), 'ad_location' => $add['ad_location']];
-        }, $this->main->getAll('addresses', 'id, ad_location', ['user_id' => $this->api, 'is_deleted' => 0]));
+        $data['address'] = $this->addresses();
 
         $response['row'] = $data;
         $response['error'] = false;
@@ -104,13 +102,28 @@ class User extends API_controller {
     {
         get();
         
-        $data['address'] = array_map(function($add){
-            return ['id' => e_id($add['id']), 'ad_location' => $add['ad_location']];
-        }, $this->main->getAll('addresses', 'id, ad_location', ['user_id' => $this->api, 'is_deleted' => 0]));
+        $data['address'] = $this->addresses();
 
         $response['row'] = $data;
         $response['error'] = false;
         $response['message'] = "Get address success.";
+
+        echoRespnse(200, $response);
+    }
+
+    public function delete_address()
+    {
+        post();
+
+        $this->form_validation->set_rules('id', 'id', 'required|is_natural', ['required' => "%s is required", 'is_natural' => "%s is invalid"]);
+        
+        verifyRequiredParams();
+
+		$id = $this->main->update(['id' => d_id($this->input->post('id'))], ['is_deleted' => 1], 'addresses');
+
+		$response['row'] = $this->addresses();
+        $response['error'] = $id ? false : true;
+        $response['message'] = $id ? 'Address added successfully.' : 'Address not added.';
 
         echoRespnse(200, $response);
     }
@@ -123,6 +136,7 @@ class User extends API_controller {
         $this->form_validation->set_rules('city', 'City', 'required|max_length[100]', ['required' => "%s is required", 'max_length' => 'Max 100 chars allowed.']);
         $this->form_validation->set_rules('lat', 'Lat', 'required|decimal|max_length[100]', ['required' => "%s is required", 'max_length' => 'Max 100 chars allowed.', 'decimal' => '%s is invalid.']);
         $this->form_validation->set_rules('lng', 'Lng', 'required|decimal|max_length[100]', ['required' => "%s is required", 'max_length' => 'Max 100 chars allowed.', 'decimal' => '%s is invalid.']);
+        $this->form_validation->set_rules('id', 'Id', 'is_natural', ['is_natural' => "%s is invalid"]);
         verifyRequiredParams();
         
         $post = [
@@ -134,11 +148,10 @@ class User extends API_controller {
 			'longitude'	  => $this->input->post('lng')
 		];
 
-		$id = $this->main->add($post, 'addresses');
+		$id = ($this->input->post('id')) ? $this->main->update(['id' => d_id($this->input->post('id'))], $post, 'addresses') 
+                : $this->main->add($post, 'addresses');
 
-		$response['row'] = array_map(function($add){
-            return ['id' => e_id($add['id']), 'ad_location' => $add['ad_location']];
-        }, $this->main->getAll('addresses', 'id, ad_location', ['user_id' => $this->api, 'is_deleted' => 0]));
+		$response['row'] = $this->addresses();
 
         $response['error'] = $id ? false : true;
         $response['message'] = $id ? 'Address added successfully.' : 'Address not added.';
@@ -203,6 +216,13 @@ class User extends API_controller {
             $member['id'] = e_id($member['id']);
             return $member;
         }, $this->main->getAll('user_members', '*, DATE_FORMAT(FROM_DAYS(DATEDIFF(CURRENT_DATE, dob)), "%y") AS age', ['u_id' => $this->api, 'is_deleted' => 0]));
+    }
+
+    private function addresses()
+    {
+        return array_map(function($add){
+            return ['id' => e_id($add['id']), 'ad_location' => $add['ad_location']];
+        }, $this->main->getAll('addresses', 'id, ad_location', ['user_id' => $this->api, 'is_deleted' => 0]));
     }
 
     public function profile()
