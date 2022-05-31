@@ -47,9 +47,10 @@ class Order_model extends MY_Model
 
     public function getOrder($id)
     {
-        $order = $this->db->select('o.name, o.mobile, o.collection_date, o.collection_time, ref_doctor, doc_remarks')
+        $order = $this->db->select('o.name, o.mobile, o.collection_date, o.collection_time, ref_doctor, doc_remarks, u.token')
                         ->from($this->table)
                         ->where('o.id', $id)
+                        ->join('users u', 'u.id = o.u_id')
                         ->get()->row_array();
 
         $order['tests'] = $this->db->select('ot.id, t_name, price, test_report, DATE_FORMAT(upload_date, "%d-%m-%Y %I:%i %p") AS date')

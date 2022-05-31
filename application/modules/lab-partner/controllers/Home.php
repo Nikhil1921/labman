@@ -146,10 +146,9 @@ class Home extends Admin_controller  {
                     ];
 
                 $uid = $this->order_model->upload_reports($post);
-
+                
                 if($uid){
-                    $token = $this->api_model->getUserToken($this->input->post('id'));
-                    send_notification("Test update", 'Your test is in : '.$post['status'], $token['token'], $this->config->item('user-token'));
+                    send_notification("Test update", 'Your test report is uploaded.', $data['data']['token'], $this->config->item('user-token'));
                 }
                 
                 if(!$uid && is_file($this->path.$report["message"]))

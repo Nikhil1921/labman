@@ -22,7 +22,7 @@ class Main_modal extends MY_Model
             ],
             [
                 'name' => 'notifications',
-                'title' => 'Notifications',
+                'title' => 'Notification',
                 'permissions' => ['view', 'add', 'delete'],
                 'added' => array_map(function($arr){
                     return $arr['operation'];
