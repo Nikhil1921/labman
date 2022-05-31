@@ -31,7 +31,7 @@
                     <?= form_hidden('pack_id', e_id($pack['id'])) ?>
                     <select name="city" id="city" class="btn btn-primary btn-lg">
                         <?php foreach($this->main->getCities() as $city): ?>
-                            <option><?= $city['c_name'] ?></option>
+                            <option <?= $this->session->city === $city['c_name'] ? 'selected' : '' ?>><?= $city['c_name'] ?></option>
                         <?php endforeach ?>
                     </select>
                     <input type="submit" value="Book Now" name="redirect" class="btn btn-primary btn-lg" />

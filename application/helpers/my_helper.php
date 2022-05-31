@@ -131,17 +131,17 @@ if ( ! function_exists('send_email'))
 
 if ( ! function_exists('send_notification'))
 {
-    function send_notification($title, $body, $token, $serverKey)
+    function send_notification($title, $body, $token, $serverKey, $image='')
 	{
         $url = "https://fcm.googleapis.com/fcm/send";
-        
-        $notification = array('title' => $title, 'body' => $body, 'sound' => 'default', 'badge' => '1');
+
+        $notification = array('title' => $title, 'body' => $body, 'sound' => 'default', 'badge' => '1', 'image' => base_url($image));
         $arrayToSend = array('to' => $token, 'notification' => $notification, 'priority'=>'high');
         $json = json_encode($arrayToSend);
         $headers = array();
         $headers[] = 'Content-Type: application/json';
         $headers[] = 'Authorization: key='.$serverKey;
-        
+
         $ch = curl_init();
 
         curl_setopt($ch, CURLOPT_URL, $url);

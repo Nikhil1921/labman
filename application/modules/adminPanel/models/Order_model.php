@@ -6,9 +6,9 @@
 class Order_model extends MY_Model
 {
 	public $table = "orders o";
-	public $select_column = ['o.id', 'o.name', 'o.mobile', 'DATE_FORMAT(o.collection_date, "%d-%m-%Y") collection_date', 'DATE_FORMAT(o.collection_time, "%I:%i %p") collection_time', '(SUM(ot.price) - IF(package_by = "Lab", o.discount, 0)) total', '(SUM(ot.margin) - IF(package_by = "Admin", o.discount, 0)) labman', 'l.name AS lab', 'o.ref_doctor', 'o.doc_remarks', 'ph.name AS phlebetomist', 'o.status'];
+	public $select_column = ['o.id', 'o.name', 'o.mobile', 'DATE_FORMAT(o.collection_date, "%d-%m-%Y") collection_date', 'DATE_FORMAT(o.collection_time, "%I:%i %p") collection_time', 'CONCAT(a.faddress, ", ", a.ad_location, ", ", ad_city) AS address', '(SUM(ot.price) - IF(package_by = "Lab", o.discount, 0)) total', '(SUM(ot.margin) - IF(package_by = "Admin", o.discount, 0)) labman', 'l.name AS lab', 'o.ref_doctor', 'o.doc_remarks', 'ph.name AS phlebetomist', 'o.status'];
 	public $search_column = ['o.name', 'o.mobile', 'o.collection_date', 'o.collection_time'];
-    public $order_column = [null, 'o.name', 'o.mobile', 'o.collection_date', 'o.collection_time', null, null, null, null, null, null, null, null];
+    public $order_column = [null, 'o.name', 'o.mobile', 'o.collection_date', 'o.collection_time', null, null, null, null, null, null, null, null, null];
 	public $order = ['o.id' => 'DESC'];
 
 	public function make_query()
@@ -19,6 +19,7 @@ class Order_model extends MY_Model
 				 ->join('orders_tests ot', 'ot.o_id = o.id')
 				 ->join('logins l', 'l.id = o.lab_id')
 				 ->join('logins ph', 'ph.id = o.phlebotomist_id', 'left')
+				 ->join('addresses a', 'a.id = o.add_id', 'left')
                  ->group_by('ot.o_id');
 
         if($this->input->get('status'))
@@ -37,6 +38,7 @@ class Order_model extends MY_Model
 				 ->join('orders_tests ot', 'ot.o_id = o.id')
 				 ->join('logins l', 'l.id = o.lab_id')
 				 ->join('logins ph', 'ph.id = o.phlebotomist_id', 'left')
+                 ->join('addresses a', 'a.id = o.add_id', 'left')
                  ->group_by('ot.o_id');
                  
         if($this->input->get('status'))

@@ -21,9 +21,17 @@ class Main_modal extends MY_Model
                 }, $this->getall('permissions', 'operation', ['role' => $role, 'nav' => 'banners']))
             ],
             [
+                'name' => 'notifications',
+                'title' => 'Notifications',
+                'permissions' => ['view', 'add', 'delete'],
+                'added' => array_map(function($arr){
+                    return $arr['operation'];
+                }, $this->getall('permissions', 'operation', ['role' => $role, 'nav' => 'notifications']))
+            ],
+            [
                 'name' => 'users',
                 'title' => 'Users',
-                'permissions' => ['view', 'status', 'update'],
+                'permissions' => ['view', 'status', 'update', 'order'],
                 'added' => array_map(function($arr){
                     return $arr['operation'];
                 }, $this->getall('permissions', 'operation', ['role' => $role, 'nav' => 'users']))
@@ -194,10 +202,33 @@ class Main_modal extends MY_Model
                      ->join('lab_partners lp', 'lp.id = lt.lab_id')
                      ->join('tests t', 't.id = lt.test_id')
                      ->join('report_time rt', 'rt.id = lp.del_time')
-                     ->order_by('total ASC')->group_by('lab_id')->get()->result_array();
-            
+                     ->order_by('total ASC')
+                     ->group_by('lab_id')
+                     ->having("count('lab_id')", count($ts))
+                     ->get()->result_array();
+                     
             return $return ? $return : [];
         }else
             return [];
     }
+
+    public function getOrder($o_id)
+    {
+        $data['order'] = $this->db->select('hardcopy, fix_price, home_visit, discount, or_id, u_id')
+                            ->from('orders')
+                            ->where(['id' => $o_id])
+                            ->get()
+                            ->row_array();
+
+        $data['user'] = $this->get('users', 'name, mobile', ['id' => $data['order']['u_id']]);
+
+        $data['cart']['tests'] = $this->db->select('(price + margin) AS total, mrp AS ltl_mrp, t_name')
+                                            ->from('orders_tests ot')
+                                            ->where(['o_id' => $o_id])
+                                            ->join('tests t', 't.id = ot.test_id')
+                                            ->get()
+                                            ->result();
+        return $data;
+    }
+
 }

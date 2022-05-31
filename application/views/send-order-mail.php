@@ -68,17 +68,17 @@
             </tr>
             <tr>
               <td colspan="1"  class="total-line">Collection Charge</td>
-              <td class="total-value">Rs. <?= $cart['cart']->home_visit ?></td>
+              <td class="total-value">Rs. <?= $order['home_visit'] ?></td>
             </tr>
             <tr>
                 <td colspan="1"  class="total-line">Total Amount</td>
-                <td class="total-value">Rs. <?= $mrp + $cart['cart']->home_visit + $order['hardcopy'] ?></td>
+                <td class="total-value">Rs. <?= $mrp + $order['home_visit'] + $order['hardcopy'] ?></td>
             </tr>
             <tr>
                 <td colspan="1"  class="total-line">Discount</td>
                 <?php $total = $total - $cart['cart']->discount ?>
                 <td class="total-value">Rs. 
-                    <?= $total >= $order['fix_price'] ? $mrp - $total + $cart['cart']->home_visit : $mrp - $total; ?>
+                    <?= $total >= $order['fix_price'] ? $mrp - $total + $order['home_visit'] : $mrp - $total; ?>
                 </td>
             </tr>
             <tr>

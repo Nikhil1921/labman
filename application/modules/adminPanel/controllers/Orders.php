@@ -45,6 +45,7 @@ class Orders extends Admin_controller  {
                         <span class="icon-settings"></span></button><div class="dropdown-menu" aria-labelledby="btnGroupVerticalDrop1" x-placement="bottom-start">';
             
             $action .= '<a class="dropdown-item" onclick="getOrderDetails('.e_id($row->id).')" href="javascript:;"><i class="fa fa-flask"></i> Tests</a>';
+            $action .= anchor(admin("/invoice/".e_id($row->id)), '<i class="fa fa-file-text-o"></i> Invoice', 'class="dropdown-item"');
             
             $action .= '</div></div>';
             $sub_array[] = $action;

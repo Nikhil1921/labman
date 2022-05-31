@@ -5,9 +5,11 @@
 <div class="card-body">
     <form action="" method="get">
         <div class="row">
+            <?php if(isset($data['prescription'])): ?>
             <div class="col-md-12 mb-3">
                 <?= img($data['prescription'], '', 'width="100%"') ?>
             </div>
+            <?php endif ?>
             <div class="col-md-12">
                 <div class="text-center alert alert-danger">Search lab</div>
             </div>
@@ -42,7 +44,7 @@
             </div>
         </div>
     </form>
-    <?= form_open("$url/add/$id?".$this->input->server('REDIRECT_QUERY_STRING'), '', ['u_id' => e_id($data['u_id'])]) ?>
+    <?= form_open("$save?".$this->input->server('REDIRECT_QUERY_STRING'), '', ['u_id' => e_id($data['u_id'])]) ?>
         <?php if($this->input->get('tests')) foreach($this->input->get('tests') as $test) echo form_hidden('tests[]', $test); ?>
         <?= form_hidden('city', $this->input->get('city')); ?>
         <div class="row">
@@ -177,7 +179,7 @@
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
             </div>
             <div class="modal-body">
-                <?= form_open("$url/add-member", 'id="add_member"', ['u_id' => e_id($data['u_id'])]) ?>
+                <?= form_open(admin("prescriptions/add-member"), 'id="add_member"', ['u_id' => e_id($data['u_id'])]) ?>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -243,7 +245,7 @@
                 <!-- <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button> -->
             </div>
             <div class="modal-body">
-                <?= form_open("$url/add-address", 'id="add_address"', ['u_id' => e_id($data['u_id'])]) ?>
+                <?= form_open(admin("prescriptions/add-address"), 'id="add_address"', ['u_id' => e_id($data['u_id'])]) ?>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -275,7 +277,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+                <!-- <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button> -->
                 <button class="btn btn-primary" onclick="submitForm(document.getElementById('add_address'), this);" type="button">Add address</button>
             </div>
         </div>

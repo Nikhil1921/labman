@@ -47,7 +47,7 @@ class Employees_applications extends Admin_controller  {
             $action = '<div class="btn-group" role="group"><button class="btn btn-success dropdown-toggle" id="btnGroupVerticalDrop1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="icon-settings"></span></button><div class="dropdown-menu" aria-labelledby="btnGroupVerticalDrop1" x-placement="bottom-start">';
             if($status)
-                $action .= anchor($this->redirect."/status/".e_id($row->id), '<i class="fa fa-thumbs-up"></i> Approve</a>', 'class="dropdown-item"');
+                $action .= anchor($this->redirect."/status/".e_id($row->id), '<i class="fa fa-thumbs-up"></i> Approve', 'class="dropdown-item"');
             
             
             $action .= '</div></div>';

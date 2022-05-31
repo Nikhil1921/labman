@@ -32,7 +32,7 @@
                            <div class="row-100 overflow-hidden">
                               <?= form_open('search', 'method="get"') ?>
                                  <div class="city-select-top">
-                                    <select class="select2-icon form-control main-search" name="city">
+                                    <select class="select2-icon form-control main-search" name="city" onchange="selectCity(this.value)">
                                        <?php foreach($this->main->getCities() as $k => $city):
                                        if(!$this->session->city && $k === 0) $this->session->set_userdata('city', $city['c_name']);
                                        if($this->input->get('city')) $this->session->set_userdata('city', $this->input->get('city'));
@@ -322,6 +322,9 @@
          for (let i = 0; i < tagArr.length; i++) {
             tagArr[i].autocomplete = 'off';
          }
+         const selectCity = (city) => {
+            $.get(`<?=  base_url('select-city?city=') ?>${city}`);
+         };
       </script>
    </body>
 </html>

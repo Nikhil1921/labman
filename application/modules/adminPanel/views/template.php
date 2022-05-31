@@ -161,6 +161,11 @@ $pers = $this->user->role === 'Admin' ? [] : $this->main->getAll('permissions', 
                                     <?= anchor(admin('lab_test'), '<i data-feather="dollar-sign"></i><span> Test by Lab</span>', 'class="sidebar-header '.($name === 'lab_test' ? 'active' : '').'"') ?>
                                 </li>
                             <?php endif ?>
+                            <?php if(verify_nav('notifications', $pers)): ?>
+                                <li>
+                                    <?= anchor(admin('notifications'), '<i data-feather="lock"></i><span> Notifications</span>', 'class="sidebar-header '.($name === 'notifications' ? 'active' : '').'"') ?>
+                                </li>
+                            <?php endif ?>
                             <?php if(verify_nav('permissions', $pers)): ?>
                                 <li>
                                     <?= anchor(admin('permissions'), '<i data-feather="lock"></i><span> Permissions</span>', 'class="sidebar-header '.($name === 'permissions' ? 'active' : '').'"') ?>
@@ -232,7 +237,7 @@ $pers = $this->user->role === 'Admin' ? [] : $this->main->getAll('permissions', 
         <script src="<?= base_url('assets/back/js/select2/select2.full.min.js') ?>"></script>
         <script src="<?= base_url('assets/back/js/select2/select2-custom.js') ?>"></script>
         <script src="<?= base_url('assets/back/js/editor/ckeditor/ckeditor.js') ?>"></script>
-        <?php if(in_array($name, ['city', 'prescriptions'])): ?>
+        <?php if(in_array($name, ['city', 'prescriptions', 'users'])): ?>
         <script type='text/javascript' src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDiWWB6yJd6ilpII5N89O-vXAo2eXiVD9g&libraries=places"></script>
         <script src="<?= base_url('assets/js/jquery.geocomplete.js') ?>"></script>
         <script>

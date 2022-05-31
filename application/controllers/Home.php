@@ -229,7 +229,7 @@ class Home extends Public_controller {
 
 	/* public function send_noti()
     {   
-        send_notification(APP_NAME, "USER", 'ceCfkMZtSLSELT3ZAoVqqK:APA91bHVgIGabDDhuffcOQs5vofteGdeI5hCgTQTkhzw9LRJoK8WJ3G58SDnq4XI5htSn1NJH_VbrrKkPTQADXf4DqD27sZYxK0pQ5xSXgnCX44iNBkLoTQHlPY8fq5bVOUAFC4uxDZQ', $this->config->item('user-token'));
+        send_notification(APP_NAME, "USER", 'eqeI-DKQSVanmLvOknfT0S:APA91bHGkErb684ARCMBqf2QiE_-7NnbXl_sTwA7xMQHNfXaG3Ys2ydOf3_pfnPF1eDvauCrhuTy82l28WDVwvjt0lnzFhD_OguTMZj6OIQ8eAFxGGLMRlXZNRhY30YH8FISYCGqXxGG', $this->config->item('user-token'));
         send_notification(APP_NAME, "PHLEBO", 'eZeNWwCyV1M:APA91bG4d8iKPA8XgaSUekXWMTQD9r0XTXy8GQQeqYKdwO_7UsZsUNQddZzpVQs01DW8oYxW3okpKG2f8sKvc_GjIsOM3sI_8DYxa9w8BSp4O0dWpOWtrx4FPkxFwzUND5zhIBut9pA8', $this->config->item('phleb-token'));
     } */
 
@@ -240,4 +240,9 @@ class Home extends Public_controller {
 		
 		return $this->template->load('template', 'error_404', $data);
 	}
+
+    public function select_city()
+    {
+        $this->session->set_userdata('city', $this->input->get('city'));
+    }
 }

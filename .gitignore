@@ -34,3 +34,5 @@ uploads/employee/*
 !uploads/employee/index.html
 uploads/invoices/*
 !uploads/invoices/index.html
+uploads/notifications/*
+!uploads/notifications/index.html

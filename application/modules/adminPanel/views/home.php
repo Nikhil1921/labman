@@ -70,6 +70,7 @@
                     <th>Mobile</th>
                     <th>Date</th>
                     <th>Time</th>
+                    <th class="target">Address</th>
                     <th class="target">Lab</th>
                     <th class="target">Ref. Doctor</th>
                     <th class="target">Doctor Remark</th>

@@ -4,6 +4,7 @@ $route['404_override'] = 'home/error_404';
 $route['translate_uri_dashes'] = TRUE;
 
 // front routes
+$route["select-city"] = "home/select_city";
 $route["getTests"] = "home/getTests";
 $route["search"] = "home/search";
 $route["callback"]['post'] = "home/callback";

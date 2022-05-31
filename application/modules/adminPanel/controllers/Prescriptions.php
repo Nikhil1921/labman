@@ -50,7 +50,7 @@ class Prescriptions extends Admin_controller  {
                         <span class="icon-settings"></span></button><div class="dropdown-menu" aria-labelledby="btnGroupVerticalDrop1" x-placement="bottom-start">';
             
             if($update)
-                $action .= anchor($this->redirect."/add/".e_id($row->id), '<i class="fa fa-file-text"></i> Add</a>', 'class="dropdown-item"');
+                $action .= anchor($this->redirect."/add/".e_id($row->id), '<i class="fa fa-file-text"></i> Add', 'class="dropdown-item"');
             if($delete)
                 $action .= form_open($this->redirect.'/delete', 'id="'.e_id($row->id).'"', ['id' => e_id($row->id)]).
                     '<a class="dropdown-item" onclick="script.delete('.e_id($row->id).'); return false;" href=""><i class="fa fa-trash"></i> Delete</a>'.
@@ -89,6 +89,7 @@ class Prescriptions extends Admin_controller  {
         $data['name'] = $this->name;
         $data['id'] = $id;
         $data['operation'] = "Add";
+        $data['save'] = "$this->redirect/add/$id";
         $data['url'] = $this->redirect;
         $data['data'] = $this->main->get($this->table, 'u_id, CONCAT("'.$this->path.'", prescription) prescription', ['id' => d_id($id)]);
         $data['cities'] = $this->main->getAll('cities', 'c_name, hard_copy, home_visit, fix_price', ['is_deleted' => 0]);

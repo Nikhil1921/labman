@@ -31,7 +31,7 @@ class Prescription_model extends MY_Model
 		return $this->db->get()->num_rows();
 	}
 
-	public function addOrder($post, $id)
+	public function addOrder($post, $id=0)
 	{
 		if($post['family'] == 0)
             $user = $this->main->get('users', 'name, email, mobile', ['id' => d_id($post['u_id'])]);
@@ -87,7 +87,7 @@ class Prescription_model extends MY_Model
         }
 
         $this->db->insert_batch('orders_tests', $or_test);
-        $this->db->update('prescription', ['is_booked' => 1], ['id' => $id]);
+        if($id !== 0) $this->db->update('prescription', ['is_booked' => 1], ['id' => $id]);
         $this->db->trans_complete();
 		if ($this->db->trans_status() === FALSE)
             return ['error' => true, 'message' => 'Order not placed.'];
