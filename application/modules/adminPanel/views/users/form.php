@@ -51,20 +51,6 @@
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <?= form_label('Password', 'password', 'class="col-form-label"') ?>
-                    <?= form_input([
-                        'class' => "form-control",
-                        'type' => "password",
-                        'id' => "password",
-                        'name' => "password",
-                        'maxlength' => 100,
-                        (! isset($data['mobile']) ? 'required' : ''),
-                    ]); ?>
-                    <?= form_error('password') ?>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
                     <?= form_label('Date of birth', 'dob', 'class="col-form-label"') ?>
                     <?= form_input([
                         'class' => "form-control",

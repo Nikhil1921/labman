@@ -125,6 +125,35 @@ class Users extends Admin_controller  {
         return $this->template->load('template', "$this->redirect/members", $data);
     }
 
+    public function add()
+	{
+        check_access($this->name, 'add');
+
+        $this->form_validation->set_rules($this->validate);
+
+        if ($this->form_validation->run() == FALSE)
+        {
+            $data['title'] = $this->title;
+            $data['name'] = $this->name;
+            $data['operation'] = "Add";
+            $data['url'] = $this->redirect;
+            
+            return $this->template->load('template', "$this->redirect/form", $data);
+        }else{
+            $post = [
+                'name'   => $this->input->post('name'),
+                'mobile' => $this->input->post('mobile'),
+                'email'  => $this->input->post('email'),
+                'gender' => $this->input->post('gender'),
+                'dob'    => $this->input->post('dob'),
+            ];
+            
+            $id = $this->main->add($post, $this->table);
+
+            flashMsg($id, "$this->title updated.", "$this->title not updated. Try again.", $this->redirect);
+        }
+    }
+
     public function update($id)
 	{
         check_access($this->name, 'update');
@@ -148,9 +177,6 @@ class Users extends Admin_controller  {
                 'gender' => $this->input->post('gender'),
                 'dob'    => $this->input->post('dob'),
             ];
-            
-            if($this->input->post('password'))
-			    $post['password'] = my_crypt($this->input->post('password'));
 
             if (!empty($_FILES['image']['name'])) {
                 $image = $this->uploadImage('image');
