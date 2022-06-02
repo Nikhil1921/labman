@@ -163,13 +163,16 @@ class Home extends Admin_controller  {
     {
         $this->form_validation->set_rules('id', 'id', 'required|is_natural');
         $this->form_validation->set_rules('status', 'status', 'required');
-
+        
         if ($this->form_validation->run() == FALSE)
             flashMsg(0, "", "Some required fields are missing.", $this->redirect);
         else{
             $id = $this->main->update(['id' => d_id($this->input->post('id'))], ['status' => $this->input->post('status')], 'orders');
+            
             if($id){
+                $this->load->model('phlebetomist/api_model');
                 $token = $this->api_model->getUserToken(d_id($this->input->post('id')));
+                
                 send_notification("Test update", 'Your test is in : '.$this->input->post('status'), $token['token'], $this->config->item('user-token'));
             }
             flashMsg($id, "Status changed success.", "Status not changed.", $this->redirect);
