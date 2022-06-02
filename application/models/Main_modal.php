@@ -305,6 +305,7 @@ class Main_modal extends MY_Model
                         ->join('employees e', 'e.id = o.phlebotomist_id', 'left')
                         ->join('packages pk', 'pk.id = o.package', 'left')
                         ->group_by('ot.o_id')
+                        ->order_by('id DESC')
                         ->get()->result_array();
     }
 
