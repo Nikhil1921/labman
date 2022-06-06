@@ -160,8 +160,24 @@ class Home extends Admin_controller  {
     
             $path = $this->config->item('test-reports').$data['test_report'];
             
-            $pageCount = $this->make_pdf->setSourceFile($path);
+            $new_path = $this->config->item('test-reports').'compatible/'.$data['test_report'];
             
+            $filepdf = fopen($path, "r");
+            
+            $line_first = fgets($filepdf);
+            fclose($filepdf);
+            
+            preg_match_all('!\d+!', $line_first, $matches);
+
+            $pdfversion = implode('.', $matches[0]);
+            
+            if($pdfversion > "1.4"){
+                shell_exec('gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile="'.$new_path.'" "'.$path.'"');
+                $path = $this->config->item('test-reports').'compatible/'.$data['test_report'];
+            }
+            
+            $pageCount = $this->make_pdf->setSourceFile($path);
+
             for ($i=1; $i <= $pageCount; $i++) { 
                 $this->make_pdf->AddPage();
                 $this->make_pdf->AliasNbPages();
