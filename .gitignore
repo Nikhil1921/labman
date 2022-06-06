@@ -29,7 +29,10 @@ uploads/users/*
 !uploads/users/index.html
 !uploads/users/user.png
 uploads/test-reports/*
+!uploads/test-reports/compatible/
 !uploads/test-reports/index.html
+uploads/test-reports/compatible/*
+!uploads/test-reports/compatible/index.html
 uploads/employee/*
 !uploads/employee/index.html
 uploads/invoices/*
