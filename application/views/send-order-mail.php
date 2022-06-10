@@ -47,7 +47,7 @@
                     <tr>
                         <td><?= $test->t_name ?></td>
                         <td class="total-value">
-                            Rs. <?= $test->total ?>
+                            Rs. <?= $test->ltl_mrp ?>
                         </td>
                     </tr>
                 <?php endforeach ?>
