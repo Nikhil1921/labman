@@ -49,9 +49,9 @@ class Home extends Admin_controller  {
                     break;
                 case 'In process':
                 case 'In Process':
-                    if($this->main->check('orders_tests', ['o_id' => $row->id, 'test_report' => null], 'o_id'))
+                    // if($this->main->check('orders_tests', ['o_id' => $row->id, 'test_report' => null], 'o_id'))
                         $action .= anchor(admin('upload-reports/'.e_id($row->id)), '<i class="fa fa-upload"></i> Upload reports', 'class="dropdown-item"');
-                    else
+                    // else
                         $action .= form_open(admin('change-status'), 'id="change_'.e_id($row->id).'"', ['id' => e_id($row->id), 'status' => 'Completed']).
                                     '<a class="dropdown-item" onclick="script.delete(\'change_'.e_id($row->id).'\'); return false;" href=""><i class="fa fa-thumbs-up"></i> Completed</a>'.
                                     form_close();

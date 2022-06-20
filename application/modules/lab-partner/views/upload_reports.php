@@ -38,8 +38,9 @@
                         <br />
                         <?php foreach($data['tests'] as $test): ?>
                         <div class="checkbox checkbox-dark">
-                            <input id="test_<?= e_id($test['id']) ?>" value="<?= e_id($test['id']) ?>" name="reports[]" type="checkbox" <?= set_value('reports') ? set_checkbox('reports', e_id($test['id'])) : (isset($test['test_report']) && $test['test_report'] ? 'checked' : '') ?> <?= isset($test['test_report']) && $test['test_report'] ? 'disabled' : '' ?> />
+                            <input id="test_<?= e_id($test['id']) ?>" value="<?= e_id($test['id']) ?>" name="reports[]" type="checkbox" <?= set_checkbox('reports', e_id($test['id'])) ?>  />
                             <label for="test_<?= e_id($test['id']) ?>"><?= $test['t_name'] ?></label>
+                            <?= isset($test['test_report']) && $test['test_report'] ? '<span class="badge badge-success ml-3">Uploaded</span>' : '<span class="badge badge-danger ml-3">Pending</span>' ?>
                         </div>
                         <?php endforeach ?>
                         <?= form_error('reports[]') ?>
