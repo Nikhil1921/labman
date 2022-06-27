@@ -58,6 +58,7 @@ class Home extends Admin_controller  {
                     break;
                 case 'Completed':
                     $action .= anchor(admin('view-reports/'.e_id($row->id)), '<i class="fa fa-eye"></i> View reports', 'class="dropdown-item"');
+                    $action .= anchor(admin('upload-reports/'.e_id($row->id)), '<i class="fa fa-upload"></i> Upload reports', 'class="dropdown-item"');
                     break;
                 
                 default:
